@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   meta: ^1.8.0
+  logging: ^1.0.2
   mitmproxy_ri_client:
     git:
       url: 'https://github.com/hacker1024/mitmproxy_ri_client.dart.git'

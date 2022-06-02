@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:pandora_mitm/plugin_dev.dart';
 
 /// A [PandoraMitm] plugin.
@@ -97,4 +99,12 @@ abstract class PandoraMitmPlugin {
     PandoraResponse? response,
   ) =>
       PandoraMessageSet.preserve;
+}
+
+mixin PandoraMitmPluginLogging on PandoraMitmPlugin {
+  @protected
+  String get logTag;
+
+  @protected
+  late final Logger log = Logger('PandoraMitm.plugin.$logTag');
 }

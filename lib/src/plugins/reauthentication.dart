@@ -6,8 +6,12 @@ import 'package:pandora_mitm/plugin_dev.dart';
 ///
 /// By default, each client will only be reauthenticated once.
 /// This can be reset, though - see [invalidate] for more details.
-class ReauthenticationPlugin extends PandoraMitmPlugin {
+class ReauthenticationPlugin extends PandoraMitmPlugin
+    with PandoraMitmPluginLogging {
   final _reauthenticatedClients = <String>{};
+
+  @override
+  String get logTag => 'reauthentication';
 
   /// Triggers a reauthentication on the next authorised API request.
   void invalidate() => _reauthenticatedClients.clear();
@@ -40,6 +44,9 @@ class ReauthenticationPlugin extends PandoraMitmPlugin {
       return PandoraMessageSet.preserve;
     } else {
       _reauthenticatedClients.add(apiRequest.deviceId!);
+      log.info(
+        'Re-authenticating client with device ID ${apiRequest.deviceId}.',
+      );
       return const PandoraMessageSet(
         response: PandoraResponse(
           apiResponse: PandoraApiResponse.fail(
