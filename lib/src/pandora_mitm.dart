@@ -170,6 +170,7 @@ abstract class PandoraMitm {
         partnerId: partnerId,
         authToken: authToken,
         method: method,
+        deviceId: body['deviceId'] as String?,
         encrypted: originalRequestWasEncrypted,
         body: body,
       );
