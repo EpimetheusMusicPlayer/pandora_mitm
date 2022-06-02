@@ -38,7 +38,7 @@ void main() async {
   final pandoraMitm = PandoraMitm.foreground([
     streamPlugin,
     modificationDetectorPlugin,
-    const pmplg.FeatureUnlockPlugin(),
+    pmplg.FeatureUnlockPlugin(),
     modificationDetectorPlugin,
     pmplg.MitmproxyUiHelperPlugin(stripBoilerplate: true),
   ]);
