@@ -8,6 +8,7 @@ class PandoraApiRequest with _$PandoraApiRequest {
   const factory PandoraApiRequest({
     int? partnerId,
     String? authToken,
+    String? deviceId,
     required String method,
     @Default(false) bool encrypted,
     required Map<String, dynamic> body,
