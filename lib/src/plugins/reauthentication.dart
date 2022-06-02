@@ -4,23 +4,13 @@ import 'package:pandora_mitm/plugin_dev.dart';
 /// A [PandoraMitmPlugin] that forces Pandora clients to reauthenticate by
 /// simulating an expired authentication token error.
 ///
-/// This plugin only works properly with one Pandora client at a time - if more
-/// than one client is using the proxy, only the first client to make an
-/// authorised request after [invalidate] has been called will be forced to
-/// reauthenticate.
+/// By default, each client will only be reauthenticated once.
+/// This can be reset, though - see [invalidate] for more details.
 class ReauthenticationPlugin extends PandoraMitmPlugin {
-  bool _shouldReauthenticate;
-
-  /// Creates a [ReauthenticationPlugin] instance.
-  ///
-  /// Setting [startInvalid] to true (the default) is equivalent to calling
-  /// [invalidate].
-  ReauthenticationPlugin({
-    bool startInvalid = true,
-  }) : _shouldReauthenticate = startInvalid;
+  final _reauthenticatedClients = <String>{};
 
   /// Triggers a reauthentication on the next authorised API request.
-  void invalidate() => _shouldReauthenticate = true;
+  void invalidate() => _reauthenticatedClients.clear();
 
   @override
   MessageSetSettings getRequestSetSettings(
@@ -29,9 +19,9 @@ class ReauthenticationPlugin extends PandoraMitmPlugin {
     RequestSummary requestSummary,
     ResponseSummary? responseSummary,
   ) =>
-      (!_shouldReauthenticate || !_apiMethodIsAuthenticated(apiMethod))
-          ? MessageSetSettings.skip
-          : MessageSetSettings.includeRequestOnly;
+      _apiMethodIsAuthenticated(apiMethod)
+          ? MessageSetSettings.includeRequestOnly
+          : MessageSetSettings.skip;
 
   @override
   PandoraMessageSet handleRequest(
@@ -39,15 +29,17 @@ class ReauthenticationPlugin extends PandoraMitmPlugin {
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
   ) {
-    if (!_shouldReauthenticate ||
-        apiRequest?.authToken == null ||
-        // For some reason, the Pandora client sometimes call even methods like
-        // auth.userLogin with an authentication token.
-        // A manual blacklist must be employed.
-        !_apiMethodIsAuthenticated(apiRequest!.method)) {
+    if (apiRequest?.authToken == null ||
+        apiRequest!.deviceId == null ||
+        // For some reason, the Pandora client sometimes calls even methods like
+        // auth.userLogin with an existing authentication token.
+        // A manual blacklist must be employed to prevent breaking the
+        // authentication flow.
+        !_apiMethodIsAuthenticated(apiRequest.method) ||
+        _reauthenticatedClients.contains(apiRequest.deviceId)) {
       return PandoraMessageSet.preserve;
     } else {
-      _shouldReauthenticate = false;
+      _reauthenticatedClients.add(apiRequest.deviceId!);
       return const PandoraMessageSet(
         response: PandoraResponse(
           apiResponse: PandoraApiResponse.fail(
