@@ -14,7 +14,7 @@ A CLI exposing some basic [pandora_mitm] functionality.
 
 ### Setup
 
-Follow the [pandora_mitm] setup instructions.
+Follow the [pandora_mitm setup instructions](https://github.com/EpimetheusMusicPlayer/pandora_mitm#setup).
 
 ### Usage
 
