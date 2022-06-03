@@ -1,6 +1,6 @@
 # pandora_mitm
 
-A Dart package featuring a mitmproxy Remote Interceptions client that can analyse and modify Pandora JSON API messages.
+A Dart package featuring a [mitmproxy Remote Interceptions client][ri] that can analyse and modify Pandora JSON API messages.
 
 ### [Looking for the CLI?][cli]
 
