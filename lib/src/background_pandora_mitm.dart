@@ -9,6 +9,7 @@ import 'package:pandora_mitm/src/entities/pandora_message_set.dart';
 import 'package:pandora_mitm/src/entities/pandora_response.dart';
 import 'package:pandora_mitm/src/pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm_plugin.dart';
+import 'package:pandora_mitm/src/plugin_manager.dart';
 
 class BackgroundPandoraMitmClient
     with PluginGroupPandoraMitmMixin
@@ -19,7 +20,7 @@ class BackgroundPandoraMitmClient
   final _disconnectionCompleter = Completer<void>();
 
   BackgroundPandoraMitmClient([Iterable<PandoraMitmPlugin>? plugins]) {
-    if (plugins != null) this.plugins.addAll(plugins);
+    if (plugins != null) pluginManager.addPlugins(plugins);
   }
 
   @override
@@ -154,7 +155,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
   }
 
   @override
-  List<PandoraMitmPlugin> get plugins => throw UnsupportedError(
+  PluginManager get pluginManager => throw UnsupportedError(
         'Plugins are not natively supported in the background PandoraMitm server!',
       );
 
