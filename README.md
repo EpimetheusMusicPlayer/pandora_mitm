@@ -41,17 +41,30 @@ project.
 
 ### Dart
 
-See the [example](example/pandora_mitm_example.dart) project.
+1. Add the package to your `pubspec.yaml`:
+   ```yaml
+   dependencies:
+     pandora_mitm:
+       git:
+         url: 'https://github.com/EpimetheusMusicPlayer/pandora_mitm.git'
+         ref: master # Or a tag, commit, secondary branch, etc.
+   ```
+2. Import the libraries:
+   ```dart
+   import 'package:pandora_mitm/pandora_mitm.dart';
+   import 'package:pandora_mitm/plugins.dart' as pmplg;
+   ```
+4. See the [example](example/pandora_mitm_example.dart) project and API docs.
 
 #### Custom plugin creation
 
-Import the plugin development library:
+1. Import the plugin development library:
+   ```dart
+   import 'package:pandora_mitm/plugin_dev.dart';
+   ```
 
-```dart
-import 'package:pandora_mitm/plugin_dev.dart';
-```
-
-Then, extend the `PandoraMitmPlugin` or a higher-level base class. 
+2. Extend the `PandoraMitmPlugin` or a higher-level base class.
+3. Consult the API docs.
 
 [cli]: https://github.com/EpimetheusMusicPlayer/pandora_mitm_cli
 [mitmproxy]: https://mitmproxy.org
