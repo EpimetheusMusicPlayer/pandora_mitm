@@ -9,6 +9,11 @@ environment:
 dependencies:
   meta: ^1.8.0
   logging: ^1.0.2
+  notifying_list:
+    git:
+      url: 'https://github.com/hacker1024/notifying_list.dart.git'
+      ref: '987055f17a74f06217d499145eb8e858cd35539f'
+  freezed_annotation: ^2.0.3
   mitmproxy_ri_client:
     git:
       url: 'https://github.com/hacker1024/mitmproxy_ri_client.dart.git'
@@ -17,7 +22,6 @@ dependencies:
     git:
       url: 'https://github.com/EpimetheusMusicPlayer/Iapetus.git'
       ref: 3a0f5cabdf85b7aa4817870ed9cb90c006a30346
-  freezed_annotation: ^2.0.3
 
 dev_dependencies:
   lint: ^1.8.2

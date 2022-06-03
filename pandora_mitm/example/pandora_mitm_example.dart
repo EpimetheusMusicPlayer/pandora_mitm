@@ -40,12 +40,18 @@ void main() async {
     modificationDetectorPlugin,
     pmplg.FeatureUnlockPlugin(),
     modificationDetectorPlugin,
-    pmplg.MitmproxyUiHelperPlugin(stripBoilerplate: true),
   ]);
+
+  pandoraMitm.pluginManager.pluginListChanges.forEach(
+      (pluginList) => stdout.writeln('Plugin list changed: $pluginList'));
 
   stdout.writeln('Connecting...');
   await pandoraMitm.connect();
   stdout.writeln('Connected.');
+
+  // Plugins can be added at any time.
+  pandoraMitm.pluginManager
+      .addPlugin(pmplg.MitmproxyUiHelperPlugin(stripBoilerplate: true));
 
   late final StreamSubscription<ProcessSignal> sigintSubscription;
   sigintSubscription = ProcessSignal.sigint.watch().listen((_) async {

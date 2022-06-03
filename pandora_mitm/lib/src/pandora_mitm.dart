@@ -10,6 +10,7 @@ import 'package:pandora_mitm/src/entities/pandora_message_set.dart';
 import 'package:pandora_mitm/src/entities/pandora_response.dart';
 import 'package:pandora_mitm/src/foreground_pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm_plugin.dart';
+import 'package:pandora_mitm/src/plugin_manager.dart';
 import 'package:pandora_mitm/src/plugins/group.dart';
 
 /// A mitmproxy Remote Interceptions client that can analyse and modify Pandora
@@ -29,7 +30,7 @@ abstract class PandoraMitm {
 
   /// Create a new [PandoraMitm] instance, starting with the given [plugins].
   PandoraMitm([Iterable<PandoraMitmPlugin>? plugins]) {
-    if (plugins != null) this.plugins.addAll(plugins);
+    if (plugins != null) pluginManager.addPlugins(plugins);
   }
 
   /// Create a new [PandoraMitm], starting with the given [plugins], in the
@@ -46,12 +47,12 @@ abstract class PandoraMitm {
   factory PandoraMitm.background([Iterable<PandoraMitmPlugin>? plugins]) =>
       BackgroundPandoraMitmClient(plugins);
 
-  /// The list of plugins that are currently in use.
+  /// The [PluginManager] managing the plugin list in use.
   ///
-  /// This list can in theory be modified at any time, but note that many
-  /// plugins expect to receive responses after requests. Removing them before
-  /// they do so may cause memory leaks.
-  List<PandoraMitmPlugin> get plugins;
+  /// The plugin list in use can in theory be modified at any time, but note
+  /// that many plugins expect to receive responses after requests. Removing
+  /// them before they do so may cause memory leaks.
+  PluginManager get pluginManager;
 
   /// A [Future] that completes when the client disconnects from the mitmproxy
   /// Remote Interceptions server.
@@ -328,7 +329,7 @@ mixin PluginGroupPandoraMitmMixin implements PandoraMitm {
   final _pluginGroup = PluginGroup();
 
   @override
-  List<PandoraMitmPlugin> get plugins => _pluginGroup.plugins;
+  PluginManager get pluginManager => _pluginGroup;
 
   @protected
   @override
