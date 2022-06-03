@@ -6,6 +6,7 @@ A CLI exposing some basic [pandora_mitm] functionality.
 - [mitmproxy] UI enhancements
   - Decryption
   - API response `Content-Type` corrections
+  - Request boilerplate removal
 - Feature unlocking
 - Reauthentication
 - Logging
