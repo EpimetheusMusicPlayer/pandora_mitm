@@ -146,6 +146,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
           await connect(host: message.host, port: message.port);
         } on SocketException catch (e, s) {
           _sendPort.send(_ExceptionServerMessage(e, s));
+          return;
         }
         _sendPort.send(const _ConnectedServerMessage());
       } else if (message is _DisconnectClientMessage) {
