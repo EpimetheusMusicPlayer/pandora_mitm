@@ -6,7 +6,7 @@ import 'package:pandora_mitm/plugins.dart' as pmplg;
 
 void main() async {
   final streamPlugin = pmplg.StreamPlugin()
-    ..stream.forEach((record) {
+    ..recordStream.forEach((record) {
       stdout.writeln(
         '[${record.flowId}] API: SND: ${record.apiRequest.method}${record.apiRequest.encrypted ? ' (encrypted)' : ''}',
       );
