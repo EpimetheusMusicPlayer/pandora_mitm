@@ -50,7 +50,7 @@ class ReauthenticationPlugin extends PandoraMitmPlugin
       return const PandoraMessageSet(
         response: PandoraResponse(
           apiResponse: PandoraApiResponse.fail(
-            code: PandoraApiErrorCodes.invalidAuthToken,
+            code: PandoraApiErrorCode.invalidAuthToken,
             message: 'An unexpected error occurred',
           ),
         ),
