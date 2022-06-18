@@ -7,11 +7,21 @@ class PandoraMitmRecord {
   final PandoraApiRequest apiRequest;
   final Future<PandoraResponse> responseFuture;
 
-  const PandoraMitmRecord(
+  late final PandoraResponse _response;
+  var _completed = false;
+
+  PandoraMitmRecord(
     this.flowId,
     this.apiRequest,
     this.responseFuture,
-  );
+  ) {
+    responseFuture.then((response) {
+      _completed = true;
+      _response = response;
+    });
+  }
+
+  PandoraResponse? get response => _completed ? _response : null;
 
   @override
   bool operator ==(Object other) =>
