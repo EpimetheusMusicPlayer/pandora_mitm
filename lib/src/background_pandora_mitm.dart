@@ -144,7 +144,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
       } else if (message is _ConnectClientMessage) {
         try {
           await connect(host: message.host, port: message.port);
-        } on SocketException catch (e, s) {
+        } on IOException catch (e, s) {
           _sendPort.send(_ExceptionServerMessage(e, s));
           return;
         }
