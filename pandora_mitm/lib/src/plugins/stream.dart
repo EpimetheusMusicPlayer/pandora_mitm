@@ -12,13 +12,12 @@ class StreamPlugin extends PandoraMitmPlugin {
   Set<String>? apiMethodWhitelist;
 
   final _streamController = StreamController<PandoraMitmRecord>.broadcast();
-  final Map<String, WeakReference<Completer<PandoraResponse>>>
-      _responseCompleters = {};
+  final Map<String, Completer<PandoraResponse>> _responseCompleters = {};
 
   StreamPlugin([this.apiMethodWhitelist]);
 
   /// The stream of API requests and responses.
-  Stream<PandoraMitmRecord> get stream => _streamController.stream;
+  Stream<PandoraMitmRecord> get recordStream => _streamController.stream;
 
   @override
   MessageSetSettings getRequestSetSettings(
@@ -54,7 +53,7 @@ class StreamPlugin extends PandoraMitmPlugin {
     }
 
     final responseCompleter = Completer<PandoraResponse>();
-    _responseCompleters[flowId] = WeakReference(responseCompleter);
+    _responseCompleters[flowId] = responseCompleter;
     _streamController.add(
       PandoraMitmRecord(
         flowId,
@@ -71,7 +70,7 @@ class StreamPlugin extends PandoraMitmPlugin {
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
   ) async {
-    _responseCompleters.remove(flowId)?.target?.complete(response);
+    _responseCompleters.remove(flowId)?.complete(response);
     return PandoraMessageSet.preserve;
   }
 }
