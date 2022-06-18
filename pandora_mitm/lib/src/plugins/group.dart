@@ -55,7 +55,7 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
       _plugins.removeRange(start, end);
 
   @override
-  void removePluginAt(int index) => _plugins.removeAt(index);
+  PandoraMitmPlugin removePluginAt(int index) => _plugins.removeAt(index);
 
   @override
   Future<MessageSetSettings> getRequestSetSettings(
