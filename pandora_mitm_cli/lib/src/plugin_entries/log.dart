@@ -33,7 +33,7 @@ class LogPluginEntry extends PluginEntry {
   ) =>
       pmplg.StreamPlugin(
         (options[_apiMethodWhitelistOption] as List<String>?)?.toSet(),
-      )..stream.forEach(_writeLogMessage);
+      )..recordStream.forEach(_writeLogMessage);
 
   Future<void> _writeLogMessage(
     PandoraMitmRecord record, [
