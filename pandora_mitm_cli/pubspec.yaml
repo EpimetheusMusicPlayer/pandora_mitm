@@ -1,7 +1,7 @@
 name: pandora_mitm_cli
 description: A CLI exposing some basic pandora_mitm functionality.
 version: 0.1.0
-homepage: https://github.com/EpimetheusMusicPlayer/pandora_mitm_cli
+homepage: https://github.com/EpimetheusMusicPlayer/pandora_mitm/tree/master/pandora_mitm_cli
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
