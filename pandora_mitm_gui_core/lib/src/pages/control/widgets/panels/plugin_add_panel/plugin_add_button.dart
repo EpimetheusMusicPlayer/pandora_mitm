@@ -7,6 +7,7 @@ class PluginAddButton extends StatelessWidget {
   final List<PluginUi> availablePluginUis;
   final Color? color;
   final double? size;
+  final bool showTooltip;
 
   const PluginAddButton({
     Key? key,
@@ -14,6 +15,7 @@ class PluginAddButton extends StatelessWidget {
     required this.availablePluginUis,
     this.color,
     this.size,
+    this.showTooltip = true,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,7 @@ class PluginAddButton extends StatelessWidget {
         if (selection == null) return;
         pluginManager.addPlugin(selection);
       },
+      tooltip: showTooltip ? 'Add plugin' : null,
       icon: const Icon(Icons.add),
     );
   }

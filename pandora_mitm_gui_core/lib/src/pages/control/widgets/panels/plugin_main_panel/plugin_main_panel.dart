@@ -48,6 +48,7 @@ class PluginMainPanel extends StatelessWidget {
                         size: 72,
                         // Match the color with SplashArt
                         color: Theme.of(context).textTheme.displaySmall!.color,
+                        showTooltip: false,
                       ),
                       const SizedBox(height: 16),
                       Text(

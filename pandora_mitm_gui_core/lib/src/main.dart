@@ -10,7 +10,11 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/recor
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/theme.dart';
 
-void runPandoraMitmGuiApp([List<PluginUi> extraPluginUis = const []]) => runApp(
+void runPandoraMitmGuiApp({
+  List<PluginUi> extraPluginUis = const [],
+  Map<String, Iterable<PluginUi>> extraPluginTemplates = const {},
+}) =>
+    runApp(
       PandoraMitmGuiApp(
         availablePluginUis: [
           ...extraPluginUis,
@@ -19,16 +23,35 @@ void runPandoraMitmGuiApp([List<PluginUi> extraPluginUis = const []]) => runApp(
           const FeatureUnlockPluginUi(),
           const MitmproxyUiHelperPluginUi(),
         ],
+        availablePluginTemplates: {
+          'Blank': const [],
+          'Recommended': const [RecordPluginUi()],
+          'Recommended++': const [
+            RecordPluginUi(),
+            ReauthenticationPluginUi(),
+            FeatureUnlockPluginUi(),
+          ],
+          'mitmproxy': const [MitmproxyUiHelperPluginUi()],
+          ...extraPluginTemplates,
+        },
       ),
     );
 
 class PandoraMitmGuiApp extends StatefulWidget {
   final List<PluginUi> availablePluginUis;
+  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
 
-  const PandoraMitmGuiApp({
+  PandoraMitmGuiApp({
     Key? key,
     required this.availablePluginUis,
-  }) : super(key: key);
+    required this.availablePluginTemplates,
+  })  : assert(
+          availablePluginTemplates.values.every(
+            (pluginUiList) => pluginUiList.every(availablePluginUis.contains),
+          ),
+          'The plugin templates must only contain plugin uis that are generally available.',
+        ),
+        super(key: key);
 
   @override
   State<PandoraMitmGuiApp> createState() => _PandoraMitmGuiAppState();
@@ -62,8 +85,10 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
           darkTheme: darkThemeData,
           routes: {
             '/': (BuildContext context) => const ConnectPage(),
-            'control': (BuildContext context) =>
-                ControlPage(availablePluginUis: widget.availablePluginUis),
+            'control': (BuildContext context) => ControlPage(
+                  availablePluginUis: widget.availablePluginUis,
+                  availablePluginTemplates: widget.availablePluginTemplates,
+                ),
           },
         ),
       ),

@@ -10,10 +10,12 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/section_heade
 
 class ControlPage extends StatelessWidget {
   final List<PluginUi> availablePluginUis;
+  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
 
   const ControlPage({
     Key? key,
     required this.availablePluginUis,
+    required this.availablePluginTemplates,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class ControlPage extends StatelessWidget {
                     PluginAddPanel(
                       pluginManager: pandoraMitm.pluginManager,
                       availablePluginUis: availablePluginUis,
+                      availablePluginTemplates: availablePluginTemplates,
                     ),
                   ],
                 ),
