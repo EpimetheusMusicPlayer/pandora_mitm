@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
-import 'package:pandora_mitm/plugins.dart' as pmplg;
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/feature_unlock/feature_unlock_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mitmproxy_ui_helper/mitmproxy_ui_helper_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/reauthentication/reauthentication_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 abstract class PluginUi<T extends PandoraMitmPlugin> {
   const PluginUi();
@@ -32,19 +25,10 @@ abstract class PluginUi<T extends PandoraMitmPlugin> {
 
   T buildPlugin();
 
-  static PluginUi<T> fromPlugin<T extends PandoraMitmPlugin>(T plugin) {
-    if (plugin is RecordPlugin) {
-      return const RecordPluginUi() as PluginUi<T>;
-    }
-    if (plugin is pmplg.FeatureUnlockPlugin) {
-      return const FeatureUnlockPluginUi() as PluginUi<T>;
-    }
-    if (plugin is pmplg.ReauthenticationPlugin) {
-      return const ReauthenticationPluginUi() as PluginUi<T>;
-    }
-    if (plugin is pmplg.MitmproxyUiHelperPlugin) {
-      return const MitmproxyUiHelperPluginUi() as PluginUi<T>;
-    }
-    throw UnsupportedError('Plugin type ${plugin.runtimeType} not supported!');
-  }
+  bool _supportsPlugin(PandoraMitmPlugin plugin) => plugin is T;
+}
+
+extension PluginUiSelectors on Iterable<PluginUi> {
+  PluginUi<T> forPlugin<T extends PandoraMitmPlugin>(T plugin) =>
+      firstWhere((pluginUi) => pluginUi._supportsPlugin(plugin)) as PluginUi<T>;
 }

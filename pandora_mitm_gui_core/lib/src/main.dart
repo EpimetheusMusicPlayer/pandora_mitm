@@ -2,13 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/pages/connect/page.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/page.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/feature_unlock/feature_unlock_plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mitmproxy_ui_helper/mitmproxy_ui_helper_plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/reauthentication/reauthentication_plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/theme.dart';
 
-void runPandoraMitmGuiApp() => runApp(const PandoraMitmGuiApp());
+void runPandoraMitmGuiApp([List<PluginUi> extraPluginUis = const []]) => runApp(
+      PandoraMitmGuiApp(
+        availablePluginUis: [
+          ...extraPluginUis,
+          const RecordPluginUi(),
+          const ReauthenticationPluginUi(),
+          const FeatureUnlockPluginUi(),
+          const MitmproxyUiHelperPluginUi(),
+        ],
+      ),
+    );
 
 class PandoraMitmGuiApp extends StatefulWidget {
-  const PandoraMitmGuiApp({Key? key}) : super(key: key);
+  final List<PluginUi> availablePluginUis;
+
+  const PandoraMitmGuiApp({
+    Key? key,
+    required this.availablePluginUis,
+  }) : super(key: key);
 
   @override
   State<PandoraMitmGuiApp> createState() => _PandoraMitmGuiAppState();
@@ -42,7 +62,8 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
           darkTheme: darkThemeData,
           routes: {
             '/': (BuildContext context) => const ConnectPage(),
-            'control': (BuildContext context) => const ControlPage(),
+            'control': (BuildContext context) =>
+                ControlPage(availablePluginUis: widget.availablePluginUis),
           },
         ),
       ),

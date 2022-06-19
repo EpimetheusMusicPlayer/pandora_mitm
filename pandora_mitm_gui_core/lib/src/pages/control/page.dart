@@ -5,10 +5,16 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/control_a
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/plugin_add_panel/plugin_add_panel.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/plugin_main_panel/plugin_main_panel.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/plugin_selection_panel/plugin_selection_panel.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/section_header.dart';
 
 class ControlPage extends StatelessWidget {
-  const ControlPage({Key? key}) : super(key: key);
+  final List<PluginUi> availablePluginUis;
+
+  const ControlPage({
+    Key? key,
+    required this.availablePluginUis,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +49,22 @@ class ControlPage extends StatelessWidget {
                     ),
                     PluginAddPanel(
                       pluginManager: pandoraMitm.pluginManager,
+                      availablePluginUis: availablePluginUis,
                     ),
                   ],
                 ),
                 Expanded(
                   child: PluginSelectionPanel(
                     pluginManager: pandoraMitm.pluginManager,
+                    availablePluginUis: availablePluginUis,
                   ),
                 ),
               ],
             ),
-            PluginMainPanel(pluginManager: pandoraMitm.pluginManager),
+            PluginMainPanel(
+              pluginManager: pandoraMitm.pluginManager,
+              availablePluginUis: availablePluginUis,
+            ),
           ],
         ),
       ),

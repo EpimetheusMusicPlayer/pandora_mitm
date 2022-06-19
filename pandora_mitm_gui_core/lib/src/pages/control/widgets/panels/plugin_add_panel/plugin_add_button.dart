@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/feature_unlock/feature_unlock_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mitmproxy_ui_helper/mitmproxy_ui_helper_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/reauthentication/reauthentication_plugin_ui.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_ui.dart';
 
 class PluginAddButton extends StatelessWidget {
   final PluginManager pluginManager;
+  final List<PluginUi> availablePluginUis;
   final Color? color;
   final double? size;
 
   const PluginAddButton({
     Key? key,
     required this.pluginManager,
+    required this.availablePluginUis,
     this.color,
     this.size,
   }) : super(key: key);
@@ -29,12 +27,7 @@ class PluginAddButton extends StatelessWidget {
           builder: (context) {
             return SimpleDialog(
               title: const Text('Add plugin'),
-              children: const <PluginUi>[
-                RecordPluginUi(),
-                FeatureUnlockPluginUi(),
-                ReauthenticationPluginUi(),
-                MitmproxyUiHelperPluginUi(),
-              ]
+              children: availablePluginUis
                   .map(
                     (pluginUi) => SimpleDialogOption(
                       onPressed: () =>

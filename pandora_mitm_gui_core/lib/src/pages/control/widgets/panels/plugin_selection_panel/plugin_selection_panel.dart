@@ -5,10 +5,12 @@ import 'package:popup_menu_title/popup_menu_title.dart';
 
 class PluginSelectionPanel extends StatelessWidget {
   final PluginManager pluginManager;
+  final List<PluginUi> availablePluginUis;
 
   const PluginSelectionPanel({
     Key? key,
     required this.pluginManager,
+    required this.availablePluginUis,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class PluginSelectionPanel extends StatelessWidget {
           itemCount: plugins.length,
           itemBuilder: (context, index) {
             final plugin = plugins[index];
-            final pluginUi = PluginUi.fromPlugin(plugin);
+            final pluginUi = availablePluginUis.forPlugin(plugin);
             return GestureDetector(
               key: ObjectKey(index),
               behavior: HitTestBehavior.deferToChild,

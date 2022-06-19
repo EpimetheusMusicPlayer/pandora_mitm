@@ -7,10 +7,12 @@ import 'package:pandora_mitm_gui_core/src/widgets/splash_art.dart';
 
 class PluginMainPanel extends StatelessWidget {
   final PluginManager pluginManager;
+  final List<PluginUi> availablePluginUis;
 
   const PluginMainPanel({
     Key? key,
     required this.pluginManager,
+    required this.availablePluginUis,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class PluginMainPanel extends StatelessWidget {
         final plugins = snapshot.data!;
         final pluginUiMap = <PandoraMitmPlugin, PluginUi>{};
         for (final plugin in plugins) {
-          final pluginUi = PluginUi.fromPlugin(plugin);
+          final pluginUi = availablePluginUis.forPlugin(plugin);
           if (pluginUi.hasMainPanel) {
             pluginUiMap[plugin] = pluginUi;
           }
@@ -42,6 +44,7 @@ class PluginMainPanel extends StatelessWidget {
                     children: [
                       PluginAddButton(
                         pluginManager: pluginManager,
+                        availablePluginUis: availablePluginUis,
                         size: 72,
                         // Match the color with SplashArt
                         color: Theme.of(context).textTheme.displaySmall!.color,
