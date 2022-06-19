@@ -36,4 +36,7 @@ abstract class PluginManager {
 
   /// Removes the plugin at the given [index] from the plugin list.
   PandoraMitmPlugin removePluginAt(int index);
+
+  /// Removes all plugins from the plugin list.
+  void removeAllPlugins();
 }

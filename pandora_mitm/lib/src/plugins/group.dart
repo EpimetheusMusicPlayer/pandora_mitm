@@ -58,6 +58,9 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   PandoraMitmPlugin removePluginAt(int index) => _plugins.removeAt(index);
 
   @override
+  void removeAllPlugins() => _plugins.clear();
+
+  @override
   Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
