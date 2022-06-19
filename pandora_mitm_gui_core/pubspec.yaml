@@ -1,0 +1,82 @@
+name: pandora_mitm_gui_core
+description: An extensible pandora_mitm GUI app package.
+version: 0.1.0
+homepage: https://github.com/EpimetheusMusicPlayer/pandora_mitm/tree/master/pandora_mitm_gui_core
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pandora_mitm:
+    path: ../pandora_mitm
+  iapetus:
+    path: ../iapetus
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  popup_menu_title: ^1.1.0-nullsafety.1
+  multi_split_view: ^2.1.0
+  flutter_highlight:
+    git:
+      url: 'https://github.com/shreyas1599/highlight.dart.git'
+      ref: b5e7de8bc95f4e8e30534d7b1da5b41979caab01
+      path: 'flutter_highlight'
+  json_view: ^0.4.0
+
+  # Temporary
+  freezed_annotation: ^2.0.3
+
+dev_dependencies:
+  lint: ^1.8.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - 'assets/'
+  fonts:
+    - family: 'JetBrains Mono'
+      fonts:
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Thin.ttf'
+          weight: 100
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-ThinItalic.ttf'
+          weight: 100
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-ExtraLight.ttf'
+          weight: 200
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-ExtraLightItalic.ttf'
+          weight: 200
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Light.ttf'
+          weight: 300
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-LightItalic.ttf'
+          weight: 300
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Regular.ttf'
+          weight: 400
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Italic.ttf'
+          weight: 400
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Medium.ttf'
+          weight: 500
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-MediumItalic.ttf'
+          weight: 500
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-SemiBold.ttf'
+          weight: 600
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-SemiBoldItalic.ttf'
+          weight: 600
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-Bold.ttf'
+          weight: 700
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-BoldItalic.ttf'
+          weight: 700
+          style: italic
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-ExtraBold.ttf'
+          weight: 800
+        - asset: 'fonts/JetBrainsMono/JetBrainsMono-ExtraBoldItalic.ttf'
+          weight: 800
+          style: italic
+
+dependency_overrides:
+  meta: ^1.7.0
