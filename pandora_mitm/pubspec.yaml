@@ -19,9 +19,7 @@ dependencies:
       url: 'https://github.com/hacker1024/mitmproxy_ri_client.dart.git'
       ref: 8b23a897d4d39a09faa50b362a27d8fcc816ce3d
   iapetus:
-    git:
-      url: 'https://github.com/EpimetheusMusicPlayer/Iapetus.git'
-      ref: 3a0f5cabdf85b7aa4817870ed9cb90c006a30346
+    path: ../iapetus
 
 dev_dependencies:
   lint: ^1.8.2

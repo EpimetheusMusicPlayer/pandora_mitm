@@ -14,9 +14,7 @@ dependencies:
   logging: ^1.0.2
   args: ^2.3.1
   pandora_mitm:
-    git:
-      url: 'https://github.com/EpimetheusMusicPlayer/pandora_mitm.git'
-      ref: '409dc14cc5fc8138261faf7fb5c00d46c5773eb1'
+    path: ../pandora_mitm
 
 dev_dependencies:
   lint: ^1.8.2
