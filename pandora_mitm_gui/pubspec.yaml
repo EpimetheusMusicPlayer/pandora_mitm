@@ -1,0 +1,24 @@
+name: pandora_mitm_gui
+description: A Pandora app reverse-engineering toolbox.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pandora_mitm_gui_core:
+    path: ../pandora_mitm_gui_core
+
+dev_dependencies:
+  lint: ^1.8.2
+
+flutter:
+  uses-material-design: true
+
+dependency_overrides:
+  meta: ^1.7.0
