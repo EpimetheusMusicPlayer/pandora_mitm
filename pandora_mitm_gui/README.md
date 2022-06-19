@@ -2,6 +2,8 @@
 
 A Pandora app reverse-engineering toolbox.
 
+![Screenshot](https://user-images.githubusercontent.com/20849728/174468680-acf986d1-7faa-44f0-96c9-3cc33e412af6.png)
+
 ## Features
 - Dynamic decryption, analysis and modification of Pandora JSON API messages
 - Extensibility through a [Dart](https://dart.dev) plugin API
