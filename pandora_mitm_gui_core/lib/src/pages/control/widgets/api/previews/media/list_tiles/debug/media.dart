@@ -14,15 +14,25 @@ class DebugMediaListTile extends StatelessWidget {
       track: DebugTrackListTile.new,
       artist: DebugArtistListTile.new,
       album: (_) => SizedBox(
-          height: 92, child: Center(child: Text(annotation.pandoraId))),
+        height: 92,
+        child: Center(child: Text(annotation.pandoraId)),
+      ),
       genre: (_) => SizedBox(
-          height: 92, child: Center(child: Text(annotation.pandoraId))),
+        height: 92,
+        child: Center(child: Text(annotation.pandoraId)),
+      ),
       playlist: (_) => SizedBox(
-          height: 92, child: Center(child: Text(annotation.pandoraId))),
+        height: 92,
+        child: Center(child: Text(annotation.pandoraId)),
+      ),
       composer: (_) => SizedBox(
-          height: 92, child: Center(child: Text(annotation.pandoraId))),
+        height: 92,
+        child: Center(child: Text(annotation.pandoraId)),
+      ),
       listener: (_) => SizedBox(
-          height: 92, child: Center(child: Text(annotation.pandoraId))),
+        height: 92,
+        child: Center(child: Text(annotation.pandoraId)),
+      ),
     );
   }
 }

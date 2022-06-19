@@ -59,7 +59,7 @@ class PluginAddButton extends StatelessWidget {
         if (selection == null) return;
         pluginManager.addPlugin(selection);
       },
-      icon: Icon(Icons.add),
+      icon: const Icon(Icons.add),
     );
   }
 }

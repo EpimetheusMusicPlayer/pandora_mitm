@@ -54,22 +54,6 @@ mixin AnnotationStreamMixin on pmplg.StreamPlugin {
             ignoreUnknownFormats: true,
           );
         }
-
-      // case 'catalog.v4.getDetails':
-      //   final MediaDetailsSet detailsSet;
-      //   if (responseJson.containsKey('trackDetails')) {
-      //     detailsSet = TrackDetailsSet.fromJson(responseJson);
-      //   } else if (responseJson.containsKey('genreDetails')) {
-      //     detailsSet = GenreDetailsSet.fromJson(responseJson);
-      //   } else {
-      //     break;
-      //   }
-      //   yield* detailsSet.annotations.entries;
-      //   break;
-      //
-      // case 'pods.v5.getAutoplaySongs':
-      //   yield* SongRecommendationSet.fromJson(responseJson).annotations.entries;
-      //   break;
     }
   }
 
@@ -96,10 +80,6 @@ mixin AnnotationStreamMixin on pmplg.StreamPlugin {
       } catch (e) {
         if (ignoreUnknownFormats &&
             (e is FormatException || e is CheckedFromJsonException)) {
-          if (e is CheckedFromJsonException) {
-            print(e.map);
-          }
-
           // If the annotation field isn't parsed correctly, it's likely just
           // a minor problem with a specific field that may not occur with the
           // remaining annotation objects. Skip to the next one.

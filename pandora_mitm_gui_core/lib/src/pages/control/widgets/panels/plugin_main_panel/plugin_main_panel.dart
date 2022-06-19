@@ -81,8 +81,10 @@ class PluginMainPanel extends StatelessWidget {
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: pluginUiMap.entries
-                      .map((entry) =>
-                          entry.value.buildMainPanel(context, entry.key))
+                      .map(
+                        (entry) =>
+                            entry.value.buildMainPanel(context, entry.key),
+                      )
                       .toList(growable: false),
                 ),
               ),
