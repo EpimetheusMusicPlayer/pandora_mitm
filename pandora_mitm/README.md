@@ -66,6 +66,6 @@ project.
 2. Extend the `PandoraMitmPlugin` or a higher-level base class.
 3. Consult the API docs.
 
-[cli]: https://github.com/EpimetheusMusicPlayer/pandora_mitm_cli
+[cli]: ../pandora_mitm_cli
 [mitmproxy]: https://mitmproxy.org
 [ri]: https://github.com/hacker1024/mitmproxy_remote_interceptions

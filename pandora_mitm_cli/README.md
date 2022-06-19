@@ -15,7 +15,7 @@ A CLI exposing some basic [pandora_mitm] functionality.
 
 ### Setup
 
-Follow the [pandora_mitm setup instructions](https://github.com/EpimetheusMusicPlayer/pandora_mitm#setup).
+Follow the [pandora_mitm setup instructions](../pandora_mitm#setup).
 
 ### Usage
 
@@ -85,5 +85,5 @@ Consult the API docs for the `run` function for more information.
 
 Native builds made with `dart compile` for easy distribution can also be done.
 
-[pandora_mitm]: https://github.com/EpimetheusMusicPlayer/pandora_mitm
+[pandora_mitm]: ../pandora_mitm
 [mitmproxy]: https://mitmproxy.org
