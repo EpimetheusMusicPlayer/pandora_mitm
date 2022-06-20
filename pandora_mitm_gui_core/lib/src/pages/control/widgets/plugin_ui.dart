@@ -21,7 +21,10 @@ abstract class PluginUi<T extends PandoraMitmPlugin> {
   ) =>
       const [];
 
-  void handleContextMenuSelection(T plugin, Object selection) {}
+  /// Handles a context menu selection.
+  ///
+  /// Returns true if the [selection] was handled.
+  bool handleContextMenuSelection(T plugin, Object selection) => false;
 
   T buildPlugin();
 
