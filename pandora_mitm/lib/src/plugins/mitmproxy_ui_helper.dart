@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:pandora_mitm/plugin_dev.dart';
+import 'package:pandora_mitm/src/plugins/interfaces/boilerplate_stripper.dart';
+import 'package:pandora_mitm/src/plugins/interfaces/passive_capable.dart';
 
 /// A [PandoraMitm] plugin to improve the mitmproxy UI experience.
 ///
@@ -11,17 +13,20 @@ import 'package:pandora_mitm/plugin_dev.dart';
 ///
 /// This plugin destructively modifies HTTP requests and responses, and should
 /// always be placed last in the plugin list.
-class MitmproxyUiHelperPlugin extends PandoraMitmPlugin {
+class MitmproxyUiHelperPlugin extends PandoraMitmPlugin
+    implements PassiveCapablePlugin, BoilerplateStripperPlugin {
   /// If true, this plugin will only modify requests and responses that have
   /// been used by other plugins.
   ///
   /// This will vastly reduce the amount of data being streamed and processed.
+  @override
   bool passive;
 
   /// If true, this plugin will strip boilerplate JSON fields from API requests.
   ///
   /// See the [handleResponse] implementation for more information about what is
   /// removed.
+  @override
   bool stripBoilerplate;
 
   MitmproxyUiHelperPlugin({
