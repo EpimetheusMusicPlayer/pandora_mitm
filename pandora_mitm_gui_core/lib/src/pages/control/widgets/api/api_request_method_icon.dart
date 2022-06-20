@@ -42,6 +42,8 @@ class ApiRequestMethodIcon extends StatelessWidget {
         'user.getStationListChecksum': Icons.check_circle_outline,
         'playlists.v7.annotatePlaylists': Icons.featured_play_list_outlined,
         'playlists.v7.getTracks': Icons.featured_play_list,
+        'aesop.v1.annotateObjects': Icons.book_outlined,
+        'aesop.v1.getDetails': Icons.book,
       }[method],
     );
   }
