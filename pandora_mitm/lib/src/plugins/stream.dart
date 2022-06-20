@@ -2,19 +2,28 @@ import 'dart:async';
 
 import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/src/entities/record.dart';
+import 'package:pandora_mitm/src/plugins/interfaces/boilerplate_stripper.dart';
 
 /// A [PandoraMitm] plugin that streams API requests and responses.
 ///
 /// This plugin has a large potential performance impact. To mitigate this,
 /// consider using the [apiMethodWhitelist] or [LogPlugin].
-class StreamPlugin extends PandoraMitmPlugin {
+class StreamPlugin extends PandoraMitmPlugin
+    implements BoilerplateStripperPlugin {
   /// A whitelist of API methods to stream.
-  Set<String>? apiMethodWhitelist;
+  final Set<String>? apiMethodWhitelist;
+
+  /// Whether to strip boilerplate fields from API messages or not.
+  @override
+  bool stripBoilerplate;
 
   final _streamController = StreamController<PandoraMitmRecord>.broadcast();
   final Map<String, Completer<PandoraResponse>> _responseCompleters = {};
 
-  StreamPlugin([this.apiMethodWhitelist]);
+  StreamPlugin({
+    this.apiMethodWhitelist,
+    this.stripBoilerplate = false,
+  });
 
   /// The stream of API requests and responses.
   Stream<PandoraMitmRecord> get recordStream => _streamController.stream;
@@ -57,7 +66,7 @@ class StreamPlugin extends PandoraMitmPlugin {
     _streamController.add(
       PandoraMitmRecord(
         flowId,
-        apiRequest,
+        stripBoilerplate ? apiRequest.withoutBoilerplate() : apiRequest,
         responseCompleter.future,
       ),
     );

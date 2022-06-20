@@ -156,7 +156,7 @@ class __$$_PandoraApiRequestCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PandoraApiRequest implements _PandoraApiRequest {
+class _$_PandoraApiRequest extends _PandoraApiRequest {
   const _$_PandoraApiRequest(
       {this.partnerId,
       this.authToken,
@@ -164,7 +164,8 @@ class _$_PandoraApiRequest implements _PandoraApiRequest {
       required this.method,
       this.encrypted = false,
       required final Map<String, dynamic> body})
-      : _body = body;
+      : _body = body,
+        super._();
 
   @override
   final int? partnerId;
@@ -219,7 +220,7 @@ class _$_PandoraApiRequest implements _PandoraApiRequest {
           this, _$identity);
 }
 
-abstract class _PandoraApiRequest implements PandoraApiRequest {
+abstract class _PandoraApiRequest extends PandoraApiRequest {
   const factory _PandoraApiRequest(
       {final int? partnerId,
       final String? authToken,
@@ -227,6 +228,7 @@ abstract class _PandoraApiRequest implements PandoraApiRequest {
       required final String method,
       final bool encrypted,
       required final Map<String, dynamic> body}) = _$_PandoraApiRequest;
+  const _PandoraApiRequest._() : super._();
 
   @override
   int? get partnerId => throw _privateConstructorUsedError;

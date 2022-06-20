@@ -50,21 +50,9 @@ class MitmproxyUiHelperPlugin extends PandoraMitmPlugin
     PandoraResponse? response,
   ) =>
       PandoraMessageSet(
-        apiRequest: apiRequest?.copyWith(
-          encrypted: false,
-          body: stripBoilerplate
-              ? Map.fromEntries(
-                  apiRequest.body.entries.where(
-                    (entry) => !const {
-                      'deviceId',
-                      'deviceProperties',
-                      'syncTime',
-                      'userAuthToken',
-                    }.contains(entry.key),
-                  ),
-                )
-              : apiRequest.body,
-        ),
+        apiRequest: stripBoilerplate
+            ? apiRequest?.withoutBoilerplate(decrypt: true)
+            : apiRequest?.copyWith(encrypted: false),
         response: response?.copyWith(
           headers: {
             ...response.headers,

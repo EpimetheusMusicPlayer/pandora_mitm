@@ -32,7 +32,8 @@ class LogPluginEntry extends PluginEntry {
     Map<String, Object?> options,
   ) =>
       pmplg.StreamPlugin(
-        (options[_apiMethodWhitelistOption] as List<String>?)?.toSet(),
+        apiMethodWhitelist:
+            (options[_apiMethodWhitelistOption] as List<String>?)?.toSet(),
       )..recordStream.forEach(_writeLogMessage);
 
   Future<void> _writeLogMessage(
