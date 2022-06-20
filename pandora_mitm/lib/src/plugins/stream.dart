@@ -13,7 +13,6 @@ class StreamPlugin extends PandoraMitmPlugin
   /// A whitelist of API methods to stream.
   final Set<String>? apiMethodWhitelist;
 
-  /// Whether to strip boilerplate fields from API messages or not.
   @override
   bool stripBoilerplate;
 
