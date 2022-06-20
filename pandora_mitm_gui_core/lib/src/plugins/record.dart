@@ -10,7 +10,8 @@ class RecordPlugin extends SuperStreamPlugin {
   late final _MapEntryRecorder<String, MediaAnnotation> _annotationRecorder;
   late final _MapEntryRecorder<PandoraMitmRecord, Object?> _objectRecorder;
 
-  RecordPlugin() {
+  RecordPlugin({bool stripBoilerplate = false})
+      : super(stripBoilerplate: stripBoilerplate) {
     _messageRecordRecorder = _Recorder(recordStream);
     _annotationRecorder = _MapEntryRecorder(mediaAnnotationStream);
     _objectRecorder = _MapEntryRecorder(objectStream);

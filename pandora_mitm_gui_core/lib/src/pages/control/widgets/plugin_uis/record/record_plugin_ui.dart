@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/annotation_tab.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/message_tab.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
-class RecordPluginUi extends PluginUi<RecordPlugin> {
+class RecordPluginUi extends PluginUi<RecordPlugin>
+    with BoilerplateStripperPluginUiMixin {
   const RecordPluginUi();
 
   @override
@@ -25,7 +27,7 @@ class RecordPluginUi extends PluginUi<RecordPlugin> {
       _RecordPluginUi(plugin: plugin);
 
   @override
-  RecordPlugin buildPlugin() => RecordPlugin();
+  RecordPlugin buildPlugin() => RecordPlugin(stripBoilerplate: true);
 }
 
 class _RecordPluginUi extends StatelessWidget {
