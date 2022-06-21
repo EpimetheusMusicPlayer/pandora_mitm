@@ -36,6 +36,7 @@ class RecordListWidget extends StatelessWidget {
                 //     ? Theme.of(context).focusColor.withAlpha(0x7)
                 //     : Colors.transparent,
                 child: RecordListTile(
+                  plugin: plugin,
                   record: record,
                   selected: identical(record, selectedRecord),
                   onPressed: () => onRecordSelected(record),

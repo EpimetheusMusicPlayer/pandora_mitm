@@ -27,7 +27,10 @@ class InteractiveJsonView extends StatelessWidget {
           style: JsonStyleScheme(depth: initialDepth),
           animationDuration: const Duration(milliseconds: 200),
         ),
-        child: JsonView(json: json),
+        child: JsonView(
+          json: json,
+          padding: const EdgeInsets.all(8),
+        ),
       ),
     );
   }

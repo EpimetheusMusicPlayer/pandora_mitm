@@ -19,50 +19,46 @@ class RecordResponseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final previewFactory = getResponsePreviewFactory(plugin, record);
-
     return DefaultTabController(
-      length: previewFactory == null ? 2 : 3,
+      length: 3,
       child: Column(
         children: [
           MessageTabBar(
             jsonEncodable: record.response?.apiResponse,
-            tabEntries: [
-              if (previewFactory != null)
-                const ThemedTabEntry('Preview', Icons.preview),
+            tabEntries: const [
               ...MessageTabBar.defaultTabEntries,
+              ThemedTabEntry('Preview', Icons.preview),
             ],
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FutureBuilder<PandoraResponse>(
-                key: ObjectKey(record.responseFuture),
-                future: record.responseFuture,
-                initialData: record.response,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final response = snapshot.data!;
+            child: FutureBuilder<PandoraResponse>(
+              key: ObjectKey(record.responseFuture),
+              future: record.responseFuture,
+              initialData: record.response,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final response = snapshot.data!;
 
-                  return TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      if (previewFactory != null)
-                        Center(child: previewFactory()),
-                      InteractiveJsonView(
-                        key: ObjectKey(response.apiResponse),
-                        json: response.apiResponse.toJson(),
-                        initialDepth: 1,
-                      ),
-                      RawJsonView(
-                        jsonEncodable: response.apiResponse,
-                      ),
-                    ],
-                  );
-                },
-              ),
+                return TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    InteractiveJsonView(
+                      key: ObjectKey(response.apiResponse),
+                      json: response.apiResponse.toJson(),
+                      initialDepth: 1,
+                    ),
+                    RawJsonView(
+                      jsonEncodable: response.apiResponse,
+                    ),
+                    RecordResponsePreview(
+                      plugin: plugin,
+                      record: record,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

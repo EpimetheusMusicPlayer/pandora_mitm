@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iapetus/iapetus.dart';
 
-class ErrorPreview extends StatelessWidget {
+class ApiErrorPreview extends StatelessWidget {
   final PandoraApiException error;
 
-  const ErrorPreview({
+  const ApiErrorPreview({
     Key? key,
     required this.error,
   }) : super(key: key);

@@ -25,6 +25,7 @@ class RawJsonView extends StatelessWidget {
       jsonText,
       language: 'json',
       theme: theme,
+      padding: const EdgeInsets.all(8),
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
     );
   }
