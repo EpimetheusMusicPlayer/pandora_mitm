@@ -18,8 +18,7 @@ class RawJsonView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jsonText =
-        const JsonEncoder.withIndent('    ').convert(jsonEncodable);
+    final jsonText = const JsonEncoder.withIndent('  ').convert(jsonEncodable);
 
     return HighlightView(
       jsonText,
