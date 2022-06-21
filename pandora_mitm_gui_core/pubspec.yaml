@@ -17,6 +17,10 @@ dependencies:
   flutter_bloc: ^8.0.1
   popup_menu_title: ^1.1.0-nullsafety.1
   multi_split_view: ^2.1.0
+  auto_scroll:
+    git:
+      url: https://github.com/hacker1024/auto_scroll.dart.git
+      ref: fa928f1c75c8c922ededea28c68a23f9d5df5e04
   flutter_highlight:
     git:
       url: 'https://github.com/shreyas1599/highlight.dart.git'

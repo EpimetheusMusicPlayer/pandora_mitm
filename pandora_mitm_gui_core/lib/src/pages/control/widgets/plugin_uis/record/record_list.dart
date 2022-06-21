@@ -1,3 +1,4 @@
+import 'package:auto_scroll/auto_scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_list_tile.dart';
@@ -22,23 +23,26 @@ class RecordListWidget extends StatelessWidget {
       stream: plugin.messageRecordsStream,
       builder: (context, snapshot) {
         final recordList = snapshot.data!;
-        return ListView.builder(
-          primary: false,
-          itemCount: recordList.length,
-          itemBuilder: (context, index) {
-            final record = recordList[index];
-            return ColoredBox(
-              color: Colors.transparent,
-              // color: index.isOdd
-              //     ? Theme.of(context).focusColor.withAlpha(0x7)
-              //     : Colors.transparent,
-              child: RecordListTile(
-                record: record,
-                selected: identical(record, selectedRecord),
-                onPressed: () => onRecordSelected(record),
-              ),
-            );
-          },
+        return AutoScroller(
+          lengthIdentifier: recordList.length,
+          builder: (context, controller) => ListView.builder(
+            controller: controller,
+            itemCount: recordList.length,
+            itemBuilder: (context, index) {
+              final record = recordList[index];
+              return ColoredBox(
+                color: Colors.transparent,
+                // color: index.isOdd
+                //     ? Theme.of(context).focusColor.withAlpha(0x7)
+                //     : Colors.transparent,
+                child: RecordListTile(
+                  record: record,
+                  selected: identical(record, selectedRecord),
+                  onPressed: () => onRecordSelected(record),
+                ),
+              );
+            },
+          ),
         );
       },
     );
