@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/simple_key_value_text.dart';
 
 class RecordInformationView extends StatelessWidget {
   final PandoraMitmRecord record;
@@ -16,7 +17,7 @@ class RecordInformationView extends StatelessWidget {
       margin: EdgeInsets.zero,
       elevation: 4,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,44 +48,18 @@ class RecordInformationView extends StatelessWidget {
               style: Theme.of(context).textTheme.caption,
             ),
             const Divider(),
-            if (record.apiRequest.partnerId != null)
-              SelectableText.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Partner: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(text: record.apiRequest.partnerId!.toString()),
-                  ],
-                ),
-              ),
-            if (record.apiRequest.authToken != null)
-              SelectableText.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Auth: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(text: record.apiRequest.authToken),
-                  ],
-                ),
-              ),
-            if (record.apiRequest.deviceId != null)
-              SelectableText.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Device ID: ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: record.apiRequest.deviceId,
-                    ),
-                  ],
-                ),
-              ),
+            SimpleKeyValueText(
+              'Partner',
+              record.apiRequest.partnerId?.toString() ?? '',
+            ),
+            SimpleKeyValueText(
+              'Auth',
+              record.apiRequest.authToken ?? '',
+            ),
+            SimpleKeyValueText(
+              'Device ID',
+              record.apiRequest.deviceId ?? '',
+            ),
             FutureBuilder<PandoraResponse>(
               future: record.responseFuture,
               initialData: record.response,
@@ -92,27 +67,15 @@ class RecordInformationView extends StatelessWidget {
                 final response = snapshot.data;
                 final requestEncrypted = record.apiRequest.encrypted;
                 final responseEncrypted = response?.encryptedBody ?? false;
-                if (!(requestEncrypted || responseEncrypted)) {
-                  return const SizedBox.shrink();
-                }
-                return SelectableText.rich(
-                  TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: 'Encryption: ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(
-                        text: requestEncrypted
-                            ? responseEncrypted
-                                ? 'Bidirectional'
-                                : 'Request'
-                            : responseEncrypted
-                                ? 'Response'
-                                : 'None',
-                      ),
-                    ],
-                  ),
+                return SimpleKeyValueText(
+                  'Encryption',
+                  requestEncrypted
+                      ? responseEncrypted
+                          ? 'Bidirectional'
+                          : 'Request'
+                      : responseEncrypted
+                          ? 'Response'
+                          : '',
                 );
               },
             ),
