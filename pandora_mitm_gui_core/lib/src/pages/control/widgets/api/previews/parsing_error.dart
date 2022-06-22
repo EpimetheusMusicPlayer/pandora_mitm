@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:iapetus/iapetus.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_view.dart';
 
 class ParsingErrorPreview extends StatelessWidget {
   final CheckedFromJsonException error;
@@ -136,6 +137,53 @@ class ParsingErrorPreview extends StatelessWidget {
                         ),
                       ),
                     ),
+                  _buildKeyValueTableRow(
+                    'JSON',
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Row(
+                                children: [
+                                  Icon(
+                                    Icons.data_object,
+                                    color: Theme.of(context).errorColor,
+                                  ),
+                                  const SizedBox(width: 24),
+                                  Expanded(
+                                    child: Text(
+                                      '${error.className}: ${error.key}: ${error.message}',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              titlePadding: const EdgeInsets.all(16),
+                              titleTextStyle: TextStyle(
+                                color: Theme.of(context).errorColor,
+                              ),
+                              content: ColoredBox(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                child: RawJsonView(
+                                  jsonEncodable: error.map,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.zero,
+                            );
+                          },
+                        );
+                      },
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Show'),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
