@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/popup_menu_utils.dart';
 import 'package:popup_menu_title/popup_menu_title.dart';
 
 class PluginSelectionPanel extends StatelessWidget {
@@ -33,18 +34,11 @@ class PluginSelectionPanel extends StatelessWidget {
               key: ObjectKey(index),
               behavior: HitTestBehavior.deferToChild,
               onSecondaryTapDown: (details) async {
-                final overlay = Overlay.of(context)!.context.findRenderObject()!
-                    as RenderBox;
                 final pluginItems =
                     pluginUi.buildContextMenuItems(context, plugin);
                 final menuResult = await showMenu<Object?>(
                   context: context,
-                  position: RelativeRect.fromLTRB(
-                    details.globalPosition.dx,
-                    details.globalPosition.dy,
-                    overlay.size.width - details.globalPosition.dx,
-                    overlay.size.height - details.globalPosition.dy,
-                  ),
+                  position: details.calculateMenuPosition(context),
                   items: [
                     PopupMenuTitle(title: pluginUi.displayName),
                     const PopupMenuItem(
