@@ -104,7 +104,10 @@ class ParsingErrorPreview extends StatelessWidget {
                       ExpandablePanel(
                         header: const SizedBox.shrink(),
                         collapsed: const SizedBox.shrink(),
-                        expanded: SelectableText(error.innerError.toString()),
+                        expanded: Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: SelectableText(error.innerError.toString()),
+                        ),
                       ),
                     ),
                   if (error.innerStack != null)
@@ -116,11 +119,14 @@ class ParsingErrorPreview extends StatelessWidget {
                       ExpandablePanel(
                         header: const SizedBox.shrink(),
                         collapsed: const SizedBox.shrink(),
-                        expanded: SelectableText(
-                          error.innerStack.toString(),
-                          style: const TextStyle(
-                            fontFamily: 'Jetbrains Mono',
-                            fontSize: 11,
+                        expanded: Padding(
+                          padding: const EdgeInsets.only(bottom: 4),
+                          child: SelectableText(
+                            error.innerStack.toString(),
+                            style: const TextStyle(
+                              fontFamily: 'Jetbrains Mono',
+                              fontSize: 11,
+                            ),
                           ),
                         ),
                       ),
