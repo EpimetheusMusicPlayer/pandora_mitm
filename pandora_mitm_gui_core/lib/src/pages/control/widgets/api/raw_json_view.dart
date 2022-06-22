@@ -50,6 +50,16 @@ class _RawJsonViewState extends State<RawJsonView> {
       theme: RawJsonView.theme,
       padding: widget.padding,
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
+      progressIndicator: ColoredBox(
+        color: RawJsonView.theme['root']!.backgroundColor ?? Colors.transparent,
+        child: SelectableText(
+          _jsonText,
+          style: TextStyle(
+            color: RawJsonView.theme['root']!.color,
+            fontFamily: 'JetBrains Mono',
+          ),
+        ),
+      ),
     );
   }
 }

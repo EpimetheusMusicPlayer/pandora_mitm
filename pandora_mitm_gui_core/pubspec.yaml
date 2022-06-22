@@ -23,9 +23,9 @@ dependencies:
       ref: fa928f1c75c8c922ededea28c68a23f9d5df5e04
   flutter_highlight:
     git:
-      url: 'https://github.com/shreyas1599/highlight.dart.git'
-      ref: b5e7de8bc95f4e8e30534d7b1da5b41979caab01
-      path: 'flutter_highlight'
+      url: https://github.com/hacker1024/highlight.dart.git
+      ref: e95f987f7e41eda2a73ab464c7d43846a2ef47f8
+      path: flutter_highlight
   json_view: ^0.4.0
   expandable: ^5.0.1
 

@@ -89,9 +89,9 @@ packages:
     dependency: transitive
     description:
       path: flutter_highlight
-      ref: b5e7de8bc95f4e8e30534d7b1da5b41979caab01
-      resolved-ref: b5e7de8bc95f4e8e30534d7b1da5b41979caab01
-      url: "https://github.com/shreyas1599/highlight.dart.git"
+      ref: e95f987f7e41eda2a73ab464c7d43846a2ef47f8
+      resolved-ref: e95f987f7e41eda2a73ab464c7d43846a2ef47f8
+      url: "https://github.com/hacker1024/highlight.dart.git"
     source: git
     version: "0.7.0"
   freezed_annotation:
