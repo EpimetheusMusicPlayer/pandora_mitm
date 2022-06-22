@@ -5,11 +5,13 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_vie
 class InteractiveJsonView extends StatelessWidget {
   final Map<String, dynamic> json;
   final int initialDepth;
+  final ScrollPhysics? physics;
 
   const InteractiveJsonView({
     Key? key,
     required this.json,
     this.initialDepth = 0,
+    this.physics,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class InteractiveJsonView extends StatelessWidget {
           json: json,
           shrinkWrap: true,
           padding: const EdgeInsets.all(8),
+          physics: physics,
         ),
       ),
     );
