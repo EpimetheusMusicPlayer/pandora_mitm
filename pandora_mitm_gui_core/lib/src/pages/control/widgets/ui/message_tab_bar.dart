@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/json_copy_button.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 
 class MessageTabBar extends StatelessWidget {
@@ -28,16 +26,11 @@ class MessageTabBar extends StatelessWidget {
         Positioned(
           right: 8,
           bottom: 8,
-          child: IconButton(
-            icon: const Icon(Icons.copy),
-            tooltip: 'Copy JSON',
-            color: Theme.of(context).typography.white.headline6!.color,
-            onPressed: () => Clipboard.setData(
-              ClipboardData(
-                text:
-                    const JsonEncoder.withIndent('    ').convert(jsonEncodable),
-              ),
+          child: IconTheme(
+            data: IconThemeData(
+              color: Theme.of(context).typography.white.headline6!.color,
             ),
+            child: JsonCopyButton(jsonEncodable: jsonEncodable),
           ),
         )
       ],
