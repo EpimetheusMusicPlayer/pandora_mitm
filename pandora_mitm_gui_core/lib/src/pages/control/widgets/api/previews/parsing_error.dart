@@ -87,6 +87,11 @@ class ParsingErrorPreview extends StatelessWidget {
                       style: const TextStyle(fontFamily: 'Jetbrains Mono'),
                     ),
                   ),
+                  if (error.map.containsKey('pandoraId'))
+                    _buildKeyValueTableRow(
+                      'Pandora ID',
+                      SelectableText(error.map['pandoraId'].toString()),
+                    ),
                   _buildKeyValueTableRow(
                     'Key',
                     SelectableText(error.key ?? 'N/A'),
