@@ -29,6 +29,7 @@ class InteractiveJsonView extends StatelessWidget {
         ),
         child: JsonView(
           json: json,
+          shrinkWrap: true,
           padding: const EdgeInsets.all(8),
         ),
       ),
