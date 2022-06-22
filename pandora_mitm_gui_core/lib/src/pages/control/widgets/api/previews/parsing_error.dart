@@ -8,10 +8,12 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/json_copy_but
 
 class ParsingErrorPreview extends StatelessWidget {
   final CheckedFromJsonException error;
+  final VoidCallback reparse;
 
   const ParsingErrorPreview({
     Key? key,
     required this.error,
+    required this.reparse,
   }) : super(key: key);
 
   @override
@@ -58,12 +60,29 @@ class ParsingErrorPreview extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              '{ JSON parsing error }',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-              ),
+            Row(
+              children: [
+                SizedBox(width: Theme.of(context).iconTheme.size ?? 24),
+                Expanded(
+                  child: Text(
+                    '{ JSON parsing error }',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                    softWrap: false,
+                    maxLines: 1,
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  visualDensity: VisualDensity.standard,
+                  onPressed: reparse,
+                  icon: const Icon(Icons.refresh),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             ExpandableTheme(

@@ -33,7 +33,10 @@ class RecordResponsePreview extends StatelessWidget {
           record: record,
           builder: (context, responseObject) {
             if (responseObject is CheckedFromJsonException) {
-              return ParsingErrorPreview(error: responseObject);
+              return ParsingErrorPreview(
+                error: responseObject,
+                reparse: () => plugin.reparseRecordObject(record),
+              );
             }
 
             switch (record.apiRequest.method) {
