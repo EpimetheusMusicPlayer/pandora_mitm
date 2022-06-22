@@ -65,7 +65,7 @@ class ParsingErrorPreview extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             ExpandableTheme(
               data: const ExpandableThemeData(
                 headerAlignment: ExpandablePanelHeaderAlignment.center,
