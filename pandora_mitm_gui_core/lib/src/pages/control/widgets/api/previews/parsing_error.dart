@@ -151,7 +151,7 @@ class ParsingErrorPreview extends StatelessWidget {
                                     Icons.data_object,
                                     color: Theme.of(context).errorColor,
                                   ),
-                                  const SizedBox(width: 24),
+                                  const SizedBox(width: 16),
                                   Expanded(
                                     child: Text(
                                       '${error.className}: ${error.key}: ${error.message}',
