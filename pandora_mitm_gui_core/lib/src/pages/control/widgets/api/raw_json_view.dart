@@ -10,10 +10,12 @@ class RawJsonView extends StatefulWidget {
         ideaTheme['root']!.copyWith(backgroundColor: Colors.transparent);
 
   final Object jsonEncodable;
+  final EdgeInsetsGeometry padding;
 
   const RawJsonView({
     Key? key,
     required this.jsonEncodable,
+    this.padding = const EdgeInsets.all(8),
   }) : super(key: key);
 
   @override
@@ -46,7 +48,7 @@ class _RawJsonViewState extends State<RawJsonView> {
       _jsonText,
       language: 'json',
       theme: RawJsonView.theme,
-      padding: const EdgeInsets.all(8),
+      padding: widget.padding,
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
     );
   }
