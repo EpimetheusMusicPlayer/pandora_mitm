@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/idea.dart';
 
-class RawJsonView extends StatelessWidget {
+class RawJsonView extends StatefulWidget {
   static final theme = Map.of(ideaTheme)
     ..['root'] =
         ideaTheme['root']!.copyWith(backgroundColor: Colors.transparent);
@@ -17,13 +17,35 @@ class RawJsonView extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final jsonText = const JsonEncoder.withIndent('  ').convert(jsonEncodable);
+  State<RawJsonView> createState() => _RawJsonViewState();
+}
 
+class _RawJsonViewState extends State<RawJsonView> {
+  late String _jsonText;
+
+  void _decodeJson() => _jsonText =
+      const JsonEncoder.withIndent('  ').convert(widget.jsonEncodable);
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeJson();
+  }
+
+  @override
+  void didUpdateWidget(RawJsonView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.jsonEncodable != oldWidget.jsonEncodable) {
+      _decodeJson();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return HighlightView(
-      jsonText,
+      _jsonText,
       language: 'json',
-      theme: theme,
+      theme: RawJsonView.theme,
       padding: const EdgeInsets.all(8),
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
     );
