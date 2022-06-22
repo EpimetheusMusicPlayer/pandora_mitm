@@ -16,17 +16,12 @@ class ResponseObjectView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (plugin.objectMap.containsKey(record)) {
-      return builder(context, plugin.objectMap[record]);
-    } else {
-      return FutureBuilder<Map<PandoraMitmRecord, Object?>>(
-        future: plugin.objectsStream
-            .firstWhere((objectMap) => objectMap.containsKey(record)),
-        builder: (context, snapshot) {
-          final objectMap = snapshot.data;
-          return builder(context, objectMap == null ? null : objectMap[record]);
-        },
-      );
-    }
+    return StreamBuilder<Object?>(
+      initialData: plugin.objectMap[record],
+      stream: plugin.objectStream
+          .where((entry) => entry.key == record)
+          .map((entry) => entry.value),
+      builder: (context, snapshot) => builder(context, snapshot.data),
+    );
   }
 }

@@ -5,27 +5,31 @@ import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 
 mixin ObjectStreamMixin on pmplg.StreamPlugin {
+  late final _streamController =
+      StreamController<MapEntry<PandoraMitmRecord, Object?>>.broadcast();
+
   late final Stream<MapEntry<PandoraMitmRecord, Object?>> objectStream =
       _createObjectStream();
 
   Stream<MapEntry<PandoraMitmRecord, Object?>> _createObjectStream() {
-    final controller =
-        StreamController<MapEntry<PandoraMitmRecord, Object?>>.broadcast();
-    recordStream.forEach((record) async {
-      final response = await record.responseFuture;
-      response.apiResponse.map(
-        ok: (apiResponse) {
-          controller.add(
-            MapEntry(
-              record,
-              _extractObject(record.apiRequest.method, apiResponse.result),
-            ),
-          );
-        },
-        fail: (error) => controller.add(MapEntry(record, error)),
-      );
-    });
-    return controller.stream;
+    recordStream.forEach(_handleRecord);
+    return _streamController.stream;
+  }
+
+  void reparseRecordObject(PandoraMitmRecord record) => _handleRecord(record);
+
+  Future<void> _handleRecord(PandoraMitmRecord record) async {
+    (await record.responseFuture).apiResponse.map(
+          ok: (apiResponse) {
+            _streamController.add(
+              MapEntry(
+                record,
+                _extractObject(record.apiRequest.method, apiResponse.result),
+              ),
+            );
+          },
+          fail: (error) => _streamController.add(MapEntry(record, error)),
+        );
   }
 
   Object? _extractObject(String apiMethod, Object? response) {
