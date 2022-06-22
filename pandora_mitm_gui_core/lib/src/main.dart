@@ -64,6 +64,7 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => PandoraMitmBloc(),
+      lazy: false,
       child: BlocListener<PandoraMitmBloc, PandoraMitmState>(
         listener: (context, state) {
           if (state is PandoraMitmConnected) {
