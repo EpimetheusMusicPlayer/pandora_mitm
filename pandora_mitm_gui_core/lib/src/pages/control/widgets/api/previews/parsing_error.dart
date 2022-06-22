@@ -4,6 +4,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:iapetus/iapetus.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_view.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/json_copy_button.dart';
 
 class ParsingErrorPreview extends StatelessWidget {
   final CheckedFromJsonException error;
@@ -157,6 +158,8 @@ class ParsingErrorPreview extends StatelessWidget {
                                       '${error.className}: ${error.key}: ${error.message}',
                                     ),
                                   ),
+                                  const SizedBox(width: 16),
+                                  JsonCopyButton(jsonEncodable: error.map),
                                 ],
                               ),
                               titlePadding: const EdgeInsets.all(16),
