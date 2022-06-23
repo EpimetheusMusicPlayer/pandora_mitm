@@ -89,8 +89,8 @@ packages:
     dependency: transitive
     description:
       path: flutter_highlight
-      ref: e95f987f7e41eda2a73ab464c7d43846a2ef47f8
-      resolved-ref: e95f987f7e41eda2a73ab464c7d43846a2ef47f8
+      ref: dad32771845289a37daec8d285375bb9886cc053
+      resolved-ref: dad32771845289a37daec8d285375bb9886cc053
       url: "https://github.com/hacker1024/highlight.dart.git"
     source: git
     version: "0.7.0"
