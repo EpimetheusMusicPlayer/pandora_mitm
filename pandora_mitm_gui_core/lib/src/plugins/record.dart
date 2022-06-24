@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:iapetus/iapetus.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/super_stream.dart';
 
 class RecordPlugin extends SuperStreamPlugin {
-  late final _Recorder<PandoraMitmRecord> _messageRecordRecorder;
+  late final _ListRecorder<PandoraMitmRecord> _messageRecordRecorder;
   late final _MapEntryRecorder<String, MediaAnnotation> _annotationRecorder;
   late final _MapEntryRecorder<PandoraMitmRecord, Object?> _objectRecorder;
 
   RecordPlugin({bool stripBoilerplate = false})
       : super(stripBoilerplate: stripBoilerplate) {
-    _messageRecordRecorder = _Recorder(recordStream);
+    _messageRecordRecorder = _ListRecorder(recordStream);
     _annotationRecorder = _MapEntryRecorder(mediaAnnotationStream);
     _objectRecorder = _MapEntryRecorder(objectStream);
   }
@@ -20,45 +19,74 @@ class RecordPlugin extends SuperStreamPlugin {
   List<PandoraMitmRecord> get messageRecords => _messageRecordRecorder.records;
 
   Stream<List<PandoraMitmRecord>> get messageRecordsStream =>
-      _messageRecordRecorder.recordStream;
+      _messageRecordRecorder.recordsStream;
 
   Map<String, MediaAnnotation> get annotationMap => _annotationRecorder.records;
 
   Stream<Map<String, MediaAnnotation>> get annotationsStream =>
-      _annotationRecorder.recordStream;
+      _annotationRecorder.recordsStream;
 
   Map<PandoraMitmRecord, Object?> get objectMap => _objectRecorder.records;
 
   Stream<Map<PandoraMitmRecord, Object?>> get objectsStream =>
-      _objectRecorder.recordStream;
+      _objectRecorder.recordsStream;
 }
 
-class _Recorder<T> {
-  final _records = <T>[];
-  final _recordStreamController = StreamController<List<T>>.broadcast();
+abstract class _Recorder<T, C> {
+  final void Function(C collection, T record) addRecord;
+  final void Function(C collection) clearCollection;
+  final C Function(C collection) duplicateCollection;
+  final C Function(C collection) makeCollectionImmutable;
 
-  List<T> get records => UnmodifiableListView(_records);
+  final C _records;
+  final _recordStreamController = StreamController<C>.broadcast();
 
-  Stream<List<T>> get recordStream => _recordStreamController.stream;
-
-  _Recorder(Stream<T> source) {
+  _Recorder(
+    Stream<T> source, {
+    required C Function() collectionFactory,
+    required this.addRecord,
+    required this.clearCollection,
+    required this.duplicateCollection,
+    required this.makeCollectionImmutable,
+  }) : _records = collectionFactory() {
     _recordStreamController.addStream(
-      source.map((record) => List.of(_records..add(record))),
+      source.map((record) {
+        addRecord(_records, record);
+        return duplicateCollection(_records);
+      }),
     );
+  }
+
+  C get records => makeCollectionImmutable(_records);
+
+  Stream<C> get recordsStream => _recordStreamController.stream;
+
+  void clear() {
+    clearCollection(_records);
+    _recordStreamController.add(duplicateCollection(_records));
   }
 }
 
-class _MapEntryRecorder<K, V> {
-  final _records = <K, V>{};
-  final _recordStreamController = StreamController<Map<K, V>>.broadcast();
+class _ListRecorder<T> extends _Recorder<T, List<T>> {
+  _ListRecorder(Stream<T> source)
+      : super(
+          source,
+          collectionFactory: () => [],
+          addRecord: (records, record) => records.add(record),
+          clearCollection: (records) => records.clear(),
+          duplicateCollection: (records) => List.of(records, growable: false),
+          makeCollectionImmutable: List.unmodifiable,
+        );
+}
 
-  Map<K, V> get records => UnmodifiableMapView(_records);
-
-  Stream<Map<K, V>> get recordStream => _recordStreamController.stream;
-
-  _MapEntryRecorder(Stream<MapEntry<K, V>> source) {
-    _recordStreamController.addStream(
-      source.map((entry) => Map.of(_records..[entry.key] = entry.value)),
-    );
-  }
+class _MapEntryRecorder<K, V> extends _Recorder<MapEntry<K, V>, Map<K, V>> {
+  _MapEntryRecorder(Stream<MapEntry<K, V>> source)
+      : super(
+          source,
+          collectionFactory: Map.new,
+          addRecord: (records, record) => records[record.key] = record.value,
+          clearCollection: (records) => records.clear(),
+          duplicateCollection: (records) => Map.of(records),
+          makeCollectionImmutable: Map.unmodifiable,
+        );
 }
