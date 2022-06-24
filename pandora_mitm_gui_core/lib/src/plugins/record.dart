@@ -18,10 +18,10 @@ class RecordPlugin extends SuperStreamPlugin {
 }
 
 abstract class Recorder<T, C> {
-  final void Function(C collection, T record) addRecord;
-  final void Function(C collection) clearCollection;
-  final C Function(C collection) duplicateCollection;
-  final C Function(C collection) makeCollectionImmutable;
+  final void Function(C collection, T record) _addRecord;
+  final void Function(C collection) _clearCollection;
+  final C Function(C collection) _duplicateCollection;
+  final C Function(C collection) _makeCollectionImmutable;
 
   final C _records;
   final _recordStreamController = StreamController<C>.broadcast();
@@ -29,26 +29,30 @@ abstract class Recorder<T, C> {
   Recorder(
     Stream<T> source, {
     required C Function() collectionFactory,
-    required this.addRecord,
-    required this.clearCollection,
-    required this.duplicateCollection,
-    required this.makeCollectionImmutable,
-  }) : _records = collectionFactory() {
+    required Function(C collection, T record) addRecord,
+    required Function(C collection) clearCollection,
+    required C Function(C collection) duplicateCollection,
+    required C Function(C collection) makeCollectionImmutable,
+  })  : _records = collectionFactory(),
+        _addRecord = addRecord,
+        _clearCollection = clearCollection,
+        _duplicateCollection = duplicateCollection,
+        _makeCollectionImmutable = makeCollectionImmutable {
     _recordStreamController.addStream(
       source.map((record) {
-        addRecord(_records, record);
-        return duplicateCollection(_records);
+        _addRecord(_records, record);
+        return _duplicateCollection(_records);
       }),
     );
   }
 
-  C get records => makeCollectionImmutable(_records);
+  C get records => _makeCollectionImmutable(_records);
 
   Stream<C> get recordsStream => _recordStreamController.stream;
 
   void clear() {
-    clearCollection(_records);
-    _recordStreamController.add(duplicateCollection(_records));
+    _clearCollection(_records);
+    _recordStreamController.add(_duplicateCollection(_records));
   }
 }
 
