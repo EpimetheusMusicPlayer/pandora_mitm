@@ -5,34 +5,19 @@ import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/super_stream.dart';
 
 class RecordPlugin extends SuperStreamPlugin {
-  late final _ListRecorder<PandoraMitmRecord> _messageRecordRecorder;
-  late final _MapEntryRecorder<String, MediaAnnotation> _annotationRecorder;
-  late final _MapEntryRecorder<PandoraMitmRecord, Object?> _objectRecorder;
+  late final ListRecorder<PandoraMitmRecord> messageRecorder;
+  late final MapEntryRecorder<String, MediaAnnotation> annotationRecorder;
+  late final MapEntryRecorder<PandoraMitmRecord, Object?> objectRecorder;
 
   RecordPlugin({bool stripBoilerplate = false})
       : super(stripBoilerplate: stripBoilerplate) {
-    _messageRecordRecorder = _ListRecorder(recordStream);
-    _annotationRecorder = _MapEntryRecorder(mediaAnnotationStream);
-    _objectRecorder = _MapEntryRecorder(objectStream);
+    messageRecorder = ListRecorder(recordStream);
+    annotationRecorder = MapEntryRecorder(mediaAnnotationStream);
+    objectRecorder = MapEntryRecorder(objectStream);
   }
-
-  List<PandoraMitmRecord> get messageRecords => _messageRecordRecorder.records;
-
-  Stream<List<PandoraMitmRecord>> get messageRecordsStream =>
-      _messageRecordRecorder.recordsStream;
-
-  Map<String, MediaAnnotation> get annotationMap => _annotationRecorder.records;
-
-  Stream<Map<String, MediaAnnotation>> get annotationsStream =>
-      _annotationRecorder.recordsStream;
-
-  Map<PandoraMitmRecord, Object?> get objectMap => _objectRecorder.records;
-
-  Stream<Map<PandoraMitmRecord, Object?>> get objectsStream =>
-      _objectRecorder.recordsStream;
 }
 
-abstract class _Recorder<T, C> {
+abstract class Recorder<T, C> {
   final void Function(C collection, T record) addRecord;
   final void Function(C collection) clearCollection;
   final C Function(C collection) duplicateCollection;
@@ -41,7 +26,7 @@ abstract class _Recorder<T, C> {
   final C _records;
   final _recordStreamController = StreamController<C>.broadcast();
 
-  _Recorder(
+  Recorder(
     Stream<T> source, {
     required C Function() collectionFactory,
     required this.addRecord,
@@ -67,8 +52,8 @@ abstract class _Recorder<T, C> {
   }
 }
 
-class _ListRecorder<T> extends _Recorder<T, List<T>> {
-  _ListRecorder(Stream<T> source)
+class ListRecorder<T> extends Recorder<T, List<T>> {
+  ListRecorder(Stream<T> source)
       : super(
           source,
           collectionFactory: () => [],
@@ -79,8 +64,8 @@ class _ListRecorder<T> extends _Recorder<T, List<T>> {
         );
 }
 
-class _MapEntryRecorder<K, V> extends _Recorder<MapEntry<K, V>, Map<K, V>> {
-  _MapEntryRecorder(Stream<MapEntry<K, V>> source)
+class MapEntryRecorder<K, V> extends Recorder<MapEntry<K, V>, Map<K, V>> {
+  MapEntryRecorder(Stream<MapEntry<K, V>> source)
       : super(
           source,
           collectionFactory: Map.new,

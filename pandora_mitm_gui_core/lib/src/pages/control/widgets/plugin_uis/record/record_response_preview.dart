@@ -3,7 +3,7 @@ import 'package:iapetus/iapetus.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/api_error.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/parsing_error.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/response_object_view.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/response_object_view.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 class RecordResponsePreview extends StatelessWidget {

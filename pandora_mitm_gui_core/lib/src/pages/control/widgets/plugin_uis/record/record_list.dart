@@ -1,6 +1,7 @@
 import 'package:auto_scroll/auto_scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/recorder_builder.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_list_tile.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
@@ -18,18 +19,16 @@ class RecordListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<PandoraMitmRecord>>(
-      initialData: plugin.messageRecords,
-      stream: plugin.messageRecordsStream,
-      builder: (context, snapshot) {
-        final recordList = snapshot.data!;
+    return RecorderBuilder<List<PandoraMitmRecord>>(
+      recorder: plugin.messageRecorder,
+      builder: (context, records) {
         return AutoScroller(
-          lengthIdentifier: recordList.length,
+          lengthIdentifier: records.length,
           builder: (context, controller) => ListView.builder(
             controller: controller,
-            itemCount: recordList.length,
+            itemCount: records.length,
             itemBuilder: (context, index) {
-              final record = recordList[index];
+              final record = records[index];
               return ColoredBox(
                 color: Colors.transparent,
                 // color: index.isOdd

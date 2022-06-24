@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iapetus/iapetus.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/api_request_method_icon.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/response_object_view.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/response_object_view.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 class RecordListTile extends StatelessWidget {

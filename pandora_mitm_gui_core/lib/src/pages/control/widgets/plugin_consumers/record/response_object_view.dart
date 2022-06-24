@@ -17,7 +17,7 @@ class ResponseObjectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
-      initialData: plugin.objectMap[record],
+      initialData: plugin.objectRecorder.records[record],
       stream: plugin.objectStream
           .where((entry) => entry.key == record)
           .map((entry) => entry.value),
