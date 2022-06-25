@@ -38,12 +38,10 @@ abstract class Recorder<T, C> {
         _clearCollection = clearCollection,
         _duplicateCollection = duplicateCollection,
         _makeCollectionImmutable = makeCollectionImmutable {
-    _recordStreamController.addStream(
-      source.map((record) {
-        _addRecord(_records, record);
-        return _duplicateCollection(_records);
-      }),
-    );
+    source.listen((record) {
+      _addRecord(_records, record);
+      _recordStreamController.add(_duplicateCollection(_records));
+    });
   }
 
   C get records => _makeCollectionImmutable(_records);
