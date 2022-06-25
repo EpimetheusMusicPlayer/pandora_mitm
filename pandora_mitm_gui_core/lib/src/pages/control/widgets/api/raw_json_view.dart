@@ -44,22 +44,25 @@ class _RawJsonViewState extends State<RawJsonView> {
 
   @override
   Widget build(BuildContext context) {
+    final simpleTextView = SelectableText(
+      _jsonText,
+      style: TextStyle(
+        color: RawJsonView.theme['root']!.color,
+        fontFamily: 'JetBrains Mono',
+      ),
+    );
+
+    // Limit syntax highlighting to JSON snippets smaller than 100,000
+    // characters to avoid blocking the UI for extended periods of time.
+    if (_jsonText.length > 100000) return simpleTextView;
+
     return HighlightView(
       _jsonText,
       language: 'json',
       theme: RawJsonView.theme,
       padding: widget.padding,
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
-      progressIndicator: ColoredBox(
-        color: RawJsonView.theme['root']!.backgroundColor ?? Colors.transparent,
-        child: SelectableText(
-          _jsonText,
-          style: TextStyle(
-            color: RawJsonView.theme['root']!.color,
-            fontFamily: 'JetBrains Mono',
-          ),
-        ),
-      ),
+      progressIndicator: simpleTextView,
     );
   }
 }
