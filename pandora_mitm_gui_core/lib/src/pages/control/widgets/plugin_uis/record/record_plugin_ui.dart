@@ -27,6 +27,24 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
       _RecordPluginUi(plugin: plugin);
 
   @override
+  List<PopupMenuItem<Object?>> buildContextMenuItems(
+          BuildContext context, RecordPlugin plugin) =>
+      [
+        // ignore: prefer_void_to_null
+        PopupMenuItem<Null>(
+          onTap: () => plugin
+            ..messageRecorder.clear()
+            ..objectRecorder.clear(),
+          child: const Text('Clear messages'),
+        ),
+        // ignore: prefer_void_to_null
+        PopupMenuItem<Null>(
+          onTap: plugin.annotationRecorder.clear,
+          child: const Text('Clear annotations'),
+        ),
+      ];
+
+  @override
   RecordPlugin buildPlugin() => RecordPlugin(stripBoilerplate: true);
 }
 
