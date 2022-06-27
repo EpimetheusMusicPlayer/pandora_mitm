@@ -22,17 +22,10 @@ class MessageTabBar extends StatelessWidget {
     return Stack(
       alignment: Alignment.centerRight,
       children: [
-        ThemedTabBar(tabs: tabEntries),
-        Positioned(
-          right: 8,
-          bottom: 8,
-          child: IconTheme(
-            data: IconThemeData(
-              color: Theme.of(context).typography.white.headline6!.color,
-            ),
-            child: JsonCopyButton(jsonEncodable: jsonEncodable),
-          ),
-        )
+        ThemedTabBar(
+          tabs: tabEntries,
+          actions: [JsonCopyButton(jsonEncodable: jsonEncodable)],
+        ),
       ],
     );
   }

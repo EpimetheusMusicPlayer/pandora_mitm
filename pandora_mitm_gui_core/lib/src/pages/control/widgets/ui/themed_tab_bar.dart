@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class ThemedTabBar extends StatelessWidget {
   final List<ThemedTabEntry> tabs;
+  final List<Widget> actions;
 
   const ThemedTabBar({
     Key? key,
     required this.tabs,
+    this.actions = const [],
   }) : super(key: key);
 
   @override
@@ -19,22 +21,34 @@ class ThemedTabBar extends StatelessWidget {
         margin: EdgeInsets.zero,
         shape: const Border(),
         elevation: AppBarTheme.of(context).elevation ?? 4,
-        child: TabBar(
-          isScrollable: true,
-          tabs: tabs
-              .map(
-                (tabEntry) => Tab(
-                  child: Row(
-                    children: [
-                      if (tabEntry.iconData != null)
-                        Icon(tabEntry.iconData, size: 20),
-                      const SizedBox(width: 8),
-                      Text(tabEntry.name),
-                    ],
-                  ),
+        child: IconTheme(
+          data: IconThemeData(
+            color: Theme.of(context).typography.white.headline6!.color,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TabBar(
+                  isScrollable: true,
+                  tabs: tabs
+                      .map(
+                        (tabEntry) => Tab(
+                          child: Row(
+                            children: [
+                              if (tabEntry.iconData != null)
+                                Icon(tabEntry.iconData, size: 20),
+                              const SizedBox(width: 8),
+                              Text(tabEntry.name),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(growable: false),
                 ),
-              )
-              .toList(growable: false),
+              ),
+              ...actions,
+            ],
+          ),
         ),
       ),
     );
