@@ -28,7 +28,9 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
 
   @override
   List<PopupMenuItem<Object?>> buildContextMenuItems(
-          BuildContext context, RecordPlugin plugin) =>
+    BuildContext context,
+    RecordPlugin plugin,
+  ) =>
       [
         // ignore: prefer_void_to_null
         PopupMenuItem<Null>(
@@ -42,6 +44,7 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
           onTap: plugin.annotationRecorder.clear,
           child: const Text('Clear annotations'),
         ),
+        ...super.buildContextMenuItems(context, plugin),
       ];
 
   @override
