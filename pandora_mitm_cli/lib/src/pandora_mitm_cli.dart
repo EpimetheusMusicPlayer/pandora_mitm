@@ -243,7 +243,8 @@ Future<void> run(
         '[${record.level.name}] [${record.loggerName}] ${record.message}'),
   );
 
-  final pandoraMitm = PandoraMitm.background(plugins);
+  final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
+    ..pluginManager.addPlugins(plugins);
 
   stdout.writeln('Plugins enabled: ${selectedPluginNames.join(',')}');
   stdout.writeln('Connecting to ws://$host:$port...');

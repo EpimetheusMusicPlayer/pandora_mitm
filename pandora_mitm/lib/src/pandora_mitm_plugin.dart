@@ -23,6 +23,14 @@ import 'package:pandora_mitm/plugin_dev.dart';
 abstract class PandoraMitmPlugin {
   const PandoraMitmPlugin();
 
+  /// Called just before the plugin is added to the [PandoraMitm] instance.
+  @internal
+  FutureOr<void> attach() {}
+
+  /// Called just after the plugin is removed from the [PandoraMitm] instance.
+  @internal
+  FutureOr<void> detach() {}
+
   /// Called when a request is about to be sent.
   ///
   /// Returns a [MessageSetSettings] describing which messages must be sent to
@@ -107,4 +115,14 @@ mixin PandoraMitmPluginLogging on PandoraMitmPlugin {
 
   @protected
   late final Logger log = Logger('PandoraMitm.plugin.$logTag');
+}
+
+extension PandoraMitmPluginCollectionExtension on Iterable<PandoraMitmPlugin> {
+  @internal
+  Future<void> attach() =>
+      Future.wait(map((plugin) async => await plugin.attach()));
+
+  @internal
+  Future<void> detach() =>
+      Future.wait(map((plugin) async => await plugin.detach()));
 }

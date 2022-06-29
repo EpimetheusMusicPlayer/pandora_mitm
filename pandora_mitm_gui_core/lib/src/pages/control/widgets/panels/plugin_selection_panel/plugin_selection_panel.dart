@@ -22,10 +22,7 @@ class PluginSelectionPanel extends StatelessWidget {
       builder: (context, snapshot) {
         final plugins = snapshot.data!;
         return ReorderableListView.builder(
-          onReorder: (oldIndex, newIndex) => pluginManager.insertPlugin(
-            oldIndex < newIndex ? newIndex - 1 : newIndex,
-            pluginManager.removePluginAt(oldIndex),
-          ),
+          onReorder: pluginManager.movePlugin,
           itemCount: plugins.length,
           itemBuilder: (context, index) {
             final plugin = plugins[index];

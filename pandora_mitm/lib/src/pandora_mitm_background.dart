@@ -7,27 +7,28 @@ import 'package:mitmproxy_ri_client/mitmproxy_ri_client.dart' as mitm_ri;
 import 'package:pandora_mitm/src/entities/api_request.dart';
 import 'package:pandora_mitm/src/entities/pandora_message_set.dart';
 import 'package:pandora_mitm/src/entities/pandora_response.dart';
-import 'package:pandora_mitm/src/pandora_mitm.dart';
-import 'package:pandora_mitm/src/pandora_mitm_plugin.dart';
-import 'package:pandora_mitm/src/plugin_manager.dart';
+import 'package:pandora_mitm/src/pandora_mitm_backend.dart';
+import 'package:pandora_mitm/src/pandora_mitm_handler.dart';
 
-class BackgroundPandoraMitmClient
-    with PluginGroupPandoraMitmMixin
-    implements PandoraMitm {
+/// A [PandoraMitmBackend] implementation mixin that uses a
+/// [PandoraMitmBackgroundIsolate].
+mixin PandoraMitmBackgroundMixin
+    implements PandoraMitmBackend, PandoraMitmHandler {
   late final ReceivePort _receivePort;
   late final SendPort _sendPort;
 
   final _disconnectionCompleter = Completer<void>();
 
-  BackgroundPandoraMitmClient([Iterable<PandoraMitmPlugin>? plugins]) {
-    if (plugins != null) pluginManager.addPlugins(plugins);
-  }
-
   @override
   Future<void> get done => _disconnectionCompleter.future;
 
+  void Function(SendPort sendPort) get isolateEntrypoint;
+
   @override
-  Future<void> connect({String host = 'localhost', int port = 8082}) async {
+  Future<void> connect({
+    String host = 'localhost',
+    int port = 8082,
+  }) async {
     _receivePort = ReceivePort('BackgroundPandoraMitmClient');
     done.then((_) => _receivePort.close());
 
@@ -37,7 +38,7 @@ class BackgroundPandoraMitmClient
         _sendPort.send(
           _MessageSetSettingsClientMessage(
             message.flowId,
-            await getPluginRequestMessageSetSettings(
+            await getRequestMessageSetSettings(
               message.flowId,
               message.apiMethod,
               message.requestSummary,
@@ -49,7 +50,7 @@ class BackgroundPandoraMitmClient
         _sendPort.send(
           _MessageSetSettingsClientMessage(
             message.flowId,
-            await getPluginResponseMessageSetSettings(
+            await getResponseMessageSetSettings(
               message.flowId,
               message.apiMethod,
               message.requestSummary,
@@ -61,7 +62,7 @@ class BackgroundPandoraMitmClient
         _sendPort.send(
           _PandoraMessageSetClientMessage(
             message.flowId,
-            await handlePluginRequest(
+            await handleRequest(
               message.flowId,
               message.originalApiRequest,
               message.originalResponse,
@@ -72,7 +73,7 @@ class BackgroundPandoraMitmClient
         _sendPort.send(
           _PandoraMessageSetClientMessage(
             message.flowId,
-            await handlePluginResponse(
+            await handleResponse(
               message.flowId,
               message.originalApiRequest,
               message.originalResponse,
@@ -101,9 +102,9 @@ class BackgroundPandoraMitmClient
     });
 
     await Isolate.spawn(
-      _BackgroundPandoraMitmServer.new,
+      // _BackgroundPandoraMitmServer.new,
+      isolateEntrypoint,
       _receivePort.sendPort,
-      debugName: 'BackgroundPandoraMitmServer isolate',
     );
 
     await connectedCompleter.future;
@@ -114,8 +115,13 @@ class BackgroundPandoraMitmClient
       _sendPort.send(const _DisconnectClientMessage());
 }
 
-class _BackgroundPandoraMitmServer extends PandoraMitm {
-  final _receivePort = ReceivePort('BackgroundPandoraMitmServer');
+/// A background isolate used by the [PandoraMitmBackgroundMixin].
+///
+/// This class is a complete [PandoraMitmHandler] implementation.
+/// To use this it, extend it with a [PandoraMitmBackend] mixin.
+abstract class PandoraMitmBackgroundIsolate
+    implements PandoraMitmHandler, PandoraMitmBackend {
+  final _receivePort = ReceivePort();
   final SendPort _sendPort;
 
   final Map<String, Completer<mitm_ri.MessageSetSettings>>
@@ -124,7 +130,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
   final Map<String, Completer<PandoraMessageSet>> _pandoraMessageSetCompleters =
       {};
 
-  _BackgroundPandoraMitmServer(this._sendPort) {
+  PandoraMitmBackgroundIsolate(this._sendPort) {
     _sendPort.send(_receivePort.sendPort);
 
     done.then((_) {
@@ -155,11 +161,6 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
     });
   }
 
-  @override
-  PluginManager get pluginManager => throw UnsupportedError(
-        'Plugins are not natively supported in the background PandoraMitm server!',
-      );
-
   Future<T> _sendServerFlowMessage<T>(
     _PandoraMitmBackgroundServerFlowMessage serverMessage,
     Map<String, Completer<T>> completerMap,
@@ -182,7 +183,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
 
   @protected
   @override
-  Future<mitm_ri.MessageSetSettings> getPluginRequestMessageSetSettings(
+  Future<mitm_ri.MessageSetSettings> getRequestMessageSetSettings(
     String flowId,
     String apiMethod,
     mitm_ri.RequestSummary requestSummary,
@@ -199,7 +200,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
 
   @protected
   @override
-  Future<mitm_ri.MessageSetSettings> getPluginResponseMessageSetSettings(
+  Future<mitm_ri.MessageSetSettings> getResponseMessageSetSettings(
     String flowId,
     String apiMethod,
     mitm_ri.RequestSummary requestSummary,
@@ -216,7 +217,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
 
   @protected
   @override
-  Future<PandoraMessageSet> handlePluginRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? originalApiRequest,
     PandoraResponse? originalResponse,
@@ -231,7 +232,7 @@ class _BackgroundPandoraMitmServer extends PandoraMitm {
 
   @protected
   @override
-  Future<PandoraMessageSet> handlePluginResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? originalApiRequest,
     PandoraResponse? originalResponse,

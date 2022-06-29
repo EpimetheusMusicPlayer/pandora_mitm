@@ -21,7 +21,7 @@ class ControlPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pandoraMitm =
-        ModalRoute.of(context)!.settings.arguments! as PandoraMitm;
+        ModalRoute.of(context)!.settings.arguments! as PluginCapablePandoraMitm;
 
     return MultiSplitViewTheme(
       data: MultiSplitViewThemeData(

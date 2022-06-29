@@ -35,12 +35,14 @@ void main() async {
       },
     );
 
-  final pandoraMitm = PandoraMitm.foreground([
-    streamPlugin,
-    modificationDetectorPlugin,
-    pmplg.FeatureUnlockPlugin(),
-    modificationDetectorPlugin,
-  ]);
+  final PluginCapablePandoraMitm pandoraMitm =
+      BackgroundMitmproxyRiPandoraMitm()
+        ..pluginManager.addPlugins([
+          streamPlugin,
+          modificationDetectorPlugin,
+          pmplg.FeatureUnlockPlugin(),
+          modificationDetectorPlugin,
+        ]);
 
   pandoraMitm.pluginManager.pluginListChanges.forEach(
       (pluginList) => stdout.writeln('Plugin list changed: $pluginList'));

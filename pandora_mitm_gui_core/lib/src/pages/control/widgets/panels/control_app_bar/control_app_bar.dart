@@ -4,7 +4,7 @@ import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class ControlAppBar extends StatelessWidget {
-  final PandoraMitm pandoraMitm;
+  final PluginCapablePandoraMitm pandoraMitm;
 
   const ControlAppBar({
     Key? key,

@@ -1,6 +1,6 @@
 # pandora_mitm
 
-A Dart package featuring a [mitmproxy Remote Interceptions client][ri] that can analyse and modify Pandora JSON API messages.
+A Dart package for analysing and modifying Pandora JSON API messages.
 
 ### [Looking for the CLI?][cli]
 
@@ -13,12 +13,19 @@ A Dart package featuring a [mitmproxy Remote Interceptions client][ri] that can 
   - Feature unlocking
   - Reauthentication
   - mitmproxy UI enhancement
-- Parsing and decryption can be done in a background thread for maximum performance
+- An extremely modular architecture, meaning
+  - Multithreading is easily accessible
+    - Parsing and decryption can be done in a background thread for maximum performance
+    - Plugins can manage their own background threads
+  - HTTP interception backends can be implemented with ease, with inbuilt
+    solutions for:
+    - [mitmproxy Remote Interceptions][ri]
 
 ## Getting started
 
-### Setup
+### Backend setup
 
+#### mitmproxy Remote Interceptions
 1. Set up [mitmproxy].
 2. Install the [mitmproxy] HTTPS certificate as a trusted CA on your device or emulator.
    - [On Android emulators](https://docs.mitmproxy.org/stable/howto-install-system-trusted-ca-android)

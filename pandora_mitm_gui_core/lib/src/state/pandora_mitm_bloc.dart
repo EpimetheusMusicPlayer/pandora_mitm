@@ -11,7 +11,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     int port = 8082,
   }) async {
     emit(const PandoraMitmConnecting());
-    final pandoraMitm = PandoraMitm.background()
+    final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
       ..done.then((_) => emit(const PandoraMitmDisconnected()));
     try {
       await pandoraMitm.connect(host: host, port: port);
@@ -63,7 +63,7 @@ class PandoraMitmConnecting implements PandoraMitmState {
 }
 
 class PandoraMitmConnected implements PandoraMitmState {
-  final PandoraMitm pandoraMitm;
+  final PluginCapablePandoraMitm pandoraMitm;
 
   const PandoraMitmConnected(this.pandoraMitm);
 
@@ -79,7 +79,7 @@ class PandoraMitmConnected implements PandoraMitmState {
 }
 
 class PandoraMitmDisconnecting implements PandoraMitmState {
-  final PandoraMitm pandoraMitm;
+  final PluginCapablePandoraMitm pandoraMitm;
 
   const PandoraMitmDisconnecting(this.pandoraMitm);
 }

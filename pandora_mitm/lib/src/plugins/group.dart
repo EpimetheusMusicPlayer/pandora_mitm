@@ -14,6 +14,7 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 /// replacement. In fact, the [PandoraMitm] object uses this plugin internally
 /// to support multiple plugins!
 class PluginGroup extends PandoraMitmPlugin implements PluginManager {
+  var _attached = false;
   final StreamNotifyingList<PandoraMitmPlugin> _plugins;
 
   PluginGroup([Iterable<PandoraMitmPlugin>? plugins])
@@ -28,37 +29,91 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   Stream<List<PandoraMitmPlugin>> get pluginListChanges => _plugins.stream;
 
   @override
-  void addPlugin(PandoraMitmPlugin plugin) => _plugins.add(plugin);
+  Future<void> attach() {
+    _attached = true;
+    return _plugins.attach();
+  }
 
   @override
-  void addPlugins(Iterable<PandoraMitmPlugin> plugins) =>
-      _plugins.addAll(plugins);
+  Future<void> detach() {
+    _attached = false;
+    return _plugins.detach();
+  }
 
   @override
-  void insertPlugin(int index, PandoraMitmPlugin plugin) =>
-      _plugins.insert(index, plugin);
+  Future<void> addPlugin(PandoraMitmPlugin plugin) async {
+    if (_attached) await plugin.attach();
+    _plugins.add(plugin);
+  }
 
   @override
-  void insertPlugins(int index, Iterable<PandoraMitmPlugin> plugins) =>
-      _plugins.insertAll(index, plugins);
+  Future<void> addPlugins(Iterable<PandoraMitmPlugin> plugins) async {
+    if (_attached) await plugins.attach();
+    _plugins.addAll(plugins);
+  }
 
   @override
-  void removePlugin(PandoraMitmPlugin pluginToRemove) =>
-      _plugins.removeWhere((plugin) => plugin == pluginToRemove);
+  Future<void> insertPlugin(int index, PandoraMitmPlugin plugin) async {
+    if (_attached) await plugin.attach();
+    _plugins.insert(index, plugin);
+  }
 
   @override
-  void removePlugins(Set<PandoraMitmPlugin> pluginsToRemove) =>
-      _plugins.removeWhere(pluginsToRemove.contains);
+  Future<void> insertPlugins(
+      int index, Iterable<PandoraMitmPlugin> plugins) async {
+    if (_attached) await plugins.attach();
+    _plugins.insertAll(index, plugins);
+  }
 
   @override
-  void removePluginRange(int start, int end) =>
-      _plugins.removeRange(start, end);
+  void movePlugin(int oldIndex, int newIndex) => _plugins.insert(
+        oldIndex < newIndex ? newIndex - 1 : newIndex,
+        _plugins.removeAt(oldIndex),
+      );
+
+  Future<void> _removePluginsWhere(
+    bool Function(PandoraMitmPlugin plugin) test,
+  ) async {
+    final removedPlugins = <PandoraMitmPlugin>[];
+    _plugins.removeWhere((plugin) {
+      if (test(plugin)) {
+        removedPlugins.add(plugin);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (_attached) await removedPlugins.detach();
+  }
 
   @override
-  PandoraMitmPlugin removePluginAt(int index) => _plugins.removeAt(index);
+  Future<void> removePlugin(PandoraMitmPlugin pluginToRemove) =>
+      _removePluginsWhere((plugin) => plugin == pluginToRemove);
 
   @override
-  void removeAllPlugins() => _plugins.clear();
+  Future<void> removePlugins(Set<PandoraMitmPlugin> pluginsToRemove) =>
+      _removePluginsWhere(pluginsToRemove.contains);
+
+  @override
+  Future<void> removePluginRange(int start, int end) async {
+    final removedPlugins = _plugins.sublist(start, end);
+    _plugins.removeRange(start, end);
+    if (_attached) await removedPlugins.detach();
+  }
+
+  @override
+  Future<PandoraMitmPlugin> removePluginAt(int index) async {
+    final plugin = _plugins.removeAt(index);
+    if (_attached) await plugin.detach();
+    return plugin;
+  }
+
+  @override
+  Future<void> removeAllPlugins() async {
+    final removedPlugins = List.of(_plugins);
+    _plugins.clear();
+    if (_attached) await removedPlugins.detach();
+  }
 
   @override
   Future<MessageSetSettings> getRequestSetSettings(
