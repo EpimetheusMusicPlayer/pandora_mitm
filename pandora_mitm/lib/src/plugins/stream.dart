@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/src/entities/record.dart';
-import 'package:pandora_mitm/src/plugins/interfaces/boilerplate_stripper.dart';
 
 /// A [PandoraMitm] plugin that streams API requests and responses.
 ///

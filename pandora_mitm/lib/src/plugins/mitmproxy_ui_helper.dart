@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:pandora_mitm/plugin_dev.dart';
-import 'package:pandora_mitm/src/plugins/interfaces/boilerplate_stripper.dart';
-import 'package:pandora_mitm/src/plugins/interfaces/passive_capable.dart';
 
 /// A [PandoraMitm] plugin to improve the mitmproxy UI experience.
 ///
