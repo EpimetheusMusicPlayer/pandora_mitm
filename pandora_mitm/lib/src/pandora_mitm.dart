@@ -26,7 +26,4 @@ abstract class PandoraMitm implements PandoraMitmBackend, PandoraMitmHandler {
 }
 
 /// A [PandoraMitm] variant that can use [PandoraMitmPlugin]s.
-abstract class PluginCapablePandoraMitm implements PandoraMitm, PluginCapable {
-  @override
-  PluginManager get pluginManager;
-}
+abstract class PluginCapablePandoraMitm implements PandoraMitm, PluginCapable {}
