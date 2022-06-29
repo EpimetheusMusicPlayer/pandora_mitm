@@ -33,6 +33,23 @@ class CliOptionParser<T> {
     throw UnsupportedError('Unsupported option type $T!');
   }
 
+  static String display(Object value) {
+    if (value is String) {
+      return value;
+    } else if (value is int) {
+      return value.toString();
+    } else if (value is double) {
+      return value.toString();
+    } else if (value is num) {
+      return value.toString();
+    } else if (value is Uri) {
+      return value.toString();
+    } else if (value is List<Object>) {
+      return value.map(display).join(',');
+    }
+    throw UnsupportedError('Unsupported option type ${value.runtimeType}!');
+  }
+
   String _parseString(String value) => value;
 
   int _parseInt(String value) =>

@@ -95,6 +95,9 @@ class PluginOption<T> {
 
   /// Parses a [String] representation of the option value into type [T].
   T parse(String value) => CliOptionParser<T>(value)();
+
+  /// Converts the option value into a [String] representation.
+  static String display(Object value) => CliOptionParser.display(value);
 }
 
 /// A plugin configuration flag.

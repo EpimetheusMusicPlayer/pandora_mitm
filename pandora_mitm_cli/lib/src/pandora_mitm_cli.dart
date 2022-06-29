@@ -292,7 +292,9 @@ extension on PluginEntry {
       argParser.addOption(
         option.name,
         help: option.description,
-        defaultsTo: option.defaultValue.toString(),
+        defaultsTo: option.defaultValue == null
+            ? null
+            : PluginOption.display(option.defaultValue!),
         mandatory: !option.optional,
       );
     }
