@@ -292,6 +292,7 @@ extension on PluginEntry {
       argParser.addOption(
         option.name,
         help: option.description,
+        defaultsTo: option.defaultValue.toString(),
         mandatory: !option.optional,
       );
     }
