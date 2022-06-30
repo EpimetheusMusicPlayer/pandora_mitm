@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight_background.dart';
+import 'package:logging/logging.dart';
 import 'package:pandora_mitm_gui_core/src/pages/connect/page.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/page.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/feature_unlock/feature_unlock_plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mitmproxy_ui_helper/mitmproxy_ui_helper_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/reauthentication/reauthentication_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_ui.dart';
@@ -14,29 +18,36 @@ import 'package:pandora_mitm_gui_core/src/theme.dart';
 void runPandoraMitmGuiApp({
   List<PluginUi> extraPluginUis = const [],
   Map<String, Iterable<PluginUi>> extraPluginTemplates = const {},
-}) =>
-    runApp(
-      PandoraMitmGuiApp(
-        availablePluginUis: [
-          ...extraPluginUis,
-          const RecordPluginUi(),
-          const ReauthenticationPluginUi(),
-          const FeatureUnlockPluginUi(),
-          const MitmproxyUiHelperPluginUi(),
+}) {
+  Logger.root.onRecord.listen(
+    (record) => stdout.writeln(
+        '[${record.level.name}] [${record.loggerName}] ${record.message}'),
+  );
+  runApp(
+    PandoraMitmGuiApp(
+      availablePluginUis: [
+        ...extraPluginUis,
+        const RecordPluginUi(),
+        const ReauthenticationPluginUi(),
+        const FeatureUnlockPluginUi(),
+        const InferencePluginUi(),
+        const MitmproxyUiHelperPluginUi(),
+      ],
+      availablePluginTemplates: {
+        'Blank': const [],
+        'Recommended': const [RecordPluginUi()],
+        'Research': const [
+          RecordPluginUi(),
+          InferencePluginUi(),
+          ReauthenticationPluginUi(),
+          FeatureUnlockPluginUi(),
         ],
-        availablePluginTemplates: {
-          'Blank': const [],
-          'Recommended': const [RecordPluginUi()],
-          'Recommended++': const [
-            RecordPluginUi(),
-            ReauthenticationPluginUi(),
-            FeatureUnlockPluginUi(),
-          ],
-          'mitmproxy': const [MitmproxyUiHelperPluginUi()],
-          ...extraPluginTemplates,
-        },
-      ),
-    );
+        'mitmproxy': const [MitmproxyUiHelperPluginUi()],
+        ...extraPluginTemplates,
+      },
+    ),
+  );
+}
 
 class PandoraMitmGuiApp extends StatefulWidget {
   final List<PluginUi> availablePluginUis;

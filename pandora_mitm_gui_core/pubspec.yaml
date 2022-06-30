@@ -11,10 +11,14 @@ dependencies:
     sdk: flutter
   pandora_mitm:
     path: ../pandora_mitm
+  pandora_mitm_extra:
+    path: ../pandora_mitm_extra
   iapetus:
     path: ../iapetus
+  logging: ^1.0.2
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
+  url_launcher: ^6.1.4
   popup_menu_title: ^1.1.0-nullsafety.1
   multi_split_view: ^2.1.0
   auto_scroll:
