@@ -15,6 +15,8 @@ dependencies:
   args: ^2.3.1
   pandora_mitm:
     path: ../pandora_mitm
+  pandora_mitm_extra:
+    path: ../pandora_mitm_extra
 
 dev_dependencies:
   lint: ^1.8.2

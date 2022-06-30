@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_cli/src/cli_option_parser.dart';
 import 'package:pandora_mitm_cli/src/plugin_entries/feature_unlock.dart';
+import 'package:pandora_mitm_cli/src/plugin_entries/inference.dart';
 import 'package:pandora_mitm_cli/src/plugin_entries/lite_log.dart';
 import 'package:pandora_mitm_cli/src/plugin_entries/log.dart';
 import 'package:pandora_mitm_cli/src/plugin_entries/modification_detector.dart';
@@ -36,6 +37,7 @@ Future<void> run(
       const LogPluginEntry(),
       const FeatureUnlockPluginEntry(),
       const ReauthenticatePluginEntry(),
+      const InferencePluginEntry(),
       const UiHelperPluginEntry(),
       ModificationDetectorPluginEntry(),
       ...extraPluginEntries,

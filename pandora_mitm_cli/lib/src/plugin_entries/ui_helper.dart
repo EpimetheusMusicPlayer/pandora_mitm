@@ -3,7 +3,7 @@ import 'package:pandora_mitm_cli/src/plugin_entry.dart';
 
 /// A [PluginEntry] for the [MitmproxyUiHelperPlugin] plugin.
 class UiHelperPluginEntry extends PluginEntry {
-  static const _noStripBoilerplateFlag = 'no-strip-boilerplate';
+  static const _noStripBoilerplateFlag = 'ui-helper-no-strip-boilerplate';
 
   const UiHelperPluginEntry();
 
