@@ -26,7 +26,11 @@ class PluginTemplateButton extends StatelessWidget {
       ],
       onSelected: (pluginUiList) => pluginManager
         ..removeAllPlugins()
-        ..addPlugins(pluginUiList.map((pluginUi) => pluginUi.buildPlugin())),
+        ..addPlugins(
+          pluginUiList
+              .map((pluginUi) => pluginUi.buildPlugin())
+              .toList(growable: false),
+        ),
       tooltip: 'Use plugin template',
       icon: const Icon(Icons.keyboard_arrow_down),
     );
