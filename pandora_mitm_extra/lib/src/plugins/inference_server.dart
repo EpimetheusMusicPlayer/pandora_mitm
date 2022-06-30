@@ -235,9 +235,9 @@ All the query parameters from Markdown are supported.''',
         sink.writeln('| :---- | :--- | :------- | :------ |');
         for (final valueType in entry.valueType.fieldValueTypes.entries) {
           sink.write('| ');
-          sink.write(valueType.key);
+          sink.write(valueType.key.replaceAll('<', '\\<'));
           sink.write(' | ');
-          sink.write(valueType.value.name);
+          sink.write(valueType.value.name.replaceAll('<', '\\<'));
           sink.write(' | ');
           sink.write(valueType.value.optional ? 'Yes' : 'No');
           sink.write(' | ');
