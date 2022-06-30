@@ -16,11 +16,7 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   var _attached = false;
   final StreamNotifyingList<PandoraMitmPlugin> _plugins;
-
-  PluginGroup([Iterable<PandoraMitmPlugin>? plugins])
-      : _plugins = plugins == null
-            ? StreamNotifyingList()
-            : StreamNotifyingList.of(plugins);
+  final _plugins = StreamNotifyingList<PandoraMitmPlugin>();
 
   @override
   List<PandoraMitmPlugin> get plugins => UnmodifiableListView(_plugins);
@@ -47,7 +43,7 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   }
 
   @override
-  Future<void> addPlugins(Iterable<PandoraMitmPlugin> plugins) async {
+  Future<void> addPlugins(List<PandoraMitmPlugin> plugins) async {
     if (_attached) await plugins.attach();
     _plugins.addAll(plugins);
   }
@@ -59,8 +55,8 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   }
 
   @override
-  Future<void> insertPlugins(
-      int index, Iterable<PandoraMitmPlugin> plugins) async {
+  Future<void> insertPlugins(int index, List<PandoraMitmPlugin> plugins) async {
+    if (attached) await plugins.attach();
     if (_attached) await plugins.attach();
     _plugins.insertAll(index, plugins);
   }

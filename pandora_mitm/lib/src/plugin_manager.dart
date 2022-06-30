@@ -25,13 +25,13 @@ abstract class PluginManager {
   Future<void> addPlugin(PandoraMitmPlugin plugin);
 
   /// Adds several [plugins] to the end of the plugin list.
-  Future<void> addPlugins(Iterable<PandoraMitmPlugin> plugins);
+  Future<void> addPlugins(List<PandoraMitmPlugin> plugins);
 
   /// Inserts a [plugin] in the plugin list at the given [index].
   Future<void> insertPlugin(int index, PandoraMitmPlugin plugin);
 
   /// Inserts several [plugins] in the plugin list at the given [index].
-  Future<void> insertPlugins(int index, Iterable<PandoraMitmPlugin> plugins);
+  Future<void> insertPlugins(int index, List<PandoraMitmPlugin> plugins);
 
   /// Moves a plugin from its current position ([oldIndex]) to a new one
   /// ([newIndex]).
