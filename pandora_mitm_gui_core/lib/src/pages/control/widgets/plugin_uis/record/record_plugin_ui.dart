@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/annotation_tab.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/message_tab.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/state/inference_bloc.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/annotation_list/annotation_list_tab.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/inference/inference_tab.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_list_tab.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
@@ -51,7 +54,7 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
   RecordPlugin buildPlugin() => RecordPlugin(stripBoilerplate: true);
 }
 
-class _RecordPluginUi extends StatelessWidget {
+class _RecordPluginUi extends StatefulWidget {
   final RecordPlugin plugin;
 
   const _RecordPluginUi({
@@ -60,27 +63,63 @@ class _RecordPluginUi extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<_RecordPluginUi> createState() => _RecordPluginUiState();
+}
+
+class _RecordPluginUiState extends State<_RecordPluginUi> {
+  late InferenceBloc _inferenceBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _inferenceBloc = InferenceBloc(recorder: widget.plugin.messageRecorder);
+  }
+
+  @override
+  void didUpdateWidget(_RecordPluginUi oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(
+      widget.plugin.messageRecorder,
+      oldWidget.plugin.messageRecorder,
+    )) {
+      _inferenceBloc.close();
+      _inferenceBloc = InferenceBloc(recorder: widget.plugin.messageRecorder);
+    }
+  }
+
+  @override
+  void dispose() {
+    _inferenceBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        children: [
-          const ThemedTabBar(
-            tabs: [
-              ThemedTabEntry('Messages', Icons.cloud_sync),
-              ThemedTabEntry('Metadata', Icons.library_music),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                MessageTab(plugin: plugin),
-                AnnotationTab(plugin: plugin),
+    return BlocProvider.value(
+      value: _inferenceBloc,
+      child: DefaultTabController(
+        length: 3,
+        child: Column(
+          children: [
+            const ThemedTabBar(
+              tabs: [
+                ThemedTabEntry('Messages', Icons.cloud_sync),
+                ThemedTabEntry('Metadata', Icons.library_music),
+                ThemedTabEntry('Inference', Icons.school),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  RecordListTab(plugin: widget.plugin),
+                  AnnotationListTab(plugin: widget.plugin),
+                  InferenceTab(plugin: widget.plugin),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

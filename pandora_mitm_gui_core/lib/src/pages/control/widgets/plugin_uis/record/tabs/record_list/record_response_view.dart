@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/interactive_json_view.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_view.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_response_preview.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_response_preview.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/message_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';

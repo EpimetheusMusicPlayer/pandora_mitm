@@ -2,7 +2,7 @@ import 'package:auto_scroll/auto_scroll.dart';
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/recorder_builder.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_list_tile.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_list_tile.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 class RecordListWidget extends StatelessWidget {

@@ -4,10 +4,10 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/med
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/recorder_builder.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
-class AnnotationTab extends StatelessWidget {
+class AnnotationListTab extends StatelessWidget {
   final RecordPlugin plugin;
 
-  const AnnotationTab({
+  const AnnotationListTab({
     Key? key,
     required this.plugin,
   }) : super(key: key);

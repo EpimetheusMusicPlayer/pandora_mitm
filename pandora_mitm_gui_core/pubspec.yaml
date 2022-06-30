@@ -15,10 +15,14 @@ dependencies:
     path: ../pandora_mitm_extra
   iapetus:
     path: ../iapetus
+  iapetus_meta:
+    path: ../iapetus_meta/iapetus_meta
   logging: ^1.0.2
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
   url_launcher: ^6.1.4
+  flutter_improved_scrolling: ^0.0.3
   popup_menu_title: ^1.1.0-nullsafety.1
   multi_split_view: ^2.1.0
   auto_scroll:

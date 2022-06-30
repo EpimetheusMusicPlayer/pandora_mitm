@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_list.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_view.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_list.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_view.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
-class MessageTab extends StatefulWidget {
+class RecordListTab extends StatefulWidget {
   final RecordPlugin plugin;
 
-  const MessageTab({
+  const RecordListTab({
     Key? key,
     required this.plugin,
   }) : super(key: key);
 
   @override
-  State<MessageTab> createState() => _MessageTabState();
+  State<RecordListTab> createState() => _RecordListTabState();
 }
 
-class _MessageTabState extends State<MessageTab> {
+class _RecordListTabState extends State<RecordListTab> {
   PandoraMitmRecord? _selectedRecord;
 
   @override

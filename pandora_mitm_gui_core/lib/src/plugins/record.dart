@@ -17,6 +17,15 @@ class RecordPlugin extends SuperStreamPlugin {
   }
 }
 
+enum RecorderEventType { add, remove, clear }
+
+class RecorderEvent<T> {
+  final RecorderEventType type;
+  final List<T> records;
+
+  const RecorderEvent(this.type, [this.records = const []]);
+}
+
 abstract class Recorder<T, C> {
   final void Function(C collection, T record) _addRecord;
   final void Function(C collection) _clearCollection;
@@ -25,6 +34,7 @@ abstract class Recorder<T, C> {
 
   final C _records;
   final _recordStreamController = StreamController<C>.broadcast();
+  final _eventStreamController = StreamController<RecorderEvent<T>>.broadcast();
 
   Recorder(
     Stream<T> source, {
@@ -41,6 +51,8 @@ abstract class Recorder<T, C> {
     source.listen((record) {
       _addRecord(_records, record);
       _recordStreamController.add(_duplicateCollection(_records));
+      _eventStreamController
+          .add(RecorderEvent(RecorderEventType.add, [record]));
     });
   }
 
@@ -48,9 +60,12 @@ abstract class Recorder<T, C> {
 
   Stream<C> get recordsStream => _recordStreamController.stream;
 
+  Stream<RecorderEvent<T>> get eventStream => _eventStreamController.stream;
+
   void clear() {
     _clearCollection(_records);
     _recordStreamController.add(_duplicateCollection(_records));
+    _eventStreamController.add(const RecorderEvent(RecorderEventType.clear));
   }
 }
 
