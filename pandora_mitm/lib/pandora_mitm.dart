@@ -1,6 +1,7 @@
 export 'package:iapetus/iapetus_data.dart' show PandoraApiResponse;
 
 export 'src/backends/mitmproxy_ri.dart';
+export 'src/entities/api_method_inference.dart';
 export 'src/entities/api_request.dart';
 export 'src/entities/modification_record.dart';
 export 'src/entities/pandora_response.dart';

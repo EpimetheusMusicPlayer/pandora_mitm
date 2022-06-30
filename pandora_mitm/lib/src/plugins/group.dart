@@ -13,9 +13,9 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 /// it's beneficial to reduce several plugins into one single request/response
 /// replacement. In fact, the [PandoraMitm] object uses this plugin internally
 /// to support multiple plugins!
-class PluginGroup extends PandoraMitmPlugin implements PluginManager {
-  var _attached = false;
-  final StreamNotifyingList<PandoraMitmPlugin> _plugins;
+class PluginGroup extends PandoraMitmPlugin
+    with PandoraMitmPluginStateTrackerMixin
+    implements PluginManager {
   final _plugins = StreamNotifyingList<PandoraMitmPlugin>();
 
   @override
@@ -25,39 +25,38 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   Stream<List<PandoraMitmPlugin>> get pluginListChanges => _plugins.stream;
 
   @override
-  Future<void> attach() {
-    _attached = true;
+  Future<void> attach() async {
+    await super.attach();
     return _plugins.attach();
   }
 
   @override
-  Future<void> detach() {
-    _attached = false;
-    return _plugins.detach();
+  Future<void> detach() async {
+    await _plugins.detach();
+    await super.detach();
   }
 
   @override
   Future<void> addPlugin(PandoraMitmPlugin plugin) async {
-    if (_attached) await plugin.attach();
+    if (attached) await plugin.attach();
     _plugins.add(plugin);
   }
 
   @override
   Future<void> addPlugins(List<PandoraMitmPlugin> plugins) async {
-    if (_attached) await plugins.attach();
+    if (attached) await plugins.attach();
     _plugins.addAll(plugins);
   }
 
   @override
   Future<void> insertPlugin(int index, PandoraMitmPlugin plugin) async {
-    if (_attached) await plugin.attach();
+    if (attached) await plugin.attach();
     _plugins.insert(index, plugin);
   }
 
   @override
   Future<void> insertPlugins(int index, List<PandoraMitmPlugin> plugins) async {
     if (attached) await plugins.attach();
-    if (_attached) await plugins.attach();
     _plugins.insertAll(index, plugins);
   }
 
@@ -79,7 +78,7 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
         return false;
       }
     });
-    if (_attached) await removedPlugins.detach();
+    if (attached) await removedPlugins.detach();
   }
 
   @override
@@ -94,13 +93,13 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   Future<void> removePluginRange(int start, int end) async {
     final removedPlugins = _plugins.sublist(start, end);
     _plugins.removeRange(start, end);
-    if (_attached) await removedPlugins.detach();
+    if (attached) await removedPlugins.detach();
   }
 
   @override
   Future<PandoraMitmPlugin> removePluginAt(int index) async {
     final plugin = _plugins.removeAt(index);
-    if (_attached) await plugin.detach();
+    if (attached) await plugin.detach();
     return plugin;
   }
 
@@ -108,7 +107,7 @@ class PluginGroup extends PandoraMitmPlugin implements PluginManager {
   Future<void> removeAllPlugins() async {
     final removedPlugins = List.of(_plugins);
     _plugins.clear();
-    if (_attached) await removedPlugins.detach();
+    if (attached) await removedPlugins.detach();
   }
 
   @override

@@ -20,8 +20,14 @@ dependencies:
       ref: 8b23a897d4d39a09faa50b362a27d8fcc816ce3d
   iapetus:
     path: ../iapetus
+  iapetus_meta:
+    path: ../iapetus_meta/iapetus_meta
 
 dev_dependencies:
   lint: ^1.8.2
   build_runner: ^2.1.11
   freezed: ^2.0.3+1
+
+dependency_overrides:
+  iapetus:
+    path: ../iapetus

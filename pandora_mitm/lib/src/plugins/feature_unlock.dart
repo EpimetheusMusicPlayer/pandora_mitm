@@ -9,7 +9,7 @@ import 'package:pandora_mitm/plugin_dev.dart';
 /// This enables client-side Pandora Premium features, disables ads, removes
 /// skip limits, etc.
 class FeatureUnlockPlugin extends ResponseModificationBasePlugin
-    with PandoraMitmPluginLogging {
+    with PandoraMitmPluginLoggingMixin {
   @override
   String get logTag => 'feature_unlock';
 

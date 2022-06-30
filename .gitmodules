@@ -1,3 +1,6 @@
 [submodule "iapetus"]
 	path = iapetus
-	url = https://github.com/EpimetheusMusicPlayer/Iapetus.git
+	url = https://github.com/EpimetheusMusicPlayer/iapetus.git
+[submodule "iapetus_meta"]
+	path = iapetus_meta
+	url = https://github.com/EpimetheusMusicPlayer/iapetus_meta.git

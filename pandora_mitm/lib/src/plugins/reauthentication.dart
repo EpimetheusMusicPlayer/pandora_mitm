@@ -7,7 +7,7 @@ import 'package:pandora_mitm/plugin_dev.dart';
 /// By default, each client will only be reauthenticated once.
 /// This can be reset, though - see [invalidate] for more details.
 class ReauthenticationPlugin extends PandoraMitmPlugin
-    with PandoraMitmPluginLogging {
+    with PandoraMitmPluginLoggingMixin {
   final _reauthenticatedClients = <String>{};
 
   @override

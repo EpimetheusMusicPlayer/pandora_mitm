@@ -24,11 +24,11 @@ abstract class PandoraMitmPlugin {
   const PandoraMitmPlugin();
 
   /// Called just before the plugin is added to the [PandoraMitm] instance.
-  @internal
+  @mustCallSuper
   FutureOr<void> attach() {}
 
   /// Called just after the plugin is removed from the [PandoraMitm] instance.
-  @internal
+  @mustCallSuper
   FutureOr<void> detach() {}
 
   /// Called when a request is about to be sent.
@@ -109,12 +109,37 @@ abstract class PandoraMitmPlugin {
       PandoraMessageSet.preserve;
 }
 
-mixin PandoraMitmPluginLogging on PandoraMitmPlugin {
+mixin PandoraMitmPluginLoggingMixin on PandoraMitmPlugin {
   @protected
   String get logTag;
 
   @protected
-  late final Logger log = Logger('PandoraMitm.plugin.$logTag');
+  late final Logger log = Logger('pandora_mitm.plugin.$logTag');
+}
+
+mixin PandoraMitmPluginStateTrackerMixin on PandoraMitmPlugin {
+  var _attached = false;
+
+  /// Whether the plugin is currently attached or not.
+  ///
+  /// This value is updated before the base [attach] implementation starts,
+  /// and after the base [detach] implementation finishes.
+  @protected
+  bool get attached => _attached;
+
+  @override
+  @mustCallSuper
+  FutureOr<void> attach() async {
+    _attached = true;
+    await super.attach();
+  }
+
+  @override
+  @mustCallSuper
+  FutureOr<void> detach() async {
+    await super.detach();
+    _attached = false;
+  }
 }
 
 extension PandoraMitmPluginCollectionExtension on Iterable<PandoraMitmPlugin> {

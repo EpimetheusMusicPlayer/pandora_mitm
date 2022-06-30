@@ -1,5 +1,6 @@
 export 'src/plugins/feature_unlock.dart';
 export 'src/plugins/group.dart';
+export 'src/plugins/inference.dart';
 export 'src/plugins/interfaces/boilerplate_stripper.dart';
 export 'src/plugins/interfaces/passive_capable.dart';
 export 'src/plugins/log.dart';
