@@ -10,9 +10,6 @@ import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 /// time.
 class InferencePlugin extends PandoraMitmPlugin
     implements BoilerplateStripperPlugin {
-  /// A whitelist of API methods to infer.
-  final Set<String>? apiMethodWhitelist;
-
   final Map<String, ValueType> _requestValueTypes = {};
   final Map<String, ValueType> _responseValueTypes = {};
 
@@ -20,6 +17,9 @@ class InferencePlugin extends PandoraMitmPlugin
       StreamController<MapEntry<String, ValueType>>.broadcast();
   final _responseValueTypeStreamController =
       StreamController<MapEntry<String, ValueType>>.broadcast();
+
+  /// A whitelist of API methods to infer.
+  Set<String>? apiMethodWhitelist;
 
   @override
   bool stripBoilerplate;
