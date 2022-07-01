@@ -1,15 +1,25 @@
 import 'package:iapetus_meta/typing.dart';
 
-class ApiMethodInference {
-  final String method;
-  final Iterable<NestedObjectValueTypeEntry>? requestValueTypeEntries;
-  final Iterable<NestedObjectValueTypeEntry>? responseValueTypeEntries;
+abstract class ApiMethodInference {
+  const ApiMethodInference();
 
-  const ApiMethodInference(
-    this.method,
-    this.requestValueTypeEntries,
-    this.responseValueTypeEntries,
-  );
+  String get method;
+
+  Iterable<NestedObjectValueTypeEntry>? get requestValueTypeEntries;
+
+  Iterable<NestedObjectValueTypeEntry>? get responseValueTypeEntries;
+
+  List<NestedObjectValueTypeEntry>? get computedRequestValueTypeEntries =>
+      requestValueTypeEntries?.toList(growable: false);
+
+  List<NestedObjectValueTypeEntry>? get computedResponseValueTypeEntries =>
+      responseValueTypeEntries?.toList(growable: false);
+
+  PrecomputedApiMethodInference precompute() => PrecomputedApiMethodInference(
+        method,
+        requestValueTypeEntries?.toList(growable: false),
+        responseValueTypeEntries?.toList(growable: false),
+      );
 
   Map<String, dynamic> toJson() => {
         'method': method,
@@ -18,4 +28,51 @@ class ApiMethodInference {
         if (responseValueTypeEntries != null)
           'responseTypes': responseValueTypeEntries?.toList(growable: false),
       };
+}
+
+/// A lazy variant of [ApiMethodInference].
+class LazyApiMethodInference extends ApiMethodInference {
+  @override
+  final String method;
+
+  @override
+  final Iterable<NestedObjectValueTypeEntry>? requestValueTypeEntries;
+
+  @override
+  final Iterable<NestedObjectValueTypeEntry>? responseValueTypeEntries;
+
+  const LazyApiMethodInference(
+    this.method,
+    this.requestValueTypeEntries,
+    this.responseValueTypeEntries,
+  );
+}
+
+/// A non-lazy variant of [ApiMethodInference].
+class PrecomputedApiMethodInference extends ApiMethodInference {
+  @override
+  final String method;
+
+  @override
+  final List<NestedObjectValueTypeEntry>? requestValueTypeEntries;
+
+  @override
+  final List<NestedObjectValueTypeEntry>? responseValueTypeEntries;
+
+  @override
+  List<NestedObjectValueTypeEntry>? get computedRequestValueTypeEntries =>
+      requestValueTypeEntries;
+
+  @override
+  List<NestedObjectValueTypeEntry>? get computedResponseValueTypeEntries =>
+      responseValueTypeEntries;
+
+  @override
+  PrecomputedApiMethodInference precompute() => this;
+
+  const PrecomputedApiMethodInference(
+    this.method,
+    this.requestValueTypeEntries,
+    this.responseValueTypeEntries,
+  );
 }

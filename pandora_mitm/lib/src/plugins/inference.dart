@@ -43,7 +43,7 @@ class InferencePlugin extends PandoraMitmPlugin
   /// The entry [Iterables] in the [ApiMethodInference] keys are lazily
   /// computed; the JSON is recursively parsed as iteration is performed.
   /// This is a relatively cheap function call as a result.
-  Map<String, ApiMethodInference> zipInferences() {
+  Map<String, LazyApiMethodInference> zipInferences() {
     Map<String, Iterable<NestedObjectValueTypeEntry>> flattenValueTypes(
       Map<String, ValueType> valueTypes,
     ) =>
@@ -57,7 +57,7 @@ class InferencePlugin extends PandoraMitmPlugin
       for (final key in SplayTreeSet<String>()
         ..addAll(requestValueTypeEntries.keys)
         ..addAll(responseValueTypeEntries.keys))
-        key: ApiMethodInference(
+        key: LazyApiMethodInference(
           key,
           requestValueTypeEntries[key],
           responseValueTypeEntries[key],
@@ -130,4 +130,9 @@ class InferencePlugin extends PandoraMitmPlugin
     valueTypes[method] = valueType;
     streamSink.add(MapEntry(method, valueType));
   }
+}
+
+extension ZippedApiReferenceExtensions on Map<String, LazyApiMethodInference> {
+  Map<String, PrecomputedApiMethodInference> precompute() =>
+      {for (final entry in entries) entry.key: entry.value.precompute()};
 }
