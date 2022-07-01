@@ -11,10 +11,12 @@ typedef BackgroundPluginIsolateEntrypoint<T, P extends PandoraMitmPlugin> = void
 typedef BackgroundPluginPluginFactory<T, P extends PandoraMitmPlugin> = P
     Function(T launchOptions);
 
-abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin>
-    extends PandoraMitmPlugin {
+abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M>
+    extends PandoraMitmPlugin with PandoraMitmPluginStateTrackerMixin {
   final _flowResponseStreamController =
       StreamController<_BackgroundPluginFlowResponse>.broadcast();
+  final _customActionResponseStreamController =
+      StreamController<_BackgroundPluginCustomActionResponse<M>>.broadcast();
   late Future<SendPort> _sendPortFuture;
 
   @protected
@@ -25,6 +27,27 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin>
   @protected
   BackgroundPluginPluginFactory<T, P> get pluginFactory;
 
+  bool get running => attached;
+
+  Future<void> _send(Object? message) =>
+      _sendPortFuture.then((sendPort) => sendPort.send(message));
+
+  @protected
+  Future<R> doAction<R>(M method, [Object? argument]) {
+    assert(running, 'Plugin isolate is not running!');
+    final request = _BackgroundPluginCustomActionRequest<M>(method, argument);
+    final responseFuture = _customActionResponseStreamController.stream
+        .firstWhere((response) => response.method == request.method);
+    _send(request);
+    return responseFuture.then((response) {
+      assert(
+        response.argument is R,
+        'Invalid response type for $method method!',
+      );
+      return response.argument as R;
+    });
+  }
+
   @override
   Future<void> attach() async {
     await super.attach();
@@ -32,14 +55,14 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin>
     _sendPortFuture = sendPortCompleter.future;
     final receivePort = ReceivePort();
     receivePort.listen((message) {
-      if (message is _InternalBackgroundPluginResponse) {
-        if (message is _BackgroundPluginFlowResponse) {
-          _flowResponseStreamController.add(message);
-        } else if (message is _BackgroundPluginLogResponse) {
-          message.log();
-        } else if (message is _BackgroundPluginStoppedResponse) {
-          receivePort.close();
-        }
+      if (message is _BackgroundPluginFlowResponse) {
+        _flowResponseStreamController.add(message);
+      } else if (message is _BackgroundPluginCustomActionResponse<M>) {
+        _customActionResponseStreamController.add(message);
+      } else if (message is _BackgroundPluginLogResponse) {
+        message.log();
+      } else if (message is _BackgroundPluginStoppedResponse) {
+        receivePort.close();
       } else if (message is SendPort) {
         sendPortCompleter.complete(message);
       }
@@ -57,16 +80,17 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin>
 
   @override
   Future<void> detach() async {
-    (await _sendPortFuture).send(const _BackgroundPluginStopRequest());
+    _send(const _BackgroundPluginStopRequest());
     await super.detach();
   }
 
   Future<R> _flow<R extends _BackgroundPluginFlowResponse>(
     _BackgroundPluginFlowRequest<R> request,
-  ) async {
-    (await _sendPortFuture).send(request);
-    return await _flowResponseStreamController.stream
-        .firstWhere((response) => response.flowId == request.flowId) as R;
+  ) {
+    final responseFuture = _flowResponseStreamController.stream
+        .firstWhere((response) => response.flowId == request.flowId);
+    _send(request);
+    return responseFuture.then((response) => response as R);
   }
 
   @override
@@ -130,7 +154,7 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin>
       ).then((result) => result.messageSet);
 }
 
-abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
+abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M>
     extends PandoraMitmPlugin {
   final SendPort _sendPort;
 
@@ -142,17 +166,24 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
     _init();
   }
 
+  @protected
+  FutureOr<Object?> onAction(M method, Object? argument) =>
+      throw UnsupportedError(
+        'This BackgroundPluginHost has not handled action events!',
+      );
+
+  void _send(Object? message) => _sendPort.send(message);
+
   Future<void> _init() async {
     final logSubscription = Logger.root.onRecord.listen(
-      (record) =>
-          _sendPort.send(_BackgroundPluginLogResponse.fromLogRecord(record)),
+      (record) => _send(_BackgroundPluginLogResponse.fromLogRecord(record)),
     );
 
     await plugin.attach();
 
     final receivePort = ReceivePort();
     receivePort.forEach((Object? message) async {
-      if (message is _InternalBackgroundPluginRequest) {
+      if (message is _BackgroundPluginFlowRequest) {
         if (message is _BackgroundPluginGetRequestSetSettingsRequest) {
           final messageSetSettings = await plugin.getRequestSetSettings(
             message.flowId,
@@ -160,7 +191,7 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
             message.requestSummary,
             message.responseSummary,
           );
-          _sendPort.send(
+          _send(
             _BackgroundPluginGetRequestSetSettingsResponse(
               flowId: message.flowId,
               settings: messageSetSettings,
@@ -173,7 +204,7 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
             message.requestSummary,
             message.responseSummary,
           );
-          _sendPort.send(
+          _send(
             _BackgroundPluginGetResponseSetSettingsResponse(
               flowId: message.flowId,
               settings: messageSetSettings,
@@ -185,7 +216,7 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
             message.apiRequest,
             message.response,
           );
-          _sendPort.send(
+          _send(
             _BackgroundPluginHandleRequestResponse(
               flowId: message.flowId,
               messageSet: messageSet,
@@ -197,22 +228,25 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin>
             message.apiRequest,
             message.response,
           );
-          _sendPort.send(
+          _send(
             _BackgroundPluginHandleResponseResponse(
               flowId: message.flowId,
               messageSet: messageSet,
             ),
           );
-        } else if (message is _BackgroundPluginStopRequest) {
-          await plugin.detach();
-          await logSubscription.cancel();
-          receivePort.close();
-          _sendPort.send(const _BackgroundPluginStoppedResponse());
         }
+      } else if (message is _BackgroundPluginCustomActionRequest<M>) {
+        final result = await onAction(message.method, message.argument);
+        _send(_BackgroundPluginCustomActionResponse(message, result));
+      } else if (message is _BackgroundPluginStopRequest) {
+        await plugin.detach();
+        await logSubscription.cancel();
+        receivePort.close();
+        _send(const _BackgroundPluginStoppedResponse());
       }
     });
 
-    _sendPort.send(receivePort.sendPort);
+    _send(receivePort.sendPort);
   }
 }
 
@@ -230,7 +264,7 @@ typedef ForegroundBuildingBackgroundPluginIsolateEntrypoint<
 /// * [ForegroundBuildingBackgroundPluginHost], the corresponding
 ///   [BackgroundPluginHost].
 abstract class ForegroundBuildingBackgroundBasePlugin<
-    P extends PandoraMitmPlugin> extends BackgroundBasePlugin<P, P> {
+    P extends PandoraMitmPlugin, M> extends BackgroundBasePlugin<P, P, M> {
   @override
   ForegroundBuildingBackgroundPluginIsolateEntrypoint<P> get isolateEntrypoint;
 
@@ -252,7 +286,7 @@ abstract class ForegroundBuildingBackgroundBasePlugin<
 /// A [BackgroundPluginHost] implementation to be used with
 /// [ForegroundBuildingBackgroundBasePlugin].
 abstract class ForegroundBuildingBackgroundPluginHost<
-    P extends PandoraMitmPlugin> extends BackgroundPluginHost<P, P> {
+    P extends PandoraMitmPlugin, M> extends BackgroundPluginHost<P, P, M> {
   ForegroundBuildingBackgroundPluginHost(super.payload);
 }
 
@@ -274,28 +308,6 @@ class BackgroundPluginInitialPayload<T, P extends PandoraMitmPlugin> {
 abstract class _InternalBackgroundPluginRequest {}
 
 abstract class _InternalBackgroundPluginResponse {}
-
-abstract class _BackgroundPluginFlowMessage {
-  String get flowId;
-}
-
-abstract class _BackgroundPluginFlowRequest<
-        T extends _BackgroundPluginFlowResponse>
-    implements _BackgroundPluginFlowMessage, _InternalBackgroundPluginRequest {}
-
-abstract class _BackgroundPluginFlowResponse
-    implements
-        _BackgroundPluginFlowMessage,
-        _InternalBackgroundPluginResponse {}
-
-class _BackgroundPluginStopRequest implements _InternalBackgroundPluginRequest {
-  const _BackgroundPluginStopRequest();
-}
-
-class _BackgroundPluginStoppedResponse
-    implements _InternalBackgroundPluginResponse {
-  const _BackgroundPluginStoppedResponse();
-}
 
 class _BackgroundPluginLogResponse
     implements _InternalBackgroundPluginResponse {
@@ -323,6 +335,28 @@ class _BackgroundPluginLogResponse
         );
 
   void log() => Logger(loggerName).log(level, message, errorString, stackTrace);
+}
+
+abstract class _BackgroundPluginFlowMessage {
+  String get flowId;
+}
+
+abstract class _BackgroundPluginFlowRequest<
+        T extends _BackgroundPluginFlowResponse>
+    implements _BackgroundPluginFlowMessage, _InternalBackgroundPluginRequest {}
+
+abstract class _BackgroundPluginFlowResponse
+    implements
+        _BackgroundPluginFlowMessage,
+        _InternalBackgroundPluginResponse {}
+
+class _BackgroundPluginStopRequest implements _InternalBackgroundPluginRequest {
+  const _BackgroundPluginStopRequest();
+}
+
+class _BackgroundPluginStoppedResponse
+    implements _InternalBackgroundPluginResponse {
+  const _BackgroundPluginStoppedResponse();
 }
 
 class _BackgroundPluginGetRequestSetSettingsRequest
@@ -437,4 +471,26 @@ class _BackgroundPluginHandleResponseResponse
     required this.flowId,
     required this.messageSet,
   });
+}
+
+class _BackgroundPluginCustomActionRequest<M>
+    implements _InternalBackgroundPluginRequest {
+  final identifier = Capability();
+  final M method;
+  final Object? argument;
+
+  _BackgroundPluginCustomActionRequest(this.method, this.argument);
+}
+
+class _BackgroundPluginCustomActionResponse<M>
+    implements _InternalBackgroundPluginResponse {
+  final Capability identifier;
+  final M method;
+  final Object? argument;
+
+  _BackgroundPluginCustomActionResponse(
+    _BackgroundPluginCustomActionRequest<M> request,
+    this.argument,
+  )   : identifier = request.identifier,
+        method = request.method;
 }
