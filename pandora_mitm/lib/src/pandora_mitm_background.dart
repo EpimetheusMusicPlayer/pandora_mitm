@@ -14,7 +14,6 @@ import 'package:pandora_mitm/src/pandora_mitm_handler.dart';
 /// [PandoraMitmBackgroundIsolate].
 mixin PandoraMitmBackgroundMixin
     implements PandoraMitmBackend, PandoraMitmHandler {
-  late final ReceivePort _receivePort;
   late final SendPort _sendPort;
 
   final _disconnectionCompleter = Completer<void>();
@@ -29,11 +28,11 @@ mixin PandoraMitmBackgroundMixin
     String host = 'localhost',
     int port = 8082,
   }) async {
-    _receivePort = ReceivePort('BackgroundPandoraMitmClient');
-    done.then((_) => _receivePort.close());
+    final receivePort = ReceivePort('BackgroundPandoraMitmClient');
+    done.then((_) => receivePort.close());
 
     final connectedCompleter = Completer<void>();
-    _receivePort.listen((message) async {
+    receivePort.listen((message) async {
       if (message is _RequestMessageSetSettingsServerMessage) {
         _sendPort.send(
           _MessageSetSettingsClientMessage(
@@ -104,7 +103,7 @@ mixin PandoraMitmBackgroundMixin
     await Isolate.spawn(
       // _BackgroundPandoraMitmServer.new,
       isolateEntrypoint,
-      _receivePort.sendPort,
+      receivePort.sendPort,
     );
 
     await connectedCompleter.future;
@@ -121,7 +120,6 @@ mixin PandoraMitmBackgroundMixin
 /// To use this it, extend it with a [PandoraMitmBackend] mixin.
 abstract class PandoraMitmBackgroundIsolate
     implements PandoraMitmHandler, PandoraMitmBackend {
-  final _receivePort = ReceivePort();
   final SendPort _sendPort;
 
   final Map<String, Completer<mitm_ri.MessageSetSettings>>
@@ -131,14 +129,16 @@ abstract class PandoraMitmBackgroundIsolate
       {};
 
   PandoraMitmBackgroundIsolate(this._sendPort) {
-    _sendPort.send(_receivePort.sendPort);
+    final receivePort = ReceivePort();
+
+    _sendPort.send(receivePort.sendPort);
 
     done.then((_) {
       _sendPort.send(const _DisconnectedServerMessage());
-      _receivePort.close();
+      receivePort.close();
     });
 
-    _receivePort.forEach((Object? message) async {
+    receivePort.forEach((Object? message) async {
       if (message is _MessageSetSettingsClientMessage) {
         _messageSetSettingsCompleters
             .remove(message.flowId)!
