@@ -8,8 +8,46 @@ import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 
 /// A [PandoraMitm] plugin that infers API request and response definitions over
 /// time.
+///
+/// See also:
+abstract class InferencePluginDefinition
+/// * [ForegroundInferencePlugin], an implementation that runs in the main
+///   isolate with synchronously accessible functions and properties
+/// * [BackgroundInferencePlugin], an implementation that runs in a background
+///   isolate
+    implements PandoraMitmPlugin, BoilerplateStripperPlugin {
+  /// A whitelist of API methods to infer.
+  ///
+  /// This set may not be mutated; it must be replaced.
+  abstract Set<String>? apiMethodWhitelist;
+
+  /// Like setting the [apiMethodWhitelist], but completes when the operation
+  /// completes.
+  Future<void> applyApiMethodWhitelist(Set<String>? apiMethodWhitelist);
+
+  /// Like setting the [stripBoilerplate] value, but completes when the
+  /// operation completes.
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> applyStripBoilerplate(bool stripBoilerplate);
+
+  FutureOr<Map<String, ValueType>> get requestValueTypes;
+
+  FutureOr<Map<String, ValueType>> get responseValueTypes;
+
+  /// Flattens inferred object types and groups messages by API methods.
+  ///
+  /// Returns a sorted map of API methods to their corresponding
+  /// [ApiMethodInference]s
+  ///
+  /// Some implementations may choose to use [LazyApiMethodInference]s, where
+  /// the entry [Iterables] in the [ApiMethodInference] keys are lazily
+  /// computed such that the JSON is recursively processed as iteration is
+  /// performed. This is a relatively cheap function call as a result.
+  FutureOr<Map<String, ApiMethodInference>> zipInferences();
+}
+
 class InferencePlugin extends PandoraMitmPlugin
-    implements BoilerplateStripperPlugin {
+    implements InferencePluginDefinition {
   final Map<String, ValueType> _requestValueTypes = {};
   final Map<String, ValueType> _responseValueTypes = {};
 
@@ -18,15 +56,25 @@ class InferencePlugin extends PandoraMitmPlugin
   final _responseValueTypeStreamController =
       StreamController<MapEntry<String, ValueType>>.broadcast();
 
-  /// A whitelist of API methods to infer.
+  @override
   Set<String>? apiMethodWhitelist;
+
+  @override
+  Future<void> applyApiMethodWhitelist(Set<String>? apiMethodWhitelist) async =>
+      this.apiMethodWhitelist = apiMethodWhitelist;
 
   @override
   bool stripBoilerplate;
 
+  @override
+  Future<void> applyStripBoilerplate(bool stripBoilerplate) async =>
+      this.stripBoilerplate = stripBoilerplate;
+
+  @override
   Map<String, ValueType> get requestValueTypes =>
       UnmodifiableMapView(_requestValueTypes);
 
+  @override
   Map<String, ValueType> get responseValueTypes =>
       UnmodifiableMapView(_responseValueTypes);
 
@@ -35,14 +83,7 @@ class InferencePlugin extends PandoraMitmPlugin
     this.stripBoilerplate = false,
   });
 
-  /// Flattens inferred object types and groups messages by API methods.
-  ///
-  /// Returns a sorted map of API methods to their corresponding
-  /// [ApiMethodInference]s
-  ///
-  /// The entry [Iterables] in the [ApiMethodInference] keys are lazily
-  /// computed; the JSON is recursively parsed as iteration is performed.
-  /// This is a relatively cheap function call as a result.
+  @override
   Map<String, LazyApiMethodInference> zipInferences() {
     Map<String, Iterable<NestedObjectValueTypeEntry>> flattenValueTypes(
       Map<String, ValueType> valueTypes,
