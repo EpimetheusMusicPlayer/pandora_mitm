@@ -19,7 +19,12 @@ import 'package:pandora_mitm/plugin_dev.dart';
 ///    before being displayed in the mitmproxy UI, and/or to spoof responses
 ///    before being sent to the Pandora client.
 ///
-/// Also see: [ResponseModificationBasePlugin]
+/// See also:
+///
+/// * [ResponseModificationBasePlugin], which provides a simplified response
+///   modification API
+/// * [BackgroundBasePlugin], which provides a mechanism to wrap a plugin to
+///   run in a background isolate.
 abstract class PandoraMitmPlugin {
   const PandoraMitmPlugin();
 
