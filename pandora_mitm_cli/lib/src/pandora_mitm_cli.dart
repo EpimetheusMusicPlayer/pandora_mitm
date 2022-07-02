@@ -24,12 +24,15 @@ import 'package:pandora_mitm_cli/src/template.dart';
 /// [extraTemplates] can be provided to add custom plugin list templates to the
 /// CLI.
 /// [defaultTemplate] can be set to choose a custom default template.
+/// [onConnect] can be used to perform an action once the connection to the
+/// HTTP interception backend is established.
 Future<void> run(
   String variantName,
   List<String> arguments, {
   List<PluginEntry> extraPluginEntries = const [],
   List<Template> extraTemplates = const [],
   String? defaultTemplate = 'ui',
+  FutureOr<void> Function(PluginCapablePandoraMitm pandoraMitm)? onConnect,
 }) async {
   final pluginEntries = {
     for (final pluginEntry in [
@@ -258,6 +261,7 @@ Future<void> run(
         'Could not connect to ws://$host:$port: ${e.message} (${e.osError})');
     exit(-1);
   }
+  await onConnect?.call(pandoraMitm);
 
   stdout.writeln('Connected to ws://$host:$port.');
 
