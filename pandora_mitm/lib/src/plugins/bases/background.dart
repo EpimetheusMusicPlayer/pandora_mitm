@@ -11,7 +11,7 @@ typedef BackgroundPluginIsolateEntrypoint<T, P extends PandoraMitmPlugin> = void
 typedef BackgroundPluginPluginFactory<T, P extends PandoraMitmPlugin> = P
     Function(T launchOptions);
 
-abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M>
+abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M, N>
     extends PandoraMitmPlugin with PandoraMitmPluginStateTrackerMixin {
   final _flowResponseStreamController =
       StreamController<_BackgroundPluginFlowResponse>.broadcast();
@@ -48,6 +48,11 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M>
     });
   }
 
+  @protected
+  void onNotification(N tag, Object? message) => throw UnsupportedError(
+        'This BackgroundPlugin implementation has not handled notification events!',
+      );
+
   @override
   Future<void> attach() async {
     await super.attach();
@@ -59,6 +64,8 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M>
         _flowResponseStreamController.add(message);
       } else if (message is _BackgroundPluginCustomActionResponse<M>) {
         _customActionResponseStreamController.add(message);
+      } else if (message is _BackgroundPluginNotification<N>) {
+        onNotification(message.tag, message.message);
       } else if (message is _BackgroundPluginLogResponse) {
         message.log();
       } else if (message is _BackgroundPluginStoppedResponse) {
@@ -154,8 +161,7 @@ abstract class BackgroundBasePlugin<T, P extends PandoraMitmPlugin, M>
       ).then((result) => result.messageSet);
 }
 
-abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M>
-    extends PandoraMitmPlugin {
+abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M, N> {
   final SendPort _sendPort;
 
   final P plugin;
@@ -166,11 +172,29 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M>
     _init();
   }
 
+  /// Called after the [plugin] is attached.
+  ///
+  /// This will only ever happen once in the [BackgroundPluginHost]'s lifetime,
+  /// as the isolate is stopped when the plugin detaches.
+  @protected
+  FutureOr<void> attach() {}
+
+  /// Called before the [plugin] is detached.
+  ///
+  /// This will only ever happen once in the [BackgroundPluginHost]'s lifetime,
+  /// as the isolate is stopped when the plugin detaches.
+  @protected
+  FutureOr<void> detach() {}
+
   @protected
   FutureOr<Object?> onAction(M method, Object? argument) =>
       throw UnsupportedError(
         'This BackgroundPluginHost has not handled action events!',
       );
+
+  @protected
+  void notify(N tag, Object? message) =>
+      _send(_BackgroundPluginNotification(tag, message));
 
   void _send(Object? message) => _sendPort.send(message);
 
@@ -180,6 +204,7 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M>
     );
 
     await plugin.attach();
+    await attach();
 
     final receivePort = ReceivePort();
     receivePort.forEach((Object? message) async {
@@ -239,6 +264,7 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M>
         final result = await onAction(message.method, message.argument);
         _send(_BackgroundPluginCustomActionResponse(message, result));
       } else if (message is _BackgroundPluginStopRequest) {
+        await detach();
         await plugin.detach();
         await logSubscription.cancel();
         receivePort.close();
@@ -264,7 +290,9 @@ typedef ForegroundBuildingBackgroundPluginIsolateEntrypoint<
 /// * [ForegroundBuildingBackgroundPluginHost], the corresponding
 ///   [BackgroundPluginHost].
 abstract class ForegroundBuildingBackgroundBasePlugin<
-    P extends PandoraMitmPlugin, M> extends BackgroundBasePlugin<P, P, M> {
+    P extends PandoraMitmPlugin,
+    M,
+    N> extends BackgroundBasePlugin<P, P, M, N> {
   @override
   ForegroundBuildingBackgroundPluginIsolateEntrypoint<P> get isolateEntrypoint;
 
@@ -286,7 +314,9 @@ abstract class ForegroundBuildingBackgroundBasePlugin<
 /// A [BackgroundPluginHost] implementation to be used with
 /// [ForegroundBuildingBackgroundBasePlugin].
 abstract class ForegroundBuildingBackgroundPluginHost<
-    P extends PandoraMitmPlugin, M> extends BackgroundPluginHost<P, P, M> {
+    P extends PandoraMitmPlugin,
+    M,
+    N> extends BackgroundPluginHost<P, P, M, N> {
   ForegroundBuildingBackgroundPluginHost(super.payload);
 }
 
@@ -493,4 +523,12 @@ class _BackgroundPluginCustomActionResponse<M>
     this.argument,
   )   : identifier = request.identifier,
         method = request.method;
+}
+
+class _BackgroundPluginNotification<N>
+    implements _InternalBackgroundPluginResponse {
+  final N tag;
+  final Object? message;
+
+  const _BackgroundPluginNotification(this.tag, this.message);
 }

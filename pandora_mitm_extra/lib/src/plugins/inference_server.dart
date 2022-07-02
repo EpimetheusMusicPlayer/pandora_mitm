@@ -7,7 +7,7 @@ import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 
 /// An extension of the [InferencePlugin] that serves inference data over HTTP.
-class InferenceServerPlugin extends pmplg.InferencePlugin
+class InferenceServerPlugin extends pmplg.ForegroundInferencePlugin
     with PandoraMitmPluginLoggingMixin, PandoraMitmPluginStateTrackerMixin {
   bool _serve;
 

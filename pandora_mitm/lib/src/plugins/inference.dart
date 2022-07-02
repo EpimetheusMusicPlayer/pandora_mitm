@@ -10,11 +10,12 @@ import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 /// time.
 ///
 /// See also:
-abstract class InferencePluginDefinition
+///
 /// * [ForegroundInferencePlugin], an implementation that runs in the main
 ///   isolate with synchronously accessible functions and properties
 /// * [BackgroundInferencePlugin], an implementation that runs in a background
 ///   isolate
+abstract class InferencePlugin
     implements PandoraMitmPlugin, BoilerplateStripperPlugin {
   /// A whitelist of API methods to infer.
   ///
@@ -34,6 +35,10 @@ abstract class InferencePluginDefinition
 
   FutureOr<Map<String, ValueType>> get responseValueTypes;
 
+  Stream<MapEntry<String, ValueType>> get requestValueTypeStream;
+
+  Stream<MapEntry<String, ValueType>> get responseValueTypeStream;
+
   /// Flattens inferred object types and groups messages by API methods.
   ///
   /// Returns a sorted map of API methods to their corresponding
@@ -46,8 +51,8 @@ abstract class InferencePluginDefinition
   FutureOr<Map<String, ApiMethodInference>> zipInferences();
 }
 
-class InferencePlugin extends PandoraMitmPlugin
-    implements InferencePluginDefinition {
+class ForegroundInferencePlugin extends PandoraMitmPlugin
+    implements InferencePlugin {
   final Map<String, ValueType> _requestValueTypes = {};
   final Map<String, ValueType> _responseValueTypes = {};
 
@@ -78,7 +83,15 @@ class InferencePlugin extends PandoraMitmPlugin
   Map<String, ValueType> get responseValueTypes =>
       UnmodifiableMapView(_responseValueTypes);
 
-  InferencePlugin({
+  @override
+  Stream<MapEntry<String, ValueType>> get requestValueTypeStream =>
+      _requestValueTypeStreamController.stream;
+
+  @override
+  Stream<MapEntry<String, ValueType>> get responseValueTypeStream =>
+      _responseValueTypeStreamController.stream;
+
+  ForegroundInferencePlugin({
     this.apiMethodWhitelist,
     this.stripBoilerplate = false,
   });

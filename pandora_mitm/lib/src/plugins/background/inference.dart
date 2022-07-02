@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:iapetus_meta/typing.dart';
@@ -5,7 +6,7 @@ import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 import 'package:pandora_mitm/src/plugins/inference.dart';
 
-enum BackgroundInferencePluginAction {
+enum _BackgroundInferencePluginAction {
   setApiMethodWhitelist,
   setStripBoilerplate,
   getRequestApiMethods,
@@ -16,11 +17,22 @@ enum BackgroundInferencePluginAction {
   zipInferences,
 }
 
+enum _BackgroundInferencePluginNotification {
+  requestValueTypeUpdated,
+  responseValueTypeUpdated,
+}
+
 class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
-    InferencePlugin,
-    BackgroundInferencePluginAction> implements InferencePluginDefinition {
+    ForegroundInferencePlugin,
+    _BackgroundInferencePluginAction,
+    _BackgroundInferencePluginNotification> implements InferencePlugin {
   Set<String>? _apiMethodWhitelist;
   bool _stripBoilerplate;
+
+  final _requestValueTypeStreamController =
+      StreamController<MapEntry<String, ValueType>>.broadcast();
+  final _responseValueTypeStreamController =
+      StreamController<MapEntry<String, ValueType>>.broadcast();
 
   /// Creates a new [BackgroundInferencePlugin].
   ///
@@ -33,11 +45,11 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
         _stripBoilerplate = stripBoilerplate;
 
   @override
-  ForegroundBuildingBackgroundPluginIsolateEntrypoint<InferencePlugin>
+  ForegroundBuildingBackgroundPluginIsolateEntrypoint<ForegroundInferencePlugin>
       get isolateEntrypoint => BackgroundInferencePluginHost.new;
 
   @override
-  InferencePlugin buildPlugin() => InferencePlugin(
+  ForegroundInferencePlugin buildPlugin() => ForegroundInferencePlugin(
         apiMethodWhitelist: _apiMethodWhitelist,
         stripBoilerplate: _stripBoilerplate,
       );
@@ -55,7 +67,7 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
   Future<void> applyApiMethodWhitelist(Set<String>? apiMethodWhitelist) {
     _apiMethodWhitelist = apiMethodWhitelist;
     return doAction(
-      BackgroundInferencePluginAction.setApiMethodWhitelist,
+      _BackgroundInferencePluginAction.setApiMethodWhitelist,
       apiMethodWhitelist,
     ).then(
       (result) =>
@@ -75,57 +87,114 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
   Future<void> applyStripBoilerplate(bool stripBoilerplate) {
     _stripBoilerplate = stripBoilerplate;
     return doAction(
-      BackgroundInferencePluginAction.setStripBoilerplate,
+      _BackgroundInferencePluginAction.setStripBoilerplate,
       stripBoilerplate,
     );
   }
 
   Future<Set<String>> getRequestApiMethods() =>
-      doAction(BackgroundInferencePluginAction.getRequestApiMethods);
+      doAction(_BackgroundInferencePluginAction.getRequestApiMethods);
 
   Future<Set<String>> getResponseApiMethods() =>
-      doAction(BackgroundInferencePluginAction.getResponseApiMethods);
+      doAction(_BackgroundInferencePluginAction.getResponseApiMethods);
 
   Future<Set<String>> getAllApiMethods() =>
-      doAction(BackgroundInferencePluginAction.getAllApiMethods);
+      doAction(_BackgroundInferencePluginAction.getAllApiMethods);
 
   @override
   Future<Map<String, ValueType>> get requestValueTypes =>
-      doAction(BackgroundInferencePluginAction.getRequestValueTypes);
+      doAction(_BackgroundInferencePluginAction.getRequestValueTypes);
 
   @override
   Future<Map<String, ValueType>> get responseValueTypes =>
-      doAction(BackgroundInferencePluginAction.getResponseValueTypes);
+      doAction(_BackgroundInferencePluginAction.getResponseValueTypes);
+
+  @override
+  Stream<MapEntry<String, ValueType>> get requestValueTypeStream =>
+      _requestValueTypeStreamController.stream;
+
+  @override
+  Stream<MapEntry<String, ValueType>> get responseValueTypeStream =>
+      _responseValueTypeStreamController.stream;
 
   @override
   Future<Map<String, PrecomputedApiMethodInference>> zipInferences() =>
-      doAction(BackgroundInferencePluginAction.zipInferences);
+      doAction(_BackgroundInferencePluginAction.zipInferences);
+
+  @override
+  void onNotification(
+    // ignore: library_private_types_in_public_api
+    _BackgroundInferencePluginNotification tag,
+    Object? message,
+  ) {
+    switch (tag) {
+      case _BackgroundInferencePluginNotification.requestValueTypeUpdated:
+        _requestValueTypeStreamController
+            .add(message! as MapEntry<String, ValueType>);
+        break;
+      case _BackgroundInferencePluginNotification.responseValueTypeUpdated:
+        _responseValueTypeStreamController
+            .add(message! as MapEntry<String, ValueType>);
+        break;
+    }
+  }
 }
 
 class BackgroundInferencePluginHost
-    extends ForegroundBuildingBackgroundPluginHost<InferencePlugin,
-        BackgroundInferencePluginAction> {
+    extends ForegroundBuildingBackgroundPluginHost<
+        ForegroundInferencePlugin,
+        _BackgroundInferencePluginAction,
+        _BackgroundInferencePluginNotification> {
+  late final StreamSubscription<MapEntry<String, ValueType>>
+      _requestValueTypeSubscription;
+
+  late final StreamSubscription<MapEntry<String, ValueType>>
+      _responseValueTypeSubscription;
+
   @override
-  Object? onAction(BackgroundInferencePluginAction action, Object? argument) {
+  void attach() {
+    _requestValueTypeSubscription = plugin.requestValueTypeStream.listen(
+      (entry) => notify(
+        _BackgroundInferencePluginNotification.requestValueTypeUpdated,
+        entry,
+      ),
+    );
+    _responseValueTypeSubscription = plugin.responseValueTypeStream.listen(
+      (entry) => notify(
+        _BackgroundInferencePluginNotification.responseValueTypeUpdated,
+        entry,
+      ),
+    );
+  }
+
+  @override
+  Future<void> detach() => Future.wait<void>([
+        _requestValueTypeSubscription.cancel(),
+        _responseValueTypeSubscription.cancel(),
+      ]);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  Object? onAction(_BackgroundInferencePluginAction action, Object? argument) {
     switch (action) {
-      case BackgroundInferencePluginAction.setApiMethodWhitelist:
+      case _BackgroundInferencePluginAction.setApiMethodWhitelist:
         plugin.apiMethodWhitelist = argument as Set<String>?;
         return null;
-      case BackgroundInferencePluginAction.setStripBoilerplate:
+      case _BackgroundInferencePluginAction.setStripBoilerplate:
         plugin.stripBoilerplate = argument! as bool;
         return null;
-      case BackgroundInferencePluginAction.getRequestApiMethods:
+      case _BackgroundInferencePluginAction.getRequestApiMethods:
         return SplayTreeSet.of(plugin.requestValueTypes.keys);
-      case BackgroundInferencePluginAction.getResponseApiMethods:
+      case _BackgroundInferencePluginAction.getResponseApiMethods:
         return SplayTreeSet.of(plugin.responseValueTypes.keys);
-      case BackgroundInferencePluginAction.getAllApiMethods:
+      case _BackgroundInferencePluginAction.getAllApiMethods:
         return SplayTreeSet.of(plugin.requestValueTypes.keys)
           ..addAll(plugin.responseValueTypes.keys);
-      case BackgroundInferencePluginAction.getRequestValueTypes:
+      case _BackgroundInferencePluginAction.getRequestValueTypes:
         return plugin.requestValueTypes;
-      case BackgroundInferencePluginAction.getResponseValueTypes:
+      case _BackgroundInferencePluginAction.getResponseValueTypes:
         return plugin.responseValueTypes;
-      case BackgroundInferencePluginAction.zipInferences:
+      case _BackgroundInferencePluginAction.zipInferences:
         return plugin.zipInferences().precompute();
     }
   }
