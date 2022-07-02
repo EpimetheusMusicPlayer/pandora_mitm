@@ -271,6 +271,7 @@ Future<void> run(
     await pandoraMitm.disconnect();
   });
   await pandoraMitm.done;
+  sigintSubscription.cancel();
 
   stdout.writeln('Disconnected from ws://$host:$port.');
 }
