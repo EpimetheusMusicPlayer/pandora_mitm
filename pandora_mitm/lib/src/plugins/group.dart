@@ -9,10 +9,11 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 ///
 /// This plugin is also a complete [PluginManager] implementation.
 ///
-/// This won't be very useful in most circumstances, but there are times when
-/// it's beneficial to reduce several plugins into one single request/response
-/// replacement. In fact, the [PandoraMitm] object uses this plugin internally
-/// to support multiple plugins!
+/// The logic used to combine [MessageSetSettings]s and [PandoraMessageSet]s
+/// into single objects is exposed through the static
+/// [combineMessageSetSettings] and [combineMessageSets] functions.
+/// These can be used for other combinational purposes, such as hosting a plugin
+/// inside another.
 class PluginGroup extends PandoraMitmPlugin
     with PandoraMitmPluginStateTrackerMixin
     implements PluginManager {
@@ -171,21 +172,8 @@ class PluginGroup extends PandoraMitmPlugin
   Future<MessageSetSettings> _getMessageSetSettings(
     FutureOr<MessageSetSettings> Function(PandoraMitmPlugin plugin)
         getPluginSettings,
-  ) async {
-    var includeRequest = false;
-    var includeResponse = false;
-
-    for (final plugin in _plugins) {
-      final pluginSettings = await getPluginSettings(plugin);
-      includeRequest |= pluginSettings.includeRequest;
-      includeResponse |= pluginSettings.includeResponse;
-    }
-
-    return MessageSetSettings(
-      includeRequest: includeRequest,
-      includeResponse: includeResponse,
-    );
-  }
+  ) =>
+      combineMessageSetSettings(plugins.map(getPluginSettings));
 
   Future<PandoraMessageSet> _handleMessage(
     PandoraApiRequest? originalApiRequest,
@@ -196,13 +184,55 @@ class PluginGroup extends PandoraMitmPlugin
       PandoraResponse? response,
     )
         pluginHandleMessage,
+  ) =>
+      combineMessageSets(
+        originalApiRequest,
+        originalResponse,
+        plugins.map(
+          (plugin) => (apiRequest, response) =>
+              pluginHandleMessage(plugin, apiRequest, response),
+        ),
+      );
+
+  /// Combines several [MessageSetSettings] into one.
+  ///
+  /// If a request or response is requested in any one of the sets, then it will
+  /// be requested in the returned settings.
+  static Future<MessageSetSettings> combineMessageSetSettings(
+    Iterable<FutureOr<MessageSetSettings>> settingsFutures,
+  ) async {
+    var includeRequest = false;
+    var includeResponse = false;
+
+    for (final settingsFuture in settingsFutures) {
+      final settings = await settingsFuture;
+      includeRequest |= settings.includeRequest;
+      includeResponse |= settings.includeResponse;
+    }
+
+    return MessageSetSettings(
+      includeRequest: includeRequest,
+      includeResponse: includeResponse,
+    );
+  }
+
+  /// Combines several [PandoraMessageSet]s into one, generating each message
+  /// set one at a time using the previous result.
+  static Future<PandoraMessageSet> combineMessageSets(
+    PandoraApiRequest? originalApiRequest,
+    PandoraResponse? originalResponse,
+    Iterable<
+            FutureOr<PandoraMessageSet> Function(
+      PandoraApiRequest? apiRequest,
+      PandoraResponse? response,
+    )>
+        messageSetGenerators,
   ) async {
     var modifiedApiRequest = originalApiRequest;
     var modifiedResponse = originalResponse;
 
-    for (final plugin in _plugins) {
-      final modifiedMessageSet = await pluginHandleMessage(
-        plugin,
+    for (final messageSetGenerator in messageSetGenerators) {
+      final modifiedMessageSet = await messageSetGenerator(
         modifiedApiRequest,
         modifiedResponse,
       );
