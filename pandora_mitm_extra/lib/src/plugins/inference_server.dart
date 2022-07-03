@@ -72,9 +72,9 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
         });
 
   Future<void> _stopServer() async {
-    log.info('Stopping inference data server...');
     await (await _httpServerFuture!).close();
     _httpServerFuture = null;
+    log.info('Stopped inference data server.');
   }
 
   Future<void> changeServe({required bool serve}) async {
