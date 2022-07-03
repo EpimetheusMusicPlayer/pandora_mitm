@@ -5,28 +5,36 @@ abstract class ApiMethodInference {
 
   String get method;
 
-  Iterable<NestedObjectValueTypeEntry>? get requestValueTypeEntries;
+  ValueType get requestValueType;
 
-  Iterable<NestedObjectValueTypeEntry>? get responseValueTypeEntries;
+  ValueType get responseValueType;
 
-  List<NestedObjectValueTypeEntry>? get computedRequestValueTypeEntries =>
-      requestValueTypeEntries?.toList(growable: false);
+  Iterable<NestedObjectValueTypeEntry> get requestValueTypeEntries;
 
-  List<NestedObjectValueTypeEntry>? get computedResponseValueTypeEntries =>
-      responseValueTypeEntries?.toList(growable: false);
+  Iterable<NestedObjectValueTypeEntry> get responseValueTypeEntries;
+
+  List<NestedObjectValueTypeEntry> get computedRequestValueTypeEntries =>
+      requestValueTypeEntries.toList(growable: false);
+
+  List<NestedObjectValueTypeEntry> get computedResponseValueTypeEntries =>
+      responseValueTypeEntries.toList(growable: false);
+
+  bool get unknownRequestValueType => requestValueType is UnknownValueType;
+
+  bool get unknownResponseValueType => responseValueType is UnknownValueType;
 
   PrecomputedApiMethodInference precompute() => PrecomputedApiMethodInference(
-        method,
-        requestValueTypeEntries?.toList(growable: false),
-        responseValueTypeEntries?.toList(growable: false),
+        method: method,
+        requestValueType: requestValueType,
+        responseValueType: responseValueType,
       );
 
   Map<String, dynamic> toJson() => {
         'method': method,
-        if (requestValueTypeEntries != null)
-          'requestTypes': requestValueTypeEntries?.toList(growable: false),
-        if (responseValueTypeEntries != null)
-          'responseTypes': responseValueTypeEntries?.toList(growable: false),
+        'requestTypes':
+            unknownRequestValueType ? null : computedRequestValueTypeEntries,
+        'responseTypes':
+            unknownResponseValueType ? null : computedResponseValueTypeEntries,
       };
 }
 
@@ -36,16 +44,24 @@ class LazyApiMethodInference extends ApiMethodInference {
   final String method;
 
   @override
-  final Iterable<NestedObjectValueTypeEntry>? requestValueTypeEntries;
+  final ValueType requestValueType;
 
   @override
-  final Iterable<NestedObjectValueTypeEntry>? responseValueTypeEntries;
+  final ValueType responseValueType;
 
-  const LazyApiMethodInference(
-    this.method,
-    this.requestValueTypeEntries,
-    this.responseValueTypeEntries,
-  );
+  @override
+  Iterable<NestedObjectValueTypeEntry> get requestValueTypeEntries =>
+      requestValueType.flattenObjectTypes(method);
+
+  @override
+  Iterable<NestedObjectValueTypeEntry> get responseValueTypeEntries =>
+      responseValueType.flattenObjectTypes(method);
+
+  const LazyApiMethodInference({
+    required this.method,
+    required this.requestValueType,
+    required this.responseValueType,
+  });
 }
 
 /// A non-lazy variant of [ApiMethodInference].
@@ -54,25 +70,35 @@ class PrecomputedApiMethodInference extends ApiMethodInference {
   final String method;
 
   @override
-  final List<NestedObjectValueTypeEntry>? requestValueTypeEntries;
+  final ValueType requestValueType;
 
   @override
-  final List<NestedObjectValueTypeEntry>? responseValueTypeEntries;
+  final ValueType responseValueType;
 
   @override
-  List<NestedObjectValueTypeEntry>? get computedRequestValueTypeEntries =>
+  final List<NestedObjectValueTypeEntry> requestValueTypeEntries;
+
+  @override
+  final List<NestedObjectValueTypeEntry> responseValueTypeEntries;
+
+  @override
+  List<NestedObjectValueTypeEntry> get computedRequestValueTypeEntries =>
       requestValueTypeEntries;
 
   @override
-  List<NestedObjectValueTypeEntry>? get computedResponseValueTypeEntries =>
+  List<NestedObjectValueTypeEntry> get computedResponseValueTypeEntries =>
       responseValueTypeEntries;
 
   @override
   PrecomputedApiMethodInference precompute() => this;
 
-  const PrecomputedApiMethodInference(
-    this.method,
-    this.requestValueTypeEntries,
-    this.responseValueTypeEntries,
-  );
+  PrecomputedApiMethodInference({
+    required this.method,
+    required this.requestValueType,
+    required this.responseValueType,
+  })  : requestValueTypeEntries =
+            requestValueType.flattenObjectTypes(method).toList(growable: false),
+        responseValueTypeEntries = responseValueType
+            .flattenObjectTypes(method)
+            .toList(growable: false);
 }

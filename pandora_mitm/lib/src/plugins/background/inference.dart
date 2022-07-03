@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:iapetus_meta/typing.dart';
 import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 import 'package:pandora_mitm/src/plugins/inference.dart';
@@ -9,19 +8,13 @@ import 'package:pandora_mitm/src/plugins/inference.dart';
 enum _BackgroundInferencePluginAction {
   setApiMethodWhitelist,
   setStripBoilerplate,
-  getRequestApiMethods,
-  getResponseApiMethods,
-  getAllApiMethods,
-  getRequestValueTypes,
-  getResponseValueTypes,
+  getInferredApiMethods,
+  getInferences,
   clear,
-  zipInferences,
+  getInference,
 }
 
-enum _BackgroundInferencePluginNotification {
-  requestValueTypeUpdated,
-  responseValueTypeUpdated,
-}
+enum _BackgroundInferencePluginNotification { inferredApiMethod }
 
 class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
     ForegroundInferencePlugin,
@@ -30,10 +23,8 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
   Set<String>? _apiMethodWhitelist;
   bool _stripBoilerplate;
 
-  final _requestValueTypeStreamController =
-      StreamController<MapEntry<String, ValueType>>.broadcast();
-  final _responseValueTypeStreamController =
-      StreamController<MapEntry<String, ValueType>>.broadcast();
+  final _inferredApiMethodStreamController =
+      StreamController<String>.broadcast();
 
   /// Creates a new [BackgroundInferencePlugin].
   ///
@@ -96,37 +87,24 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
     );
   }
 
-  Future<Set<String>> getRequestApiMethods() =>
-      doAction(_BackgroundInferencePluginAction.getRequestApiMethods);
-
-  Future<Set<String>> getResponseApiMethods() =>
-      doAction(_BackgroundInferencePluginAction.getResponseApiMethods);
-
-  Future<Set<String>> getAllApiMethods() =>
-      doAction(_BackgroundInferencePluginAction.getAllApiMethods);
+  @override
+  Future<Set<String>> get inferredApiMethods =>
+      doAction(_BackgroundInferencePluginAction.getInferredApiMethods);
 
   @override
-  Future<Map<String, ValueType>> get requestValueTypes =>
-      doAction(_BackgroundInferencePluginAction.getRequestValueTypes);
+  Stream<String> get inferredApiMethodStream =>
+      _inferredApiMethodStreamController.stream;
 
   @override
-  Future<Map<String, ValueType>> get responseValueTypes =>
-      doAction(_BackgroundInferencePluginAction.getResponseValueTypes);
-
-  @override
-  Stream<MapEntry<String, ValueType>> get requestValueTypeStream =>
-      _requestValueTypeStreamController.stream;
-
-  @override
-  Stream<MapEntry<String, ValueType>> get responseValueTypeStream =>
-      _responseValueTypeStreamController.stream;
+  Future<Map<String, ApiMethodInference>> get inferences =>
+      doAction(_BackgroundInferencePluginAction.getInferences);
 
   @override
   Future<void> clear() => doAction(_BackgroundInferencePluginAction.clear);
 
   @override
-  Future<Map<String, PrecomputedApiMethodInference>> zipInferences() =>
-      doAction(_BackgroundInferencePluginAction.zipInferences);
+  Future<ApiMethodInference?> getInference(String apiMethod) =>
+      doAction(_BackgroundInferencePluginAction.getInference, apiMethod);
 
   @override
   void onNotification(
@@ -135,13 +113,8 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
     Object? message,
   ) {
     switch (tag) {
-      case _BackgroundInferencePluginNotification.requestValueTypeUpdated:
-        _requestValueTypeStreamController
-            .add(message! as MapEntry<String, ValueType>);
-        break;
-      case _BackgroundInferencePluginNotification.responseValueTypeUpdated:
-        _responseValueTypeStreamController
-            .add(message! as MapEntry<String, ValueType>);
+      case _BackgroundInferencePluginNotification.inferredApiMethod:
+        _inferredApiMethodStreamController.add(message! as String);
         break;
     }
   }
@@ -152,33 +125,20 @@ class BackgroundInferencePluginHost
         ForegroundInferencePlugin,
         _BackgroundInferencePluginAction,
         _BackgroundInferencePluginNotification> {
-  late final StreamSubscription<MapEntry<String, ValueType>>
-      _requestValueTypeSubscription;
-
-  late final StreamSubscription<MapEntry<String, ValueType>>
-      _responseValueTypeSubscription;
+  late final StreamSubscription<String> _inferredApiMethodSubscription;
 
   @override
   Future<void> attach() async {
-    _requestValueTypeSubscription = plugin.requestValueTypeStream.listen(
-      (entry) => notify(
-        _BackgroundInferencePluginNotification.requestValueTypeUpdated,
-        entry,
-      ),
-    );
-    _responseValueTypeSubscription = plugin.responseValueTypeStream.listen(
-      (entry) => notify(
-        _BackgroundInferencePluginNotification.responseValueTypeUpdated,
-        entry,
+    _inferredApiMethodSubscription = plugin.inferredApiMethodStream.listen(
+      (apiMethod) => notify(
+        _BackgroundInferencePluginNotification.inferredApiMethod,
+        apiMethod,
       ),
     );
   }
 
   @override
-  Future<void> detach() => Future.wait<void>([
-        _requestValueTypeSubscription.cancel(),
-        _responseValueTypeSubscription.cancel(),
-      ]);
+  Future<void> detach() => _inferredApiMethodSubscription.cancel();
 
   @override
   // ignore: library_private_types_in_public_api
@@ -190,22 +150,15 @@ class BackgroundInferencePluginHost
       case _BackgroundInferencePluginAction.setStripBoilerplate:
         plugin.stripBoilerplate = argument! as bool;
         return null;
-      case _BackgroundInferencePluginAction.getRequestApiMethods:
-        return SplayTreeSet.of(plugin.requestValueTypes.keys);
-      case _BackgroundInferencePluginAction.getResponseApiMethods:
-        return SplayTreeSet.of(plugin.responseValueTypes.keys);
-      case _BackgroundInferencePluginAction.getAllApiMethods:
-        return SplayTreeSet.of(plugin.requestValueTypes.keys)
-          ..addAll(plugin.responseValueTypes.keys);
-      case _BackgroundInferencePluginAction.getRequestValueTypes:
-        return plugin.requestValueTypes;
-      case _BackgroundInferencePluginAction.getResponseValueTypes:
-        return plugin.responseValueTypes;
+      case _BackgroundInferencePluginAction.getInferredApiMethods:
+        return plugin.inferredApiMethods;
+      case _BackgroundInferencePluginAction.getInferences:
+        return UnmodifiableMapView(plugin.inferences.precompute());
       case _BackgroundInferencePluginAction.clear:
         plugin.clear();
         return null;
-      case _BackgroundInferencePluginAction.zipInferences:
-        return plugin.zipInferences().precompute();
+      case _BackgroundInferencePluginAction.getInference:
+        return plugin.getInference(argument! as String);
     }
   }
 

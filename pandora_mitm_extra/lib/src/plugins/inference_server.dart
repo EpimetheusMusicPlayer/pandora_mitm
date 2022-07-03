@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -105,40 +106,44 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
     final queryParameters = request.uri.queryParameters;
     final apiMethod = queryParameters['apiMethod'];
 
-    final inferences = await inner.zipInferences();
-    if (apiMethod != null && !inferences.containsKey(apiMethod)) {
+    final inferredApiMethods = await inner.inferredApiMethods;
+    if (apiMethod != null && !inferredApiMethods.contains(apiMethod)) {
       request.response
         ..statusCode = HttpStatus.notFound
         ..writeln('No inference has been performed for $apiMethod.');
     } else {
+      FutureOr<Map<String, ApiMethodInference>> getInferences() =>
+          inner.inferences;
+      final requestedInference =
+          apiMethod == null ? null : (await inner.getInference(apiMethod))!;
       switch (pathSegments.isEmpty ? null : pathSegments[0].toLowerCase()) {
         case null:
           request.response.headers.contentType = ContentType.html;
-          _writeHomepageBody(request.response, inferences);
+          _writeHomepageBody(request.response, inferredApiMethods);
           break;
         case 'json':
           request.response.headers.contentType = ContentType.json;
-          _writeJsonBody(
+          await _writeJsonBody(
             request.response,
-            inferences: inferences,
-            apiMethod: apiMethod,
+            getInferences: getInferences,
+            requestedInference: requestedInference,
           );
           break;
         case 'markdown':
           request.response.headers.contentType = _markdownContentType;
-          _writeMarkdownBody(
+          await _writeMarkdownBody(
             request.response,
-            inferences: inferences,
-            apiMethod: apiMethod,
+            getInferences: getInferences,
+            requestedInference: requestedInference,
             options: queryParameters,
           );
           break;
         case 'html':
           request.response.headers.contentType = ContentType.html;
-          _writeHtmlBody(
+          await _writeHtmlBody(
             request.response,
-            inferences: inferences,
-            apiMethod: apiMethod,
+            getInferences: getInferences,
+            requestedInference: requestedInference,
             options: queryParameters,
           );
           break;
@@ -153,7 +158,7 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
   }
 
   static void _writeHomepageBody(
-      StringSink sink, Map<String, ApiMethodInference> inferences) {
+      StringSink sink, Set<String> inferredApiMethods) {
     _writeMarkdownAsWebpage(
       sink,
       'Pandora MITM Inference Server Plugin',
@@ -164,7 +169,7 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
 ## Pandora JSON API methods
 | Method ([All](/html?headerLevel=2&showRootLink=true)) | [JSON](/json) | [Markdown](/markdown) | [HTML](/html) |
 |:------------------------------------------------------|---------------|-----------------------|---------------|
-${inferences.keys.map((apiMethod) => '| [$apiMethod](/html?apiMethod=$apiMethod&headerLevel=2&showRootLink=true) | [JSON](/json?apiMethod=$apiMethod) | [Markdown](/markdown?apiMethod=$apiMethod) | [HTML](/html?apiMethod=$apiMethod) |').join('\n')}
+${inferredApiMethods.map((apiMethod) => '| [$apiMethod](/html?apiMethod=$apiMethod&headerLevel=2&showRootLink=true) | [JSON](/json?apiMethod=$apiMethod) | [Markdown](/markdown?apiMethod=$apiMethod) | [HTML](/html?apiMethod=$apiMethod) |').join('\n')}
 
 ## Plugin API usage
 
@@ -194,28 +199,29 @@ All the query parameters from Markdown are supported.''',
     );
   }
 
-  static void _writeJsonBody(
+  static Future<void> _writeJsonBody(
     StringSink sink, {
-    required Map<String, ApiMethodInference> inferences,
-    String? apiMethod,
-  }) {
+    required FutureOr<Map<String, ApiMethodInference>> Function() getInferences,
+    ApiMethodInference? requestedInference,
+  }) async {
     sink.writeln(
       const JsonEncoder.withIndent('  ').convert(
-        apiMethod == null
-            ? inferences.values
+        requestedInference == null
+            ? (await getInferences())
+                .values
                 .map((inference) => inference.toJson())
                 .toList(growable: false)
-            : inferences[apiMethod]!.toJson(),
+            : requestedInference.toJson(),
       ),
     );
   }
 
-  static void _writeMarkdownBody(
+  static Future<void> _writeMarkdownBody(
     StringSink sink, {
-    required Map<String, ApiMethodInference> inferences,
-    String? apiMethod,
+    required FutureOr<Map<String, ApiMethodInference>> Function() getInferences,
+    ApiMethodInference? requestedInference,
     Map<String, String> options = const {},
-  }) {
+  }) async {
     void writeHeader(int level, String text) {
       for (var i = 0; i < level; ++i) {
         sink.write('#');
@@ -268,27 +274,28 @@ All the query parameters from Markdown are supported.''',
       }
 
       writeHeader(headerLevel, inference.method);
-      if (inference.requestValueTypeEntries != null) {
+      if (!inference.unknownRequestValueType) {
         writeHeader(headerLevel + 1, 'Request');
-        inference.requestValueTypeEntries!.forEach(writeEntry);
+        inference.requestValueTypeEntries.forEach(writeEntry);
       }
-      if (inference.responseValueTypeEntries != null) {
+      if (!inference.unknownResponseValueType) {
         writeHeader(headerLevel + 1, 'Response');
-        inference.responseValueTypeEntries!.forEach(writeEntry);
+        inference.responseValueTypeEntries.forEach(writeEntry);
       }
     }
 
     final inferenceHeaderLevel = (options.containsKey('headerLevel')
             ? int?.tryParse(options['headerLevel']!)
             : null) ??
-        (apiMethod == null ? 2 : 1);
+        (requestedInference == null ? 2 : 1);
 
     final showRootLink = options['showRootLink'] == 'true';
     if (showRootLink) {
       writeHeader(inferenceHeaderLevel + 2, '[\u25C0 See all](/)');
     }
 
-    if (apiMethod == null) {
+    if (requestedInference == null) {
+      final inferences = await getInferences();
       writeHeader(
           inferenceHeaderLevel - 1, 'Pandora JSON API message inferences');
       sink.write('_');
@@ -300,26 +307,26 @@ All the query parameters from Markdown are supported.''',
         writeInference(inference, inferenceHeaderLevel);
       }
     } else {
-      writeInference(inferences[apiMethod]!, inferenceHeaderLevel);
+      writeInference(requestedInference, inferenceHeaderLevel);
     }
   }
 
-  static void _writeHtmlBody(
+  static Future<void> _writeHtmlBody(
     StringSink sink, {
-    required Map<String, ApiMethodInference> inferences,
-    String? apiMethod,
+    required FutureOr<Map<String, ApiMethodInference>> Function() getInferences,
+    ApiMethodInference? requestedInference,
     Map<String, String> options = const {},
-  }) {
+  }) async {
     final markdownBuffer = StringBuffer();
-    _writeMarkdownBody(
+    await _writeMarkdownBody(
       markdownBuffer,
-      inferences: inferences,
-      apiMethod: apiMethod,
+      getInferences: getInferences,
+      requestedInference: requestedInference,
       options: options,
     );
     _writeMarkdownAsWebpage(
       sink,
-      '${apiMethod ?? 'Pandora JSON API message'} inferences',
+      '${requestedInference?.method ?? 'Pandora JSON API message'} inferences',
       columnFlexes: const {0: 0.25, 1: 0.75},
       markdownBuffer.toString(),
     );
