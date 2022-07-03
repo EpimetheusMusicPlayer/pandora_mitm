@@ -26,8 +26,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: fa928f1c75c8c922ededea28c68a23f9d5df5e04
-      resolved-ref: fa928f1c75c8c922ededea28c68a23f9d5df5e04
+      ref: bc3ab5508c16141f2f4b2201bd62e10a7e2a0242
+      resolved-ref: bc3ab5508c16141f2f4b2201bd62e10a7e2a0242
       url: "https://github.com/hacker1024/auto_scroll.dart.git"
     source: git
     version: "0.1.0"

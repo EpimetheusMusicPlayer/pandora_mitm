@@ -18,6 +18,7 @@ dependencies:
   iapetus_meta:
     path: ../iapetus_meta/iapetus_meta
   logging: ^1.0.2
+  provider: ^6.0.3
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
@@ -28,7 +29,7 @@ dependencies:
   auto_scroll:
     git:
       url: https://github.com/hacker1024/auto_scroll.dart.git
-      ref: fa928f1c75c8c922ededea28c68a23f9d5df5e04
+      ref: bc3ab5508c16141f2f4b2201bd62e10a7e2a0242
   flutter_highlight:
     git:
       url: https://github.com/hacker1024/highlight.dart.git

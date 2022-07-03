@@ -12,8 +12,10 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/infer
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mitmproxy_ui_helper/mitmproxy_ui_helper_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/reauthentication/reauthentication_plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/state/log_notifier.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/theme.dart';
+import 'package:provider/provider.dart';
 
 void runPandoraMitmGuiApp({
   List<PluginUi> extraPluginUis = const [],
@@ -74,9 +76,17 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => PandoraMitmBloc(),
-      lazy: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (BuildContext context) => LogNotifier(),
+          lazy: false,
+        ),
+        BlocProvider(
+          create: (BuildContext context) => PandoraMitmBloc(),
+          lazy: false,
+        ),
+      ],
       child: BlocListener<PandoraMitmBloc, PandoraMitmState>(
         listener: (context, state) {
           if (state is PandoraMitmConnected) {
