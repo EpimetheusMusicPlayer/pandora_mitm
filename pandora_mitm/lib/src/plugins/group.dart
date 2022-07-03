@@ -144,7 +144,7 @@ class PluginGroup extends PandoraMitmPlugin
       );
 
   @override
-  FutureOr<PandoraMessageSet> handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -157,7 +157,7 @@ class PluginGroup extends PandoraMitmPlugin
       );
 
   @override
-  FutureOr<PandoraMessageSet> handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,

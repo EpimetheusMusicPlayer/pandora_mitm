@@ -67,12 +67,12 @@ class ModificationDetectorPlugin extends PandoraMitmPlugin {
     }
   }
 
-  PandoraMessageSet _handleMessage<T>(
+  Future<PandoraMessageSet> _handleMessage<T>(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
     Sink<PandoraMitmModificationRecordSet> sink,
-  ) {
+  ) async {
     final modificationRecordSet = _diffMessages(
       flowId,
       PandoraMessageSet(apiRequest: apiRequest, response: response),
@@ -82,7 +82,7 @@ class ModificationDetectorPlugin extends PandoraMitmPlugin {
   }
 
   @override
-  FutureOr<PandoraMessageSet> handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -95,7 +95,7 @@ class ModificationDetectorPlugin extends PandoraMitmPlugin {
       );
 
   @override
-  FutureOr<PandoraMessageSet> handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,

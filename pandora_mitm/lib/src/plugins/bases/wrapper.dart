@@ -21,21 +21,23 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
   const WrapperBasePlugin(this.inner);
 
   @override
-  FutureOr<void> attach() async {
+  @mustCallSuper
+  Future<void> attach() async {
     await super.attach();
     await inner.attach();
     await outerAttach();
   }
 
   @override
-  FutureOr<void> detach() async {
+  @mustCallSuper
+  Future<void> detach() async {
     await outerDetach();
     await inner.detach();
     await super.detach();
   }
 
   @override
-  FutureOr<MessageSetSettings> getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -57,7 +59,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       ]);
 
   @override
-  FutureOr<MessageSetSettings> getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -79,7 +81,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       ]);
 
   @override
-  FutureOr<PandoraMessageSet> handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -102,7 +104,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       );
 
   @override
-  FutureOr<PandoraMessageSet> handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -126,14 +128,14 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
 
   @protected
   @mustCallSuper
-  FutureOr<void> outerAttach() => super.attach();
+  Future<void> outerAttach() => super.attach();
 
   @protected
   @mustCallSuper
-  FutureOr<void> outerDetach() => super.detach();
+  Future<void> outerDetach() => super.detach();
 
   @protected
-  FutureOr<MessageSetSettings> getOuterRequestSetSettings(
+  Future<MessageSetSettings> getOuterRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -147,7 +149,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       );
 
   @protected
-  FutureOr<MessageSetSettings> getOuterResponseSetSettings(
+  Future<MessageSetSettings> getOuterResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -161,7 +163,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       );
 
   @protected
-  FutureOr<PandoraMessageSet> handleOuterRequest(
+  Future<PandoraMessageSet> handleOuterRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -169,7 +171,7 @@ abstract class WrapperBasePlugin<T extends PandoraMitmPlugin>
       super.handleRequest(flowId, apiRequest, response);
 
   @protected
-  FutureOr<PandoraMessageSet> handleOuterResponse(
+  Future<PandoraMessageSet> handleOuterResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,

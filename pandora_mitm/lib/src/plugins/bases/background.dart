@@ -177,14 +177,14 @@ abstract class BackgroundPluginHost<T, P extends PandoraMitmPlugin, M, N> {
   /// This will only ever happen once in the [BackgroundPluginHost]'s lifetime,
   /// as the isolate is stopped when the plugin detaches.
   @protected
-  FutureOr<void> attach() {}
+  Future<void> attach() async {}
 
   /// Called before the [plugin] is detached.
   ///
   /// This will only ever happen once in the [BackgroundPluginHost]'s lifetime,
   /// as the isolate is stopped when the plugin detaches.
   @protected
-  FutureOr<void> detach() {}
+  Future<void> detach() async {}
 
   @protected
   FutureOr<Object?> onAction(M method, Object? argument) =>

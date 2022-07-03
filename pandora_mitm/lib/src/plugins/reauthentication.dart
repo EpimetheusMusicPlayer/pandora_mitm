@@ -17,22 +17,22 @@ class ReauthenticationPlugin extends PandoraMitmPlugin
   void invalidate() => _reauthenticatedClients.clear();
 
   @override
-  MessageSetSettings getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary? responseSummary,
-  ) =>
+  ) async =>
       _apiMethodIsAuthenticated(apiMethod)
           ? MessageSetSettings.includeRequestOnly
           : MessageSetSettings.skip;
 
   @override
-  PandoraMessageSet handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
-  ) {
+  ) async {
     if (apiRequest?.authToken == null ||
         apiRequest!.deviceId == null ||
         // For some reason, the Pandora client sometimes calls even methods like

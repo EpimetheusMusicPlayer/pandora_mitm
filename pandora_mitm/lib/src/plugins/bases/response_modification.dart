@@ -26,12 +26,12 @@ abstract class ResponseModificationBasePlugin extends PandoraMitmPlugin {
   ResponseModifier getResponseModifierForEndpoint(String endpoint);
 
   @override
-  MessageSetSettings getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary responseSummary,
-  ) =>
+  ) async =>
       hookedEndpoints.contains(apiMethod)
           ? MessageSetSettings.includeAll
           : MessageSetSettings.skip;

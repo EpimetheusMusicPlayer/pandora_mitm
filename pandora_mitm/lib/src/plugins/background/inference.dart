@@ -152,7 +152,7 @@ class BackgroundInferencePluginHost
       _responseValueTypeSubscription;
 
   @override
-  void attach() {
+  Future<void> attach() async {
     _requestValueTypeSubscription = plugin.requestValueTypeStream.listen(
       (entry) => notify(
         _BackgroundInferencePluginNotification.requestValueTypeUpdated,

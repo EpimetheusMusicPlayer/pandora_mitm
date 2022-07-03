@@ -125,31 +125,31 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
   }
 
   @override
-  MessageSetSettings getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary? responseSummary,
-  ) =>
+  ) async =>
       MessageSetSettings.skip;
 
   @override
-  MessageSetSettings getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary responseSummary,
-  ) =>
+  ) async =>
       apiMethodWhitelist?.contains(apiMethod) ?? true
           ? MessageSetSettings.includeAll
           : MessageSetSettings.skip;
 
   @override
-  PandoraMessageSet handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
-  ) {
+  ) async {
     if (apiRequest == null ||
         response == null ||
         !(apiMethodWhitelist?.contains(apiRequest.method) ?? true)) {

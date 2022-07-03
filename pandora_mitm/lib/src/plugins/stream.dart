@@ -27,23 +27,23 @@ class StreamPlugin extends PandoraMitmPlugin
   Stream<PandoraMitmRecord> get recordStream => _streamController.stream;
 
   @override
-  MessageSetSettings getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary? responseSummary,
-  ) =>
+  ) async =>
       apiMethodWhitelist?.contains(apiMethod) ?? true
           ? MessageSetSettings.includeRequestOnly
           : MessageSetSettings.skip;
 
   @override
-  MessageSetSettings getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary responseSummary,
-  ) =>
+  ) async =>
       apiMethodWhitelist?.contains(apiMethod) ?? true
           ? MessageSetSettings.includeResponseOnly
           : MessageSetSettings.skip;

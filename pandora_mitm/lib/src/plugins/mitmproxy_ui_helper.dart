@@ -25,20 +25,20 @@ class MitmproxyUiHelperPlugin extends PandoraMitmPlugin
   });
 
   @override
-  MessageSetSettings getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary responseSummary,
-  ) =>
+  ) async =>
       passive ? MessageSetSettings.skip : MessageSetSettings.includeAll;
 
   @override
-  PandoraMessageSet handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
-  ) =>
+  ) async =>
       PandoraMessageSet(
         apiRequest: stripBoilerplate
             ? apiRequest?.withoutBoilerplate(decrypt: true)

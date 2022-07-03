@@ -30,11 +30,11 @@ abstract class PandoraMitmPlugin {
 
   /// Called just before the plugin is added to the [PandoraMitm] instance.
   @mustCallSuper
-  FutureOr<void> attach() {}
+  Future<void> attach() async {}
 
   /// Called just after the plugin is removed from the [PandoraMitm] instance.
   @mustCallSuper
-  FutureOr<void> detach() {}
+  Future<void> detach() async {}
 
   /// Called when a request is about to be sent.
   ///
@@ -44,12 +44,12 @@ abstract class PandoraMitmPlugin {
   /// The settings returned here affect all plugins in the plugin list. If a
   /// single plugin requests that a message be sent to it, that message will
   /// be sent to all the other plugins in the list as well.
-  FutureOr<MessageSetSettings> getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary? responseSummary,
-  ) =>
+  ) async =>
       MessageSetSettings.skip;
 
   /// Called when a response is about to be sent.
@@ -60,12 +60,12 @@ abstract class PandoraMitmPlugin {
   /// The settings returned here affect all plugins in the plugin list. If a
   /// single plugin requests that a message be sent to it, that message will
   /// be sent to all the other plugins in the list as well.
-  FutureOr<MessageSetSettings> getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
     ResponseSummary responseSummary,
-  ) =>
+  ) async =>
       MessageSetSettings.skip;
 
   /// Called when a request is received, before it is sent to the Pandora
@@ -84,11 +84,11 @@ abstract class PandoraMitmPlugin {
   /// If the returned [PandoraMessageSet] contains a response, the response will
   /// be sent to the Pandora client without sending the API request to the
   /// server.
-  FutureOr<PandoraMessageSet> handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
-  ) =>
+  ) async =>
       PandoraMessageSet.preserve;
 
   /// Called when a response is received, before it is sent to the Pandora
@@ -106,11 +106,11 @@ abstract class PandoraMitmPlugin {
   ///
   /// If the returned [PandoraMessageSet] contains a request, the modified
   /// request will display in the mitmproxy UI.
-  FutureOr<PandoraMessageSet> handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
-  ) =>
+  ) async =>
       PandoraMessageSet.preserve;
 }
 
@@ -134,14 +134,14 @@ mixin PandoraMitmPluginStateTrackerMixin on PandoraMitmPlugin {
 
   @override
   @mustCallSuper
-  FutureOr<void> attach() async {
+  Future<void> attach() async {
     _attached = true;
     await super.attach();
   }
 
   @override
   @mustCallSuper
-  FutureOr<void> detach() async {
+  Future<void> detach() async {
     await super.detach();
     _attached = false;
   }
@@ -149,10 +149,8 @@ mixin PandoraMitmPluginStateTrackerMixin on PandoraMitmPlugin {
 
 extension PandoraMitmPluginCollectionExtension on Iterable<PandoraMitmPlugin> {
   @internal
-  Future<void> attach() =>
-      Future.wait(map((plugin) async => await plugin.attach()));
+  Future<void> attach() => Future.wait(map((plugin) => plugin.attach()));
 
   @internal
-  Future<void> detach() =>
-      Future.wait(map((plugin) async => await plugin.detach()));
+  Future<void> detach() => Future.wait(map((plugin) => plugin.detach()));
 }

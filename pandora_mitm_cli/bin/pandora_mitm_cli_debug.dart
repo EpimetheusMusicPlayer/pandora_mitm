@@ -58,7 +58,7 @@ Future<void> _handleDebugServerRequest(
 class TestPlugin extends PandoraMitmPlugin {
   @override
   // ignore: unnecessary_overrides
-  FutureOr<MessageSetSettings> getRequestSetSettings(
+  Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -73,7 +73,7 @@ class TestPlugin extends PandoraMitmPlugin {
 
   @override
   // ignore: unnecessary_overrides
-  FutureOr<MessageSetSettings> getResponseSetSettings(
+  Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,
     RequestSummary requestSummary,
@@ -88,7 +88,7 @@ class TestPlugin extends PandoraMitmPlugin {
 
   @override
   // ignore: unnecessary_overrides
-  FutureOr<PandoraMessageSet> handleRequest(
+  Future<PandoraMessageSet> handleRequest(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
@@ -97,7 +97,7 @@ class TestPlugin extends PandoraMitmPlugin {
 
   @override
   // ignore: unnecessary_overrides
-  FutureOr<PandoraMessageSet> handleResponse(
+  Future<PandoraMessageSet> handleResponse(
     String flowId,
     PandoraApiRequest? apiRequest,
     PandoraResponse? response,
