@@ -44,6 +44,9 @@ abstract class InferencePlugin
 
   Stream<MapEntry<String, ValueType>> get responseValueTypeStream;
 
+  /// Clears existing inferences.
+  FutureOr<void> clear();
+
   /// Flattens inferred object types and groups messages by API methods.
   ///
   /// Returns a sorted map of API methods to their corresponding
@@ -100,6 +103,12 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
     this.apiMethodWhitelist,
     this.stripBoilerplate = false,
   });
+
+  @override
+  FutureOr<void> clear() {
+    _requestValueTypes.clear();
+    _responseValueTypes.clear();
+  }
 
   @override
   Map<String, LazyApiMethodInference> zipInferences() {

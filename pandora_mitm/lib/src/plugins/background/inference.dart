@@ -14,6 +14,7 @@ enum _BackgroundInferencePluginAction {
   getAllApiMethods,
   getRequestValueTypes,
   getResponseValueTypes,
+  clear,
   zipInferences,
 }
 
@@ -118,6 +119,9 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
       _responseValueTypeStreamController.stream;
 
   @override
+  Future<void> clear() => doAction(_BackgroundInferencePluginAction.clear);
+
+  @override
   Future<Map<String, PrecomputedApiMethodInference>> zipInferences() =>
       doAction(_BackgroundInferencePluginAction.zipInferences);
 
@@ -194,6 +198,9 @@ class BackgroundInferencePluginHost
         return plugin.requestValueTypes;
       case _BackgroundInferencePluginAction.getResponseValueTypes:
         return plugin.responseValueTypes;
+      case _BackgroundInferencePluginAction.clear:
+        plugin.clear();
+        return null;
       case _BackgroundInferencePluginAction.zipInferences:
         return plugin.zipInferences().precompute();
     }
