@@ -1,85 +1,53 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 
+part 'pandora_mitm_bloc.freezed.dart';
+
 class PandoraMitmBloc extends Cubit<PandoraMitmState> {
-  PandoraMitmBloc() : super(const PandoraMitmDisconnected());
+  PandoraMitmBloc() : super(const PandoraMitmState.disconnected());
 
   Future<void> connect({
     String host = 'localhost',
     int port = 8082,
   }) async {
-    emit(const PandoraMitmConnecting());
+    emit(const PandoraMitmState.connecting());
     final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
-      ..done.then((_) => emit(const PandoraMitmDisconnected()));
+      ..done.then((_) => emit(const PandoraMitmState.disconnected()));
     try {
       await pandoraMitm.connect(host: host, port: port);
-      emit(PandoraMitmConnected(pandoraMitm));
+      emit(PandoraMitmState.connected(pandoraMitm));
     } on IOException {
-      emit(const PandoraMitmDisconnected(connectionFailed: true));
+      emit(const PandoraMitmState.connectionFailed());
     }
   }
 
   Future<void> disconnect() async {
     assert(
-      state is PandoraMitmConnected,
+      state is ConnectedPandoraMitmState,
       'Cannot disconnect when not connected!',
     );
-    final pandoraMitm = (state as PandoraMitmConnected).pandoraMitm;
-    emit(PandoraMitmDisconnecting(pandoraMitm));
+    final pandoraMitm = (state as ConnectedPandoraMitmState).pandoraMitm;
+    emit(const PandoraMitmState.disconnecting());
     await pandoraMitm.disconnect();
   }
 }
 
-abstract class PandoraMitmState {}
+@freezed
+class PandoraMitmState with _$PandoraMitmState {
+  const factory PandoraMitmState.disconnected() = DisconnectedPandoraMitmState;
 
-class PandoraMitmDisconnected implements PandoraMitmState {
-  final bool connectionFailed;
+  const factory PandoraMitmState.connecting() = ConnectingPandoraMitmState;
 
-  const PandoraMitmDisconnected({this.connectionFailed = false});
+  const factory PandoraMitmState.connected(
+    PandoraMitm pandoraMitm,
+  ) = ConnectedPandoraMitmState;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PandoraMitmDisconnected &&
-          runtimeType == other.runtimeType &&
-          connectionFailed == other.connectionFailed;
+  const factory PandoraMitmState.disconnecting() =
+      DisconnectingPandoraMitmState;
 
-  @override
-  int get hashCode => connectionFailed.hashCode;
-}
-
-class PandoraMitmConnecting implements PandoraMitmState {
-  const PandoraMitmConnecting();
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PandoraMitmConnecting && runtimeType == other.runtimeType;
-
-  @override
-  int get hashCode => 0;
-}
-
-class PandoraMitmConnected implements PandoraMitmState {
-  final PluginCapablePandoraMitm pandoraMitm;
-
-  const PandoraMitmConnected(this.pandoraMitm);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PandoraMitmConnected &&
-          runtimeType == other.runtimeType &&
-          pandoraMitm == other.pandoraMitm;
-
-  @override
-  int get hashCode => pandoraMitm.hashCode;
-}
-
-class PandoraMitmDisconnecting implements PandoraMitmState {
-  final PluginCapablePandoraMitm pandoraMitm;
-
-  const PandoraMitmDisconnecting(this.pandoraMitm);
+  const factory PandoraMitmState.connectionFailed() =
+      ConnectionFailedPandoraMitmState;
 }

@@ -19,16 +19,12 @@ class ConnectPage extends StatelessWidget {
       child: Scaffold(
         body: BlocListener<PandoraMitmBloc, PandoraMitmState>(
           listener: (context, state) {
-            if (state is PandoraMitmDisconnected && state.connectionFailed) {
+            if (state is ConnectionFailedPandoraMitmState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Connection failed.')),
               );
             }
           },
-          listenWhen: (previous, current) =>
-              (!(previous is PandoraMitmDisconnected &&
-                  previous.connectionFailed)) &&
-              (current is PandoraMitmDisconnected && current.connectionFailed),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [

@@ -89,7 +89,7 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
       ],
       child: BlocListener<PandoraMitmBloc, PandoraMitmState>(
         listener: (context, state) {
-          if (state is PandoraMitmConnected) {
+          if (state is ConnectedPandoraMitmState) {
             _navigatorKey.currentState!
                 .pushReplacementNamed('control', arguments: state.pandoraMitm);
           } else {
@@ -97,10 +97,10 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
           }
         },
         listenWhen: (previous, current) =>
-            (current is PandoraMitmConnected &&
-                previous is! PandoraMitmConnected) ||
-            (current is! PandoraMitmConnected &&
-                previous is PandoraMitmConnected),
+            (current is ConnectedPandoraMitmState &&
+                previous is! ConnectedPandoraMitmState) ||
+            (current is! ConnectedPandoraMitmState &&
+                previous is ConnectedPandoraMitmState),
         child: HighlightBackgroundEnvironment(
           child: MaterialApp(
             navigatorKey: _navigatorKey,
