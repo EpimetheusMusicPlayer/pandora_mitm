@@ -60,7 +60,7 @@ abstract class PandoraMitmHandler {
 /// in the mixin list.
 mixin PandoraMitmPluginGroupMixin on PandoraMitmBackend
     implements PandoraMitmHandler, PluginCapable {
-  final _pluginGroup = PluginGroup();
+  final _pluginGroup = PluginGroup('root');
 
   @override
   PluginManager get pluginManager => _pluginGroup;

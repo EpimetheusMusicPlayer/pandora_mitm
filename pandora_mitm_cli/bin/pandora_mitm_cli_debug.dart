@@ -57,6 +57,9 @@ Future<void> _handleDebugServerRequest(
 // DEBUG: Implement a test plugin here.
 class TestPlugin extends PandoraMitmPlugin {
   @override
+  String get name => 'test';
+
+  @override
   // ignore: unnecessary_overrides
   Future<MessageSetSettings> getRequestSetSettings(
     String flowId,

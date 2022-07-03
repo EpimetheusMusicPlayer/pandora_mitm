@@ -11,7 +11,7 @@ import 'package:pandora_mitm/plugin_dev.dart';
 class FeatureUnlockPlugin extends ResponseModificationBasePlugin
     with PandoraMitmPluginLoggingMixin {
   @override
-  String get logTag => 'feature_unlock';
+  String get name => 'feature_unlock';
 
   @override
   Set<String> get hookedEndpoints => const {'auth.userLogin'};

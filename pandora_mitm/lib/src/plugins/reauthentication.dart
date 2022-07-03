@@ -11,7 +11,7 @@ class ReauthenticationPlugin extends PandoraMitmPlugin
   final _reauthenticatedClients = <String>{};
 
   @override
-  String get logTag => 'reauthentication';
+  String get name => 'reauthentication';
 
   /// Triggers a reauthentication on the next authorised API request.
   void invalidate() => _reauthenticatedClients.clear();

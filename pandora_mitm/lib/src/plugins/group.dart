@@ -15,9 +15,15 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 /// These can be used for other combinational purposes, such as hosting a plugin
 /// inside another.
 class PluginGroup extends PandoraMitmPlugin
-    with PandoraMitmPluginStateTrackerMixin
+    with PandoraMitmPluginLoggingMixin, PandoraMitmPluginStateTrackerMixin
     implements PluginManager {
+  @override
+  final String name;
+
   final _plugins = StreamNotifyingList<PandoraMitmPlugin>();
+
+  PluginGroup([String? name])
+      : name = name == null ? 'plugin_group' : 'plugin_group.$name';
 
   @override
   List<PandoraMitmPlugin> get plugins => UnmodifiableListView(_plugins);
@@ -28,7 +34,7 @@ class PluginGroup extends PandoraMitmPlugin
   @override
   Future<void> attach() async {
     await super.attach();
-    return _plugins.attach();
+    await _plugins.attach();
   }
 
   @override
@@ -37,28 +43,44 @@ class PluginGroup extends PandoraMitmPlugin
     await super.detach();
   }
 
+  void _logPluginsAdded(List<PandoraMitmPlugin> plugins) {
+    for (final plugin in plugins) {
+      log.info('Added plugin: ${plugin.name}');
+    }
+  }
+
+  void _logPluginsRemoved(List<PandoraMitmPlugin> plugins) {
+    for (final plugin in plugins) {
+      log.info('Removed plugin: ${plugin.name}');
+    }
+  }
+
   @override
   Future<void> addPlugin(PandoraMitmPlugin plugin) async {
     if (attached) await plugin.attach();
     _plugins.add(plugin);
+    _logPluginsAdded([plugin]);
   }
 
   @override
   Future<void> addPlugins(List<PandoraMitmPlugin> plugins) async {
     if (attached) await plugins.attach();
     _plugins.addAll(plugins);
+    _logPluginsAdded(plugins);
   }
 
   @override
   Future<void> insertPlugin(int index, PandoraMitmPlugin plugin) async {
     if (attached) await plugin.attach();
     _plugins.insert(index, plugin);
+    _logPluginsAdded([plugin]);
   }
 
   @override
   Future<void> insertPlugins(int index, List<PandoraMitmPlugin> plugins) async {
     if (attached) await plugins.attach();
     _plugins.insertAll(index, plugins);
+    _logPluginsAdded(plugins);
   }
 
   @override
@@ -80,6 +102,7 @@ class PluginGroup extends PandoraMitmPlugin
       }
     });
     if (attached) await removedPlugins.detach();
+    _logPluginsRemoved(removedPlugins);
   }
 
   @override
@@ -95,12 +118,14 @@ class PluginGroup extends PandoraMitmPlugin
     final removedPlugins = _plugins.sublist(start, end);
     _plugins.removeRange(start, end);
     if (attached) await removedPlugins.detach();
+    _logPluginsRemoved(removedPlugins);
   }
 
   @override
   Future<PandoraMitmPlugin> removePluginAt(int index) async {
     final plugin = _plugins.removeAt(index);
     if (attached) await plugin.detach();
+    _logPluginsRemoved([plugin]);
     return plugin;
   }
 
@@ -109,6 +134,7 @@ class PluginGroup extends PandoraMitmPlugin
     final removedPlugins = List.of(_plugins);
     _plugins.clear();
     if (attached) await removedPlugins.detach();
+    _logPluginsRemoved(removedPlugins);
   }
 
   @override

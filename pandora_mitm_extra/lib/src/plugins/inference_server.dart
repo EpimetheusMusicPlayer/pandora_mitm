@@ -38,6 +38,9 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
           ),
         );
 
+  @override
+  String get name => '${inner.name}_server';
+
   T get inferencePlugin => inner;
 
   bool get serve => _serve;
@@ -48,9 +51,6 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
 
   Future<int> get runningPort =>
       _httpServerFuture!.then((server) => server.port);
-
-  @override
-  String get logTag => 'inference_server';
 
   @override
   Future<void> attach() async {

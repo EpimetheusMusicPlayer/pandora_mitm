@@ -28,6 +28,9 @@ import 'package:pandora_mitm/plugin_dev.dart';
 abstract class PandoraMitmPlugin {
   const PandoraMitmPlugin();
 
+  /// A human-readable identifier to be used for logging.
+  String get name;
+
   /// Called just before the plugin is added to the [PandoraMitm] instance.
   @mustCallSuper
   Future<void> attach() async {}
@@ -116,10 +119,7 @@ abstract class PandoraMitmPlugin {
 
 mixin PandoraMitmPluginLoggingMixin on PandoraMitmPlugin {
   @protected
-  String get logTag;
-
-  @protected
-  late final Logger log = Logger('pandora_mitm.plugin.$logTag');
+  late final Logger log = Logger('pandora_mitm.plugin.$name');
 }
 
 mixin PandoraMitmPluginStateTrackerMixin on PandoraMitmPlugin {

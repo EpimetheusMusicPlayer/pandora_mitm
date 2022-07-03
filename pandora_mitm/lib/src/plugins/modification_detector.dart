@@ -22,6 +22,9 @@ class ModificationDetectorPlugin extends PandoraMitmPlugin {
   final _responseStageModifications =
       StreamController<PandoraMitmModificationRecordSet>.broadcast();
 
+  @override
+  String get name => 'modification_detector';
+
   /// Modifications detected at a flow's request stage.
   Stream<PandoraMitmModificationRecordSet> get requestStageModifications =>
       _requestStageModifications.stream;

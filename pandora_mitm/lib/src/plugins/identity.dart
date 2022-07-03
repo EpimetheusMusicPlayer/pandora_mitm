@@ -6,4 +6,7 @@ import 'package:pandora_mitm/plugin_dev.dart';
 /// wanted.
 class IdentityPlugin extends PandoraMitmPlugin {
   const IdentityPlugin();
+
+  @override
+  String get name => 'identity';
 }

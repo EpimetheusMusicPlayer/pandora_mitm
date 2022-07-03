@@ -17,6 +17,9 @@ class LogPlugin extends PandoraMitmPlugin {
   const LogPlugin([this.log = _defaultLogAction]);
 
   @override
+  String get name => 'log';
+
+  @override
   Future<MessageSetSettings> getRequestSetSettings(
     String flowId,
     String apiMethod,

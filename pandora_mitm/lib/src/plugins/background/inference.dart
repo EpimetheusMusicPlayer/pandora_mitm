@@ -46,6 +46,9 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
         _stripBoilerplate = stripBoilerplate;
 
   @override
+  String get name => 'background_inference';
+
+  @override
   ForegroundBuildingBackgroundPluginIsolateEntrypoint<ForegroundInferencePlugin>
       get isolateEntrypoint => BackgroundInferencePluginHost.new;
 

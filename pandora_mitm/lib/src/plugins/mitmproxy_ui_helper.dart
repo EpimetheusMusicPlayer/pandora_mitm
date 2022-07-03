@@ -25,6 +25,9 @@ class MitmproxyUiHelperPlugin extends PandoraMitmPlugin
   });
 
   @override
+  String get name => 'mitmproxy_ui_helper';
+
+  @override
   Future<MessageSetSettings> getResponseSetSettings(
     String flowId,
     String apiMethod,

@@ -25,7 +25,7 @@ abstract class InferencePlugin
   /// A whitelist of API methods to infer.
   ///
   /// This set may not be mutated; it must be replaced.
-  abstract Set<String>? apiMethodWhitelist;
+  Set<String>? get apiMethodWhitelist;
 
   /// Like setting the [apiMethodWhitelist], but completes when the operation
   /// completes.
@@ -68,6 +68,9 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
       StreamController<MapEntry<String, ValueType>>.broadcast();
   final _responseValueTypeStreamController =
       StreamController<MapEntry<String, ValueType>>.broadcast();
+
+  @override
+  String get name => 'foreground_inference';
 
   @override
   Set<String>? apiMethodWhitelist;

@@ -23,6 +23,9 @@ class StreamPlugin extends PandoraMitmPlugin
     this.stripBoilerplate = false,
   });
 
+  @override
+  String get name => 'stream';
+
   /// The stream of API requests and responses.
   Stream<PandoraMitmRecord> get recordStream => _streamController.stream;
 
