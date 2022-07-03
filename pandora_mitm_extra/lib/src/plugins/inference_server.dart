@@ -4,23 +4,41 @@ import 'dart:io';
 import 'package:iapetus_meta/typing.dart';
 import 'package:markdown/markdown.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
+import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 
 /// An extension of the [InferencePlugin] that serves inference data over HTTP.
-class InferenceServerPlugin extends pmplg.ForegroundInferencePlugin
+///
+/// [InferencePlugin] APIs can be accessed through the internally managed
+/// [inferencePlugin].
+class InferenceServerPlugin<T extends pmplg.InferencePlugin>
+    extends WrapperBasePlugin<T>
     with PandoraMitmPluginLoggingMixin, PandoraMitmPluginStateTrackerMixin {
   bool _serve;
-
   int _port;
   Future<HttpServer>? _httpServerFuture;
 
-  InferenceServerPlugin({
+  /// Creates a new [InferenceServerPlugin].
+  ///
+  /// [inferencePluginFactory] is typically an [InferencePlugin] implementation
+  /// constructor tear-off, such as [ForegroundInferencePlugin.new] or
+  /// [BackgroundInferencePlugin.new].
+  InferenceServerPlugin(
+    pmplg.InferencePluginFactory<T> inferencePluginFactory, {
     bool serve = true,
     int port = 0,
-    super.apiMethodWhitelist,
-    super.stripBoilerplate = false,
+    Set<String>? apiMethodWhitelist,
+    bool stripBoilerplate = false,
   })  : _serve = serve,
-        _port = port;
+        _port = port,
+        super(
+          inferencePluginFactory(
+            apiMethodWhitelist: apiMethodWhitelist,
+            stripBoilerplate: stripBoilerplate,
+          ),
+        );
+
+  T get inferencePlugin => inner;
 
   bool get serve => _serve;
 
@@ -87,7 +105,7 @@ class InferenceServerPlugin extends pmplg.ForegroundInferencePlugin
     final queryParameters = request.uri.queryParameters;
     final apiMethod = queryParameters['apiMethod'];
 
-    final inferences = zipInferences();
+    final inferences = await inner.zipInferences();
     if (apiMethod != null && !inferences.containsKey(apiMethod)) {
       request.response
         ..statusCode = HttpStatus.notFound

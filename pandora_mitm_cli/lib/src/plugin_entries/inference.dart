@@ -1,4 +1,5 @@
 import 'package:pandora_mitm/pandora_mitm.dart';
+import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_cli/src/plugin_entry.dart';
 import 'package:pandora_mitm_extra/plugins.dart' as pmeplg;
 
@@ -48,6 +49,7 @@ class InferencePluginEntry extends PluginEntry {
     Map<String, Object?> options,
   ) =>
       pmeplg.InferenceServerPlugin(
+        pmplg.BackgroundInferencePlugin.new,
         serve: flags[_serveFlag]!,
         port: options[_portOption]! as int,
         stripBoilerplate: !flags[_noStripBoilerplateFlag]!,

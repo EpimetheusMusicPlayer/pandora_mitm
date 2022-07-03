@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_extra/plugins.dart' as pmeplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
@@ -17,6 +18,12 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
 
   @override
   IconData? get iconData => Icons.school;
+
+  @override
+  pmplg.BoilerplateStripperPlugin getBoilerplateStripperPlugin(
+    pmeplg.InferenceServerPlugin<pmplg.InferencePlugin> plugin,
+  ) =>
+      plugin.inferencePlugin;
 
   @override
   List<PopupMenuItem<Object?>> buildContextMenuItems(
@@ -54,6 +61,7 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
 
   @override
   pmeplg.InferenceServerPlugin buildPlugin() => pmeplg.InferenceServerPlugin(
+        pmplg.BackgroundInferencePlugin.new,
         port: 46337,
         stripBoilerplate: true,
       );

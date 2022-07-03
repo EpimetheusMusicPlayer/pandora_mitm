@@ -6,6 +6,11 @@ import 'package:iapetus_meta/typing.dart';
 import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/src/entities/api_method_inference.dart';
 
+typedef InferencePluginFactory<T extends InferencePlugin> = T Function({
+  Set<String>? apiMethodWhitelist,
+  bool stripBoilerplate,
+});
+
 /// A [PandoraMitm] plugin that infers API request and response definitions over
 /// time.
 ///
