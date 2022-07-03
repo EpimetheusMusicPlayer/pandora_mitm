@@ -4,6 +4,7 @@ import 'package:pandora_mitm_extra/plugins.dart' as pmeplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_plugin_main_panel.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
@@ -76,9 +77,14 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
   }
 
   @override
-  pmeplg.InferenceServerPlugin buildPlugin() => pmeplg.InferenceServerPlugin(
-        pmplg.BackgroundInferencePlugin.new,
-        port: 46337,
-        stripBoilerplate: true,
-      );
+  bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.connectedState.inferenceServerPlugin != null;
+
+  @override
+  Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.enableInferenceServerPlugin();
+
+  @override
+  Future<void> disablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.disableInferenceServerPlugin();
 }

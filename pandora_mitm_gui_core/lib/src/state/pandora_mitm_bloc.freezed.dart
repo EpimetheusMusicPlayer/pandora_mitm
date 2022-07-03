@@ -20,7 +20,16 @@ mixin _$PandoraMitmState {
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) =>
@@ -29,7 +38,16 @@ mixin _$PandoraMitmState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) =>
@@ -38,7 +56,16 @@ mixin _$PandoraMitmState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),
@@ -140,7 +167,16 @@ class _$DisconnectedPandoraMitmState implements DisconnectedPandoraMitmState {
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) {
@@ -152,7 +188,16 @@ class _$DisconnectedPandoraMitmState implements DisconnectedPandoraMitmState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) {
@@ -164,7 +209,16 @@ class _$DisconnectedPandoraMitmState implements DisconnectedPandoraMitmState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),
@@ -269,7 +323,16 @@ class _$ConnectingPandoraMitmState implements ConnectingPandoraMitmState {
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) {
@@ -281,7 +344,16 @@ class _$ConnectingPandoraMitmState implements ConnectingPandoraMitmState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) {
@@ -293,7 +365,16 @@ class _$ConnectingPandoraMitmState implements ConnectingPandoraMitmState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),
@@ -357,7 +438,14 @@ abstract class _$$ConnectedPandoraMitmStateCopyWith<$Res> {
           _$ConnectedPandoraMitmState value,
           $Res Function(_$ConnectedPandoraMitmState) then) =
       __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>;
-  $Res call({PandoraMitm pandoraMitm});
+  $Res call(
+      {PluginCapablePandoraMitm pandoraMitm,
+      bool pluginListUpdating,
+      RecordPlugin? recordPlugin,
+      pmeplg.InferenceServerPlugin<InferencePlugin>? inferenceServerPlugin,
+      pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+      pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+      pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin});
 }
 
 /// @nodoc
@@ -375,12 +463,42 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pandoraMitm = freezed,
+    Object? pluginListUpdating = freezed,
+    Object? recordPlugin = freezed,
+    Object? inferenceServerPlugin = freezed,
+    Object? reauthenticationPlugin = freezed,
+    Object? featureUnlockPlugin = freezed,
+    Object? mitmproxyUiHelperPlugin = freezed,
   }) {
     return _then(_$ConnectedPandoraMitmState(
       pandoraMitm == freezed
           ? _value.pandoraMitm
           : pandoraMitm // ignore: cast_nullable_to_non_nullable
-              as PandoraMitm,
+              as PluginCapablePandoraMitm,
+      pluginListUpdating: pluginListUpdating == freezed
+          ? _value.pluginListUpdating
+          : pluginListUpdating // ignore: cast_nullable_to_non_nullable
+              as bool,
+      recordPlugin: recordPlugin == freezed
+          ? _value.recordPlugin
+          : recordPlugin // ignore: cast_nullable_to_non_nullable
+              as RecordPlugin?,
+      inferenceServerPlugin: inferenceServerPlugin == freezed
+          ? _value.inferenceServerPlugin
+          : inferenceServerPlugin // ignore: cast_nullable_to_non_nullable
+              as pmeplg.InferenceServerPlugin<InferencePlugin>?,
+      reauthenticationPlugin: reauthenticationPlugin == freezed
+          ? _value.reauthenticationPlugin
+          : reauthenticationPlugin // ignore: cast_nullable_to_non_nullable
+              as pmplg.ReauthenticationPlugin?,
+      featureUnlockPlugin: featureUnlockPlugin == freezed
+          ? _value.featureUnlockPlugin
+          : featureUnlockPlugin // ignore: cast_nullable_to_non_nullable
+              as pmplg.FeatureUnlockPlugin?,
+      mitmproxyUiHelperPlugin: mitmproxyUiHelperPlugin == freezed
+          ? _value.mitmproxyUiHelperPlugin
+          : mitmproxyUiHelperPlugin // ignore: cast_nullable_to_non_nullable
+              as pmplg.MitmproxyUiHelperPlugin?,
     ));
   }
 }
@@ -388,14 +506,33 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
-  const _$ConnectedPandoraMitmState(this.pandoraMitm);
+  const _$ConnectedPandoraMitmState(this.pandoraMitm,
+      {this.pluginListUpdating = false,
+      this.recordPlugin,
+      this.inferenceServerPlugin,
+      this.reauthenticationPlugin,
+      this.featureUnlockPlugin,
+      this.mitmproxyUiHelperPlugin});
 
   @override
-  final PandoraMitm pandoraMitm;
+  final PluginCapablePandoraMitm pandoraMitm;
+  @override
+  @JsonKey()
+  final bool pluginListUpdating;
+  @override
+  final RecordPlugin? recordPlugin;
+  @override
+  final pmeplg.InferenceServerPlugin<InferencePlugin>? inferenceServerPlugin;
+  @override
+  final pmplg.ReauthenticationPlugin? reauthenticationPlugin;
+  @override
+  final pmplg.FeatureUnlockPlugin? featureUnlockPlugin;
+  @override
+  final pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin;
 
   @override
   String toString() {
-    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm)';
+    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm, pluginListUpdating: $pluginListUpdating, recordPlugin: $recordPlugin, inferenceServerPlugin: $inferenceServerPlugin, reauthenticationPlugin: $reauthenticationPlugin, featureUnlockPlugin: $featureUnlockPlugin, mitmproxyUiHelperPlugin: $mitmproxyUiHelperPlugin)';
   }
 
   @override
@@ -404,12 +541,31 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
         (other.runtimeType == runtimeType &&
             other is _$ConnectedPandoraMitmState &&
             const DeepCollectionEquality()
-                .equals(other.pandoraMitm, pandoraMitm));
+                .equals(other.pandoraMitm, pandoraMitm) &&
+            const DeepCollectionEquality()
+                .equals(other.pluginListUpdating, pluginListUpdating) &&
+            const DeepCollectionEquality()
+                .equals(other.recordPlugin, recordPlugin) &&
+            const DeepCollectionEquality()
+                .equals(other.inferenceServerPlugin, inferenceServerPlugin) &&
+            const DeepCollectionEquality()
+                .equals(other.reauthenticationPlugin, reauthenticationPlugin) &&
+            const DeepCollectionEquality()
+                .equals(other.featureUnlockPlugin, featureUnlockPlugin) &&
+            const DeepCollectionEquality().equals(
+                other.mitmproxyUiHelperPlugin, mitmproxyUiHelperPlugin));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(pandoraMitm));
+      runtimeType,
+      const DeepCollectionEquality().hash(pandoraMitm),
+      const DeepCollectionEquality().hash(pluginListUpdating),
+      const DeepCollectionEquality().hash(recordPlugin),
+      const DeepCollectionEquality().hash(inferenceServerPlugin),
+      const DeepCollectionEquality().hash(reauthenticationPlugin),
+      const DeepCollectionEquality().hash(featureUnlockPlugin),
+      const DeepCollectionEquality().hash(mitmproxyUiHelperPlugin));
 
   @JsonKey(ignore: true)
   @override
@@ -422,11 +578,27 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) {
-    return connected(pandoraMitm);
+    return connected(
+        pandoraMitm,
+        pluginListUpdating,
+        recordPlugin,
+        inferenceServerPlugin,
+        reauthenticationPlugin,
+        featureUnlockPlugin,
+        mitmproxyUiHelperPlugin);
   }
 
   @override
@@ -434,11 +606,27 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) {
-    return connected?.call(pandoraMitm);
+    return connected?.call(
+        pandoraMitm,
+        pluginListUpdating,
+        recordPlugin,
+        inferenceServerPlugin,
+        reauthenticationPlugin,
+        featureUnlockPlugin,
+        mitmproxyUiHelperPlugin);
   }
 
   @override
@@ -446,13 +634,29 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),
   }) {
     if (connected != null) {
-      return connected(pandoraMitm);
+      return connected(
+          pandoraMitm,
+          pluginListUpdating,
+          recordPlugin,
+          inferenceServerPlugin,
+          reauthenticationPlugin,
+          featureUnlockPlugin,
+          mitmproxyUiHelperPlugin);
     }
     return orElse();
   }
@@ -501,10 +705,29 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
 }
 
 abstract class ConnectedPandoraMitmState implements PandoraMitmState {
-  const factory ConnectedPandoraMitmState(final PandoraMitm pandoraMitm) =
+  const factory ConnectedPandoraMitmState(
+          final PluginCapablePandoraMitm pandoraMitm,
+          {final bool pluginListUpdating,
+          final RecordPlugin? recordPlugin,
+          final pmeplg.InferenceServerPlugin<InferencePlugin>?
+              inferenceServerPlugin,
+          final pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+          final pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+          final pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin}) =
       _$ConnectedPandoraMitmState;
 
-  PandoraMitm get pandoraMitm => throw _privateConstructorUsedError;
+  PluginCapablePandoraMitm get pandoraMitm =>
+      throw _privateConstructorUsedError;
+  bool get pluginListUpdating => throw _privateConstructorUsedError;
+  RecordPlugin? get recordPlugin => throw _privateConstructorUsedError;
+  pmeplg.InferenceServerPlugin<InferencePlugin>? get inferenceServerPlugin =>
+      throw _privateConstructorUsedError;
+  pmplg.ReauthenticationPlugin? get reauthenticationPlugin =>
+      throw _privateConstructorUsedError;
+  pmplg.FeatureUnlockPlugin? get featureUnlockPlugin =>
+      throw _privateConstructorUsedError;
+  pmplg.MitmproxyUiHelperPlugin? get mitmproxyUiHelperPlugin =>
+      throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$ConnectedPandoraMitmStateCopyWith<_$ConnectedPandoraMitmState>
       get copyWith => throw _privateConstructorUsedError;
@@ -557,7 +780,16 @@ class _$DisconnectingPandoraMitmState implements DisconnectingPandoraMitmState {
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) {
@@ -569,7 +801,16 @@ class _$DisconnectingPandoraMitmState implements DisconnectingPandoraMitmState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) {
@@ -581,7 +822,16 @@ class _$DisconnectingPandoraMitmState implements DisconnectingPandoraMitmState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),
@@ -688,7 +938,16 @@ class _$ConnectionFailedPandoraMitmState
   TResult when<TResult extends Object?>({
     required TResult Function() disconnected,
     required TResult Function() connecting,
-    required TResult Function(PandoraMitm pandoraMitm) connected,
+    required TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
+        connected,
     required TResult Function() disconnecting,
     required TResult Function() connectionFailed,
   }) {
@@ -700,7 +959,16 @@ class _$ConnectionFailedPandoraMitmState
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
   }) {
@@ -712,7 +980,16 @@ class _$ConnectionFailedPandoraMitmState
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? disconnected,
     TResult Function()? connecting,
-    TResult Function(PandoraMitm pandoraMitm)? connected,
+    TResult Function(
+            PluginCapablePandoraMitm pandoraMitm,
+            bool pluginListUpdating,
+            RecordPlugin? recordPlugin,
+            pmeplg.InferenceServerPlugin<InferencePlugin>?
+                inferenceServerPlugin,
+            pmplg.ReauthenticationPlugin? reauthenticationPlugin,
+            pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
+            pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
+        connected,
     TResult Function()? disconnecting,
     TResult Function()? connectionFailed,
     required TResult orElse(),

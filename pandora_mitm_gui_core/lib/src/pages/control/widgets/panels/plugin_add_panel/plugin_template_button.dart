@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:popup_menu_title/popup_menu_title.dart';
 
 class PluginTemplateButton extends StatelessWidget {
@@ -24,13 +26,14 @@ class PluginTemplateButton extends StatelessWidget {
             child: Text(pluginTemplateEntry.key),
           ),
       ],
-      onSelected: (pluginUiList) => pluginManager
-        ..removeAllPlugins()
-        ..addPlugins(
-          pluginUiList
-              .map((pluginUi) => pluginUi.buildPlugin())
-              .toList(growable: false),
-        ),
+      onSelected: (pluginUiList) async {
+        final pandoraMitmBloc = context.read<PandoraMitmBloc>();
+        await pandoraMitmBloc.waitUntilPluginListUpdated();
+        await pandoraMitmBloc.disableAllPlugins();
+        for (final pluginUi in pluginUiList) {
+          await pluginUi.enablePlugin(pandoraMitmBloc);
+        }
+      },
       tooltip: 'Use plugin template',
       icon: const Icon(Icons.keyboard_arrow_down),
     );

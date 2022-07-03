@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class ReauthenticationPluginUi extends PluginUi<pmplg.ReauthenticationPlugin> {
   const ReauthenticationPluginUi();
@@ -16,9 +17,6 @@ class ReauthenticationPluginUi extends PluginUi<pmplg.ReauthenticationPlugin> {
   IconData? get iconData => Icons.login;
 
   @override
-  pmplg.ReauthenticationPlugin buildPlugin() => pmplg.ReauthenticationPlugin();
-
-  @override
   List<PopupMenuItem<Object?>> buildContextMenuItems(
     BuildContext context,
     pmplg.ReauthenticationPlugin plugin,
@@ -30,4 +28,16 @@ class ReauthenticationPluginUi extends PluginUi<pmplg.ReauthenticationPlugin> {
           child: const Text('Invalidate sessions'),
         ),
       ];
+
+  @override
+  bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.connectedState.reauthenticationPlugin != null;
+
+  @override
+  Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.enableReauthenticationPlugin();
+
+  @override
+  Future<void> disablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.disableReauthenticationPlugin();
 }

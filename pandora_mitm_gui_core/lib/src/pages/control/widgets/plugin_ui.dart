@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 abstract class PluginUi<T extends PandoraMitmPlugin> {
   const PluginUi();
@@ -26,7 +27,11 @@ abstract class PluginUi<T extends PandoraMitmPlugin> {
   /// Returns true if the [selection] was handled.
   bool handleContextMenuSelection(T plugin, Object selection) => false;
 
-  T buildPlugin();
+  bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc);
+
+  Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc);
+
+  Future<void> disablePlugin(PandoraMitmBloc pandoraMitmBloc);
 
   bool _supportsPlugin(PandoraMitmPlugin plugin) => plugin is T;
 }

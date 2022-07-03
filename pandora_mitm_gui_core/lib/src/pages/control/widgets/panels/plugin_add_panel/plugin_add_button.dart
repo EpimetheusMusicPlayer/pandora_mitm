@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
-class PluginAddButton extends StatelessWidget {
+class PluginAddButton extends StatefulWidget {
   final PluginManager pluginManager;
   final List<PluginUi> availablePluginUis;
   final Color? color;
@@ -19,21 +21,30 @@ class PluginAddButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PluginAddButton> createState() => _PluginAddButtonState();
+}
+
+class _PluginAddButtonState extends State<PluginAddButton> {
+  @override
   Widget build(BuildContext context) {
     return IconButton(
-      iconSize: size,
-      color: color,
+      iconSize: widget.size,
+      color: widget.color,
       onPressed: () async {
-        final selection = await showDialog<PandoraMitmPlugin>(
+        final selection = await showDialog<PluginUi>(
           context: context,
           builder: (context) {
+            final pandoraMitmBloc = context.watch<PandoraMitmBloc>();
+            final relevantPluginUis = widget.availablePluginUis.where(
+              (pluginUi) => !pluginUi.isPluginEnabled(pandoraMitmBloc),
+            );
+
             return SimpleDialog(
               title: const Text('Add plugin'),
-              children: availablePluginUis
+              children: relevantPluginUis
                   .map(
                     (pluginUi) => SimpleDialogOption(
-                      onPressed: () =>
-                          Navigator.pop(context, pluginUi.buildPlugin()),
+                      onPressed: () => Navigator.pop(context, pluginUi),
                       child: ListTile(
                         visualDensity: const VisualDensity(
                           horizontal: VisualDensity.minimumDensity,
@@ -52,9 +63,12 @@ class PluginAddButton extends StatelessWidget {
           },
         );
         if (selection == null) return;
-        pluginManager.addPlugin(selection);
+        if (!mounted) return;
+        final pandoraMitmBloc = context.read<PandoraMitmBloc>();
+        await pandoraMitmBloc.waitUntilPluginListUpdated();
+        await selection.enablePlugin(pandoraMitmBloc);
       },
-      tooltip: showTooltip ? 'Add plugin' : null,
+      tooltip: widget.showTooltip ? 'Add plugin' : null,
       icon: const Icon(Icons.add),
     );
   }

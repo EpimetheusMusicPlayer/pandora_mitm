@@ -3,6 +3,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_main_panel.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class RecordPluginUi extends PluginUi<RecordPlugin>
     with BoilerplateStripperPluginUiMixin {
@@ -46,5 +47,14 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
       ];
 
   @override
-  RecordPlugin buildPlugin() => RecordPlugin(stripBoilerplate: true);
+  bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.connectedState.recordPlugin != null;
+
+  @override
+  Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.enableRecordPlugin();
+
+  @override
+  Future<void> disablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
+      pandoraMitmBloc.disableRecordPlugin();
 }
