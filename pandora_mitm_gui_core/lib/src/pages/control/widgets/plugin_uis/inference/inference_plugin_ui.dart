@@ -55,6 +55,11 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
         },
         child: Text(plugin.running ? 'Stop HTTP server' : 'Start HTTP server'),
       ),
+      // ignore: prefer_void_to_null
+      PopupMenuItem<Null>(
+        onTap: plugin.inferencePlugin.clear,
+        child: const Text('Clear inferences'),
+      ),
       ...super.buildContextMenuItems(context, plugin),
     ];
   }
