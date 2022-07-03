@@ -1,14 +1,15 @@
 import 'package:pandora_mitm/src/pandora_mitm_backend.dart';
 import 'package:pandora_mitm/src/pandora_mitm_handler.dart';
+import 'package:pandora_mitm/src/pandora_mitm_logger.dart';
 import 'package:pandora_mitm/src/plugin_manager.dart';
 
 /// An object that can intercept and modify Pandora JSON API requests and
 /// responses.
 ///
 /// Typical [PandoraMitm] implementations use an architecture consisting of a
-/// [PandoraMitmBackend] and [PandoraMitmHandler] implementation via mixins.
-/// Some [PandoraMitmBackend]s may also need a [PandoraMitmRawMessageParser]
-/// implementation mixed in as well.
+/// [PandoraMitmBackend], [PandoraMitmHandler], and [PandoraMitmLogger]
+/// implementation via mixins. Some [PandoraMitmBackend]s may also need a
+/// [PandoraMitmRawMessageParser] implementation mixed in as well.
 ///
 /// Consult the API documentation on these classes for more information.
 ///
@@ -20,7 +21,8 @@ import 'package:pandora_mitm/src/plugin_manager.dart';
 ///
 /// * [ForegroundMitmproxyRiPandoraMitm], a typical [PandoraMitm]
 /// implementation.
-abstract class PandoraMitm implements PandoraMitmBackend, PandoraMitmHandler {
+abstract class PandoraMitm
+    implements PandoraMitmBackend, PandoraMitmHandler, PandoraMitmLogger {
   // This class should be implemented, not extended.
   PandoraMitm._();
 }

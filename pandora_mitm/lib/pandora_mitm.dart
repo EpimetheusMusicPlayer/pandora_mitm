@@ -10,6 +10,7 @@ export 'src/pandora_mitm.dart';
 export 'src/pandora_mitm_backend.dart';
 export 'src/pandora_mitm_background.dart';
 export 'src/pandora_mitm_handler.dart';
+export 'src/pandora_mitm_logger.dart';
 export 'src/pandora_mitm_plugin.dart';
 export 'src/pandora_mitm_raw_message_parser.dart';
 export 'src/plugin_manager.dart';

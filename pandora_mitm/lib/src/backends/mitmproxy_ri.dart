@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:mitmproxy_ri_client/mitmproxy_ri_client.dart' as mitm_ri;
+import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm_backend.dart';
 import 'package:pandora_mitm/src/pandora_mitm_background.dart';
@@ -12,11 +13,15 @@ class ForegroundMitmproxyRiPandoraMitm
     with
         PandoraMitmMitmproxyRiBackendMixin,
         PandoraMitmRawMessageParsingMixin,
-        PandoraMitmPluginGroupMixin
+        PandoraMitmPluginGroupMixin,
+        PandoraMitmLoggingMixin
     implements PluginCapablePandoraMitm {}
 
 class BackgroundMitmproxyRiPandoraMitm
-    with PandoraMitmBackgroundMixin, PandoraMitmPluginGroupMixin
+    with
+        PandoraMitmBackgroundMixin,
+        PandoraMitmPluginGroupMixin,
+        PandoraMitmLoggingMixin
     implements PluginCapablePandoraMitm {
   @override
   void Function(SendPort sendPort) get isolateEntrypoint =>
