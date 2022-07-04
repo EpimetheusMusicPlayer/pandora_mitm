@@ -24,7 +24,7 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
   bool _stripBoilerplate;
 
   final _inferredApiMethodStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
 
   /// Creates a new [BackgroundInferencePlugin].
   ///
@@ -92,7 +92,7 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
       doAction(_BackgroundInferencePluginAction.getInferredApiMethods);
 
   @override
-  Stream<String> get inferredApiMethodStream =>
+  Stream<String?> get inferredApiMethodStream =>
       _inferredApiMethodStreamController.stream;
 
   @override
@@ -114,7 +114,7 @@ class BackgroundInferencePlugin extends ForegroundBuildingBackgroundBasePlugin<
   ) {
     switch (tag) {
       case _BackgroundInferencePluginNotification.inferredApiMethod:
-        _inferredApiMethodStreamController.add(message! as String);
+        _inferredApiMethodStreamController.add(message as String?);
         break;
     }
   }
@@ -125,7 +125,7 @@ class BackgroundInferencePluginHost
         ForegroundInferencePlugin,
         _BackgroundInferencePluginAction,
         _BackgroundInferencePluginNotification> {
-  late final StreamSubscription<String> _inferredApiMethodSubscription;
+  late final StreamSubscription<void> _inferredApiMethodSubscription;
 
   @override
   Future<void> attach() async {

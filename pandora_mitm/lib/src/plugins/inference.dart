@@ -37,7 +37,10 @@ abstract class InferencePlugin
 
   FutureOr<Set<String>> get inferredApiMethods;
 
-  Stream<String> get inferredApiMethodStream;
+  /// A stream of new inferred API methods.
+  ///
+  /// Emits `null` events if any methods are cleared.
+  Stream<String?> get inferredApiMethodStream;
 
   FutureOr<Map<String, ApiMethodInference>> get inferences;
 
@@ -51,7 +54,7 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
     implements InferencePlugin {
   final _inferences = <String, LazyApiMethodInference>{};
   final _inferredApiMethodStreamController =
-      StreamController<String>.broadcast();
+      StreamController<String?>.broadcast();
 
   @override
   String get name => 'foreground_inference';
@@ -75,7 +78,7 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
       UnmodifiableSetView(SplayTreeSet.of(_inferences.keys));
 
   @override
-  Stream<String> get inferredApiMethodStream =>
+  Stream<String?> get inferredApiMethodStream =>
       _inferredApiMethodStreamController.stream;
 
   @override
@@ -88,7 +91,10 @@ class ForegroundInferencePlugin extends PandoraMitmPlugin
   });
 
   @override
-  void clear() => _inferences.clear();
+  void clear() {
+    _inferences.clear();
+    _inferredApiMethodStreamController.add(null);
+  }
 
   @override
   ApiMethodInference? getInference(String apiMethod) => _inferences[apiMethod];
