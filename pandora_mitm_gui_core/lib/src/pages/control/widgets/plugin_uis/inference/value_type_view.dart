@@ -3,22 +3,17 @@ import 'package:iapetus_meta/typing.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 
 class FlatValueTypeView extends StatelessWidget {
-  final String name;
-  final ValueType valueType;
+  final List<NestedObjectValueTypeEntry> nestedObjectEntries;
 
   const FlatValueTypeView({
     Key? key,
-    required this.name,
-    required this.valueType,
+    required this.nestedObjectEntries,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final objectEntries =
-        valueType.flattenObjectTypes(name).toList(growable: false);
-
     return DefaultTabController(
-      length: objectEntries.length,
+      length: nestedObjectEntries.length,
       // https://github.com/flutter/flutter/issues/86584
       // A Material is needed to prevent ripples from tab children extending
       // beyond their appropriate area.
@@ -27,7 +22,7 @@ class FlatValueTypeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ThemedTabBar(
-              tabs: objectEntries.map(
+              tabs: nestedObjectEntries.map(
                 (entry) {
                   final IconData iconData;
                   switch (entry.parentCategory) {
@@ -50,7 +45,7 @@ class FlatValueTypeView extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
-                children: objectEntries
+                children: nestedObjectEntries
                     .map(
                       (entry) => ShallowJsonObjectValueTypeView(
                         valueType: entry.valueType,

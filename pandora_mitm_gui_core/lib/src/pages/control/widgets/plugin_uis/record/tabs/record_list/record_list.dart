@@ -1,20 +1,18 @@
 import 'package:auto_scroll/auto_scroll.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_consumers/record/recorder_builder.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_list_tile.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class RecordListWidget extends StatelessWidget {
   final RecordPlugin plugin;
-  final PandoraMitmRecord? selectedRecord;
-  final ValueChanged<PandoraMitmRecord> onRecordSelected;
 
   const RecordListWidget({
     Key? key,
     required this.plugin,
-    required this.selectedRecord,
-    required this.onRecordSelected,
   }) : super(key: key);
 
   @override
@@ -29,17 +27,21 @@ class RecordListWidget extends StatelessWidget {
             itemCount: records.length,
             itemBuilder: (context, index) {
               final record = records[index];
-              return ColoredBox(
-                color: Colors.transparent,
-                // color: index.isOdd
-                //     ? Theme.of(context).focusColor.withAlpha(0x7)
-                //     : Colors.transparent,
-                child: RecordListTile(
-                  plugin: plugin,
-                  record: record,
-                  selected: identical(record, selectedRecord),
-                  onPressed: () => onRecordSelected(record),
-                ),
+              return BlocSelector<PandoraMitmBloc, PandoraMitmState,
+                  PandoraMitmRecord?>(
+                selector: (state) => state.requireConnected.selectedRecord,
+                builder: (context, selectedRecord) {
+                  final isSelected = identical(record, selectedRecord);
+                  return RecordListTile(
+                    plugin: plugin,
+                    record: record,
+                    selected: isSelected,
+                    onPressed: () {
+                      if (isSelected) return;
+                      context.read<PandoraMitmBloc>().selectRecord(index);
+                    },
+                  );
+                },
               );
             },
           ),

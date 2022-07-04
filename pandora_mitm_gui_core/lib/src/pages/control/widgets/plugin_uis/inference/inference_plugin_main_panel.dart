@@ -15,8 +15,12 @@ class InferencePluginMainPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return InferenceSelector(
       plugin: plugin,
-      builder: (context, apiMethod, valueType) {
-        return FlatValueTypeView(name: apiMethod, valueType: valueType);
+      builder: (context, inference, isRequestSelected) {
+        return FlatValueTypeView(
+          nestedObjectEntries: isRequestSelected
+              ? inference.computedRequestValueTypeEntries
+              : inference.computedResponseValueTypeEntries,
+        );
       },
     );
   }

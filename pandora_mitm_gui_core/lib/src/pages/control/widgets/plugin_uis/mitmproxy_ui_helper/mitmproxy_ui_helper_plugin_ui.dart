@@ -19,7 +19,7 @@ class MitmproxyUiHelperPluginUi extends PluginUi<pmplg.MitmproxyUiHelperPlugin>
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.connectedState.mitmproxyUiHelperPlugin != null;
+      pandoraMitmBloc.state.requireConnected.mitmproxyUiHelperPlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>

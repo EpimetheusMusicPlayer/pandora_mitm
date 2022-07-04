@@ -48,7 +48,7 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.connectedState.recordPlugin != null;
+      pandoraMitmBloc.state.requireConnected.recordPlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>

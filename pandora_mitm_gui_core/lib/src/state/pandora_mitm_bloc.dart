@@ -28,19 +28,56 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     }
   }
 
-  ConnectedPandoraMitmState get connectedState {
-    assert(state is ConnectedPandoraMitmState, 'Not connected!');
-    return state as ConnectedPandoraMitmState;
-  }
-
   Future<void> disconnect() async {
-    final pandoraMitm = connectedState.pandoraMitm;
+    final pandoraMitm = state.requireConnected.pandoraMitm;
     emit(const PandoraMitmState.disconnecting());
     await pandoraMitm.disconnect();
   }
 
+  Future<ConnectedPandoraMitmState> _computeApiMethodSelection(
+    String apiMethod,
+    ConnectedPandoraMitmState state,
+  ) async {
+    final inference = await state.inferenceServerPlugin?.inferencePlugin
+        .getInference(apiMethod);
+    return state.copyWith(
+      selectedApiMethod: apiMethod,
+      selectedInference: inference,
+    );
+  }
+
+  Future<void> selectRecord(int recordIndex) async {
+    final state = this.state.requireConnected;
+    assert(
+      state.recordPlugin != null,
+      'Cannot select a record - record plugin is not enabled!',
+    );
+    final record = state.recordPlugin!.messageRecorder.records[recordIndex];
+    emit(
+      // Compute the API method even if it doesn't change, to provide a
+      // "refreshing" experience when a new record is selected.
+      await _computeApiMethodSelection(
+        record.apiRequest.method,
+        state.copyWith(selectedRecord: record),
+      ),
+    );
+  }
+
+  Future<void> selectApiMethod(String apiMethod) async {
+    final state = this.state.requireConnected;
+    emit(
+      await _computeApiMethodSelection(
+        apiMethod,
+        state.selectedRecord == null ||
+                apiMethod == state.selectedRecord!.apiRequest.method
+            ? state
+            : state.copyWith(selectedRecord: null),
+      ),
+    );
+  }
+
   Future<void> waitUntilPluginListUpdated() async {
-    if (!connectedState.pluginListUpdating) return;
+    if (!state.requireConnected.pluginListUpdating) return;
     await stream.firstWhere(
       (state) =>
           state is ConnectedPandoraMitmState && !state.pluginListUpdating,
@@ -60,7 +97,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     )
         updateState,
   ) async {
-    final state = connectedState;
+    final state = this.state.requireConnected;
     assert(!state.pluginListUpdating, 'Plugin list is updating!');
     final pandoraMitm = state.pandoraMitm;
     assert(
@@ -97,7 +134,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     ConnectedPandoraMitmState Function(ConnectedPandoraMitmState state)
         updateState,
   ) async {
-    final state = connectedState;
+    final state = this.state.requireConnected;
     assert(!state.pluginListUpdating, 'Plugin list is updating!');
     final pandoraMitm = state.pandoraMitm;
     assert(T != PandoraMitmPlugin, 'Plugin type not specified!');
@@ -114,7 +151,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
   }
 
   Future<void> disableAllPlugins() async {
-    final state = connectedState;
+    final state = this.state.requireConnected;
     assert(!state.pluginListUpdating, 'Plugin list is updating!');
     final pandoraMitm = state.pandoraMitm;
 
@@ -202,6 +239,9 @@ class PandoraMitmState with _$PandoraMitmState {
 
   const factory PandoraMitmState.connected(
     PluginCapablePandoraMitm pandoraMitm, {
+    PandoraMitmRecord? selectedRecord,
+    String? selectedApiMethod,
+    ApiMethodInference? selectedInference,
     @Default(false) bool pluginListUpdating,
     RecordPlugin? recordPlugin,
     pmeplg.InferenceServerPlugin? inferenceServerPlugin,
@@ -224,5 +264,10 @@ class PandoraMitmState with _$PandoraMitmState {
         state.reauthenticationPlugin != null &&
         state.featureUnlockPlugin != null &&
         state.mitmproxyUiHelperPlugin != null;
+  }
+
+  ConnectedPandoraMitmState get requireConnected {
+    assert(this is ConnectedPandoraMitmState, 'Not connected!');
+    return this as ConnectedPandoraMitmState;
   }
 }

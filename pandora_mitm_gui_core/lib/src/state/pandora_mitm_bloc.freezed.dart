@@ -22,6 +22,9 @@ mixin _$PandoraMitmState {
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -40,6 +43,9 @@ mixin _$PandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -58,6 +64,9 @@ mixin _$PandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -169,6 +178,9 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -190,6 +202,9 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -211,6 +226,9 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -326,6 +344,9 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -347,6 +368,9 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -368,6 +392,9 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -442,6 +469,9 @@ abstract class _$$ConnectedPandoraMitmStateCopyWith<$Res> {
       __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>;
   $Res call(
       {PluginCapablePandoraMitm pandoraMitm,
+      PandoraMitmRecord? selectedRecord,
+      String? selectedApiMethod,
+      ApiMethodInference? selectedInference,
       bool pluginListUpdating,
       RecordPlugin? recordPlugin,
       pmeplg.InferenceServerPlugin<InferencePlugin>? inferenceServerPlugin,
@@ -465,6 +495,9 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pandoraMitm = freezed,
+    Object? selectedRecord = freezed,
+    Object? selectedApiMethod = freezed,
+    Object? selectedInference = freezed,
     Object? pluginListUpdating = freezed,
     Object? recordPlugin = freezed,
     Object? inferenceServerPlugin = freezed,
@@ -477,6 +510,18 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
           ? _value.pandoraMitm
           : pandoraMitm // ignore: cast_nullable_to_non_nullable
               as PluginCapablePandoraMitm,
+      selectedRecord: selectedRecord == freezed
+          ? _value.selectedRecord
+          : selectedRecord // ignore: cast_nullable_to_non_nullable
+              as PandoraMitmRecord?,
+      selectedApiMethod: selectedApiMethod == freezed
+          ? _value.selectedApiMethod
+          : selectedApiMethod // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedInference: selectedInference == freezed
+          ? _value.selectedInference
+          : selectedInference // ignore: cast_nullable_to_non_nullable
+              as ApiMethodInference?,
       pluginListUpdating: pluginListUpdating == freezed
           ? _value.pluginListUpdating
           : pluginListUpdating // ignore: cast_nullable_to_non_nullable
@@ -509,7 +554,10 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
 
 class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   const _$ConnectedPandoraMitmState(this.pandoraMitm,
-      {this.pluginListUpdating = false,
+      {this.selectedRecord,
+      this.selectedApiMethod,
+      this.selectedInference,
+      this.pluginListUpdating = false,
       this.recordPlugin,
       this.inferenceServerPlugin,
       this.reauthenticationPlugin,
@@ -519,6 +567,12 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
 
   @override
   final PluginCapablePandoraMitm pandoraMitm;
+  @override
+  final PandoraMitmRecord? selectedRecord;
+  @override
+  final String? selectedApiMethod;
+  @override
+  final ApiMethodInference? selectedInference;
   @override
   @JsonKey()
   final bool pluginListUpdating;
@@ -535,7 +589,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
 
   @override
   String toString() {
-    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm, pluginListUpdating: $pluginListUpdating, recordPlugin: $recordPlugin, inferenceServerPlugin: $inferenceServerPlugin, reauthenticationPlugin: $reauthenticationPlugin, featureUnlockPlugin: $featureUnlockPlugin, mitmproxyUiHelperPlugin: $mitmproxyUiHelperPlugin)';
+    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm, selectedRecord: $selectedRecord, selectedApiMethod: $selectedApiMethod, selectedInference: $selectedInference, pluginListUpdating: $pluginListUpdating, recordPlugin: $recordPlugin, inferenceServerPlugin: $inferenceServerPlugin, reauthenticationPlugin: $reauthenticationPlugin, featureUnlockPlugin: $featureUnlockPlugin, mitmproxyUiHelperPlugin: $mitmproxyUiHelperPlugin)';
   }
 
   @override
@@ -545,6 +599,12 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
             other is _$ConnectedPandoraMitmState &&
             const DeepCollectionEquality()
                 .equals(other.pandoraMitm, pandoraMitm) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedRecord, selectedRecord) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedApiMethod, selectedApiMethod) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedInference, selectedInference) &&
             const DeepCollectionEquality()
                 .equals(other.pluginListUpdating, pluginListUpdating) &&
             const DeepCollectionEquality()
@@ -563,6 +623,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(pandoraMitm),
+      const DeepCollectionEquality().hash(selectedRecord),
+      const DeepCollectionEquality().hash(selectedApiMethod),
+      const DeepCollectionEquality().hash(selectedInference),
       const DeepCollectionEquality().hash(pluginListUpdating),
       const DeepCollectionEquality().hash(recordPlugin),
       const DeepCollectionEquality().hash(inferenceServerPlugin),
@@ -583,6 +646,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -596,6 +662,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   }) {
     return connected(
         pandoraMitm,
+        selectedRecord,
+        selectedApiMethod,
+        selectedInference,
         pluginListUpdating,
         recordPlugin,
         inferenceServerPlugin,
@@ -611,6 +680,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -624,6 +696,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   }) {
     return connected?.call(
         pandoraMitm,
+        selectedRecord,
+        selectedApiMethod,
+        selectedInference,
         pluginListUpdating,
         recordPlugin,
         inferenceServerPlugin,
@@ -639,6 +714,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -654,6 +732,9 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
     if (connected != null) {
       return connected(
           pandoraMitm,
+          selectedRecord,
+          selectedApiMethod,
+          selectedInference,
           pluginListUpdating,
           recordPlugin,
           inferenceServerPlugin,
@@ -710,7 +791,10 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
 abstract class ConnectedPandoraMitmState extends PandoraMitmState {
   const factory ConnectedPandoraMitmState(
           final PluginCapablePandoraMitm pandoraMitm,
-          {final bool pluginListUpdating,
+          {final PandoraMitmRecord? selectedRecord,
+          final String? selectedApiMethod,
+          final ApiMethodInference? selectedInference,
+          final bool pluginListUpdating,
           final RecordPlugin? recordPlugin,
           final pmeplg.InferenceServerPlugin<InferencePlugin>?
               inferenceServerPlugin,
@@ -721,6 +805,10 @@ abstract class ConnectedPandoraMitmState extends PandoraMitmState {
   const ConnectedPandoraMitmState._() : super._();
 
   PluginCapablePandoraMitm get pandoraMitm =>
+      throw _privateConstructorUsedError;
+  PandoraMitmRecord? get selectedRecord => throw _privateConstructorUsedError;
+  String? get selectedApiMethod => throw _privateConstructorUsedError;
+  ApiMethodInference? get selectedInference =>
       throw _privateConstructorUsedError;
   bool get pluginListUpdating => throw _privateConstructorUsedError;
   RecordPlugin? get recordPlugin => throw _privateConstructorUsedError;
@@ -786,6 +874,9 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -807,6 +898,9 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -828,6 +922,9 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -945,6 +1042,9 @@ class _$ConnectionFailedPandoraMitmState
     required TResult Function() connecting,
     required TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -966,6 +1066,9 @@ class _$ConnectionFailedPandoraMitmState
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?
@@ -987,6 +1090,9 @@ class _$ConnectionFailedPandoraMitmState
     TResult Function()? connecting,
     TResult Function(
             PluginCapablePandoraMitm pandoraMitm,
+            PandoraMitmRecord? selectedRecord,
+            String? selectedApiMethod,
+            ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
             pmeplg.InferenceServerPlugin<InferencePlugin>?

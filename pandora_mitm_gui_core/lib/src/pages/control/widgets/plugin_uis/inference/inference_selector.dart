@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iapetus_meta/typing.dart';
+import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_selection_bar.dart';
-import 'package:pandora_mitm_gui_core/src/state/selection_bloc.dart';
+import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class InferenceSelector extends StatefulWidget {
   final pmplg.InferencePlugin plugin;
   final Widget Function(
     BuildContext context,
-    String apiMethod,
-    ValueType valueType,
+    ApiMethodInference inference,
+    bool isRequestSelected,
   ) builder;
 
   const InferenceSelector({
@@ -74,30 +74,30 @@ class _InferenceSelectorState extends State<InferenceSelector> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const SizedBox.shrink();
         final apiMethods = snapshot.requireData;
-        return BlocBuilder<SelectionBloc, String?>(
-          builder: (context, selectedApiMethod) {
-            final apiMethodValid = selectedApiMethod != null &&
-                apiMethods.contains(selectedApiMethod);
+        return BlocSelector<PandoraMitmBloc, PandoraMitmState,
+            ApiMethodInference?>(
+          selector: (state) => state.requireConnected.selectedInference,
+          builder: (context, inference) {
             return Column(
               children: [
                 InferenceSelectionBar(
                   apiMethods: apiMethods,
-                  selectedApiMethod: apiMethodValid ? selectedApiMethod : null,
+                  selectedApiMethod: inference?.method,
                   isRequestSelected: _isRequestSelected,
-                  onApiMethodSelected: (selectedApiMethod) =>
-                      context.read<SelectionBloc>().select(selectedApiMethod),
+                  onApiMethodSelected: (selectedApiMethod) => context
+                      .read<PandoraMitmBloc>()
+                      .selectApiMethod(selectedApiMethod),
                   onMessageTypeSelected: (isRequestSelected) =>
                       setState(() => _isRequestSelected = isRequestSelected),
                   inProgress: false,
                 ),
                 const Divider(height: 0),
-                if (apiMethodValid)
+                if (inference != null)
                   Expanded(
                     child: widget.builder(
                       context,
-                      selectedApiMethod,
-                      // TODO: Retrieve the real value type.
-                      const UnknownValueType(optional: true),
+                      inference,
+                      _isRequestSelected,
                     ),
                   ),
               ],

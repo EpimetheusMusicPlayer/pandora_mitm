@@ -78,7 +78,7 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.connectedState.inferenceServerPlugin != null;
+      pandoraMitmBloc.state.requireConnected.inferenceServerPlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>

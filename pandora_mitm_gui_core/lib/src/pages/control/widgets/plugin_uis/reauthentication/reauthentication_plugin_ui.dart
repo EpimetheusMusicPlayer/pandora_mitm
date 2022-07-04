@@ -31,7 +31,7 @@ class ReauthenticationPluginUi extends PluginUi<pmplg.ReauthenticationPlugin> {
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.connectedState.reauthenticationPlugin != null;
+      pandoraMitmBloc.state.requireConnected.reauthenticationPlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>
