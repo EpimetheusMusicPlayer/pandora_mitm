@@ -84,10 +84,14 @@ class PluginGroup extends PandoraMitmPlugin
   }
 
   @override
-  void movePlugin(int oldIndex, int newIndex) => _plugins.insert(
-        oldIndex < newIndex ? newIndex - 1 : newIndex,
-        _plugins.removeAt(oldIndex),
-      );
+  void movePlugin(int oldIndex, int newIndex) {
+    final plugin = _plugins.removeAt(oldIndex);
+    final insertionIndex = oldIndex < newIndex ? newIndex - 1 : newIndex;
+    _plugins.insert(insertionIndex, plugin);
+    log.info(
+      '${plugin.name} plugin moved from position $oldIndex to $insertionIndex.',
+    );
+  }
 
   Future<void> _removePluginsWhere(
     bool Function(PandoraMitmPlugin plugin) test,
