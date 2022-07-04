@@ -50,19 +50,23 @@ class InferenceSelectionBar extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              IntrinsicWidth(
-                child: InputDecorator(
-                  decoration: const InputDecoration(),
-                  child: DropdownButton<bool>(
-                    hint: const Text('Message type'),
-                    value: isRequestSelected,
-                    onChanged: (apiMethod) => onMessageTypeSelected(apiMethod!),
-                    items: const [
-                      DropdownMenuItem(value: true, child: Text('Request')),
-                      DropdownMenuItem(value: false, child: Text('Response')),
-                    ],
-                  ),
+              const SizedBox(width: 12),
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: selectedApiMethod == null
+                    ? null
+                    : () => onMessageTypeSelected(!isRequestSelected),
+                icon: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.cloud_outlined, size: 20),
+                    AnimatedRotation(
+                      turns: isRequestSelected ? 0.5 : 0,
+                      curve: Curves.bounceOut,
+                      duration: const Duration(milliseconds: 400),
+                      child: const Icon(Icons.arrow_downward, size: 20),
+                    ),
+                  ],
                 ),
               ),
               const Spacer(),
