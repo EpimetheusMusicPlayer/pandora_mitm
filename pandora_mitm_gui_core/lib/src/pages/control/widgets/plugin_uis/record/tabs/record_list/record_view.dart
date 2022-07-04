@@ -4,6 +4,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/recor
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_request_view.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_response_view.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 class RecordView extends StatelessWidget {
@@ -27,15 +28,14 @@ class RecordView extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: RecordInformationView(record: record),
           ),
-          const ThemedTabBar(
-            tabs: [
-              ThemedTabEntry('Request', Icons.upload),
-              ThemedTabEntry('Response', Icons.download),
-            ],
-          ),
           Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
+            child: ThemedTabbedSection(
+              tabBar: const ThemedTabBar(
+                tabs: [
+                  ThemedTabEntry('Request', Icons.upload),
+                  ThemedTabEntry('Response', Icons.download),
+                ],
+              ),
               children: [
                 RecordRequestView(record: record),
                 RecordResponseView(plugin: plugin, record: record),

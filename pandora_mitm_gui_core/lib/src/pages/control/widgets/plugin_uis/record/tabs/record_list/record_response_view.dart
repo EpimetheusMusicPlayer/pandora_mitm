@@ -5,6 +5,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_vie
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/tabs/record_list/record_response_preview.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/message_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
 class RecordResponseView extends StatelessWidget {
@@ -19,50 +20,40 @@ class RecordResponseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        children: [
-          MessageTabBar(
+    return FutureBuilder<PandoraResponse>(
+      key: ObjectKey(record.responseFuture),
+      future: record.responseFuture,
+      initialData: record.response,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final response = snapshot.data!;
+
+        return ThemedTabbedSection(
+          tabBar: MessageTabBar(
             jsonEncodable: record.response?.apiResponse,
             tabEntries: const [
               ...MessageTabBar.defaultTabEntries,
               ThemedTabEntry('Preview', Icons.preview),
             ],
           ),
-          Expanded(
-            child: FutureBuilder<PandoraResponse>(
-              key: ObjectKey(record.responseFuture),
-              future: record.responseFuture,
-              initialData: record.response,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final response = snapshot.data!;
-
-                return TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    InteractiveJsonView(
-                      key: ObjectKey(response.apiResponse),
-                      json: response.apiResponse.toJson(),
-                      initialDepth: 1,
-                    ),
-                    RawJsonView(
-                      jsonEncodable: response.apiResponse,
-                    ),
-                    RecordResponsePreview(
-                      plugin: plugin,
-                      record: record,
-                    ),
-                  ],
-                );
-              },
+          children: [
+            InteractiveJsonView(
+              key: ObjectKey(response.apiResponse),
+              json: response.apiResponse.toJson(),
+              initialDepth: 1,
             ),
-          ),
-        ],
-      ),
+            RawJsonView(
+              jsonEncodable: response.apiResponse,
+            ),
+            RecordResponsePreview(
+              plugin: plugin,
+              record: record,
+            ),
+          ],
+        );
+      },
     );
   }
 }

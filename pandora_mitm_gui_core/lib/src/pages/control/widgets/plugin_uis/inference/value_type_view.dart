@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iapetus_meta/typing.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 
 class FlatValueTypeView extends StatelessWidget {
   final List<NestedObjectValueTypeEntry> nestedObjectEntries;
@@ -12,51 +13,35 @@ class FlatValueTypeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: nestedObjectEntries.length,
-      // https://github.com/flutter/flutter/issues/86584
-      // A Material is needed to prevent ripples from tab children extending
-      // beyond their appropriate area.
-      child: Material(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ThemedTabBar(
-              tabs: nestedObjectEntries.map(
-                (entry) {
-                  final IconData iconData;
-                  switch (entry.parentCategory) {
-                    case NestedObjectValueTypeParentCategory.root:
-                    case NestedObjectValueTypeParentCategory.object:
-                      iconData = Icons.data_object;
-                      break;
-                    case NestedObjectValueTypeParentCategory.map:
-                      iconData = Icons.transform;
-                      break;
-                    case NestedObjectValueTypeParentCategory.list:
-                      iconData = Icons.data_array;
-                      break;
-                  }
+    return ThemedTabbedSection(
+      tabBar: ThemedTabBar(
+        tabs: nestedObjectEntries.map(
+          (entry) {
+            final IconData iconData;
+            switch (entry.parentCategory) {
+              case NestedObjectValueTypeParentCategory.root:
+              case NestedObjectValueTypeParentCategory.object:
+                iconData = Icons.data_object;
+                break;
+              case NestedObjectValueTypeParentCategory.map:
+                iconData = Icons.transform;
+                break;
+              case NestedObjectValueTypeParentCategory.list:
+                iconData = Icons.data_array;
+                break;
+            }
 
-                  return ThemedTabEntry(entry.name, iconData);
-                },
-              ).toList(growable: false),
-            ),
-            Expanded(
-              child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                children: nestedObjectEntries
-                    .map(
-                      (entry) => ShallowJsonObjectValueTypeView(
-                        valueType: entry.valueType,
-                      ),
-                    )
-                    .toList(growable: false),
-              ),
-            ),
-          ],
-        ),
+            return ThemedTabEntry(entry.name, iconData);
+          },
+        ).toList(growable: false),
       ),
+      children: nestedObjectEntries
+          .map(
+            (entry) => ShallowJsonObjectValueTypeView(
+              valueType: entry.valueType,
+            ),
+          )
+          .toList(growable: false),
     );
   }
 }

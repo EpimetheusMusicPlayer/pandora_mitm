@@ -3,6 +3,7 @@ import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/plugin_add_panel/plugin_add_button.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 import 'package:pandora_mitm_gui_core/src/widgets/splash_art.dart';
 
 class PluginMainPanel extends StatelessWidget {
@@ -67,33 +68,22 @@ class PluginMainPanel extends StatelessWidget {
           );
         }
 
-        return DefaultTabController(
-          length: pluginUiMap.length,
-          child: Column(
-            children: [
-              ThemedTabBar(
-                tabs: pluginUiMap.values
-                    .map(
-                      (pluginUi) => ThemedTabEntry(
-                        pluginUi.displayName,
-                        pluginUi.iconData,
-                      ),
-                    )
-                    .toList(growable: false),
-              ),
-              Expanded(
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: pluginUiMap.entries
-                      .map(
-                        (entry) =>
-                            entry.value.buildMainPanel(context, entry.key),
-                      )
-                      .toList(growable: false),
-                ),
-              ),
-            ],
+        return ThemedTabbedSection(
+          tabBar: ThemedTabBar(
+            tabs: pluginUiMap.values
+                .map(
+                  (pluginUi) => ThemedTabEntry(
+                    pluginUi.displayName,
+                    pluginUi.iconData,
+                  ),
+                )
+                .toList(growable: false),
           ),
+          children: pluginUiMap.entries
+              .map(
+                (entry) => entry.value.buildMainPanel(context, entry.key),
+              )
+              .toList(growable: false),
         );
       },
     );
