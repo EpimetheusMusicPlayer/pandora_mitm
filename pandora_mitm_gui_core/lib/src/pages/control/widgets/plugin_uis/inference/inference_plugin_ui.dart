@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_extra/plugins.dart' as pmeplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
@@ -69,7 +70,10 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
       ),
       // ignore: prefer_void_to_null
       PopupMenuItem<Null>(
-        onTap: plugin.inferencePlugin.clear,
+        onTap: () async {
+          await context.read<PandoraMitmBloc>().selectApiMethod(null);
+          plugin.inferencePlugin.clear();
+        },
         child: const Text('Clear inferences'),
       ),
       ...super.buildContextMenuItems(context, plugin),

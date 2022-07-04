@@ -35,9 +35,16 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
   }
 
   Future<ConnectedPandoraMitmState> _computeApiMethodSelection(
-    String apiMethod,
+    String? apiMethod,
     ConnectedPandoraMitmState state,
   ) async {
+    if (apiMethod == null) {
+      return state.copyWith(
+        selectedApiMethod: null,
+        selectedInference: null,
+      );
+    }
+
     final inference = await state.inferenceServerPlugin?.inferencePlugin
         .getInference(apiMethod);
     return state.copyWith(
@@ -46,8 +53,16 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     );
   }
 
-  Future<void> selectRecord(int recordIndex) async {
+  Future<void> selectRecord(int? recordIndex) async {
     final state = this.state.requireConnected;
+
+    if (recordIndex == null) {
+      if (state.selectedRecord != null) {
+        emit(state.copyWith(selectedRecord: null));
+      }
+      return;
+    }
+
     assert(
       state.recordPlugin != null,
       'Cannot select a record - record plugin is not enabled!',
@@ -63,7 +78,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     );
   }
 
-  Future<void> selectApiMethod(String apiMethod) async {
+  Future<void> selectApiMethod(String? apiMethod) async {
     final state = this.state.requireConnected;
     emit(
       await _computeApiMethodSelection(
@@ -166,9 +181,12 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
         (state, plugin) => state.copyWith(recordPlugin: plugin),
       );
 
-  Future<void> disableRecordPlugin() => _disablePlugin<RecordPlugin>(
-        (state) => state.copyWith(recordPlugin: null),
-      );
+  Future<void> disableRecordPlugin() async {
+    await selectRecord(null);
+    await _disablePlugin<RecordPlugin>(
+      (state) => state.copyWith(recordPlugin: null),
+    );
+  }
 
   Future<void> enableInferenceServerPlugin() =>
       _enablePlugin<pmeplg.InferenceServerPlugin>(
@@ -183,10 +201,12 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
         (state, plugin) => state.copyWith(inferenceServerPlugin: plugin),
       );
 
-  Future<void> disableInferenceServerPlugin() =>
-      _disablePlugin<pmeplg.InferenceServerPlugin>(
-        (state) => state.copyWith(inferenceServerPlugin: null),
-      );
+  Future<void> disableInferenceServerPlugin() async {
+    await selectApiMethod(null);
+    await _disablePlugin<pmeplg.InferenceServerPlugin>(
+      (state) => state.copyWith(inferenceServerPlugin: null),
+    );
+  }
 
   Future<void> enableReauthenticationPlugin() =>
       _enablePlugin<pmplg.ReauthenticationPlugin>(

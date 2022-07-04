@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixins/boilerplate_stripper_plugin_ui_mixin.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/record/record_plugin_main_panel.dart';
@@ -33,9 +34,12 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
       [
         // ignore: prefer_void_to_null
         PopupMenuItem<Null>(
-          onTap: () => plugin
-            ..messageRecorder.clear()
-            ..objectRecorder.clear(),
+          onTap: () async {
+            await context.read<PandoraMitmBloc>().selectRecord(null);
+            plugin
+              ..messageRecorder.clear()
+              ..objectRecorder.clear();
+          },
           child: const Text('Clear messages'),
         ),
         // ignore: prefer_void_to_null
