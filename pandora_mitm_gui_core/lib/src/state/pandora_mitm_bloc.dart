@@ -47,10 +47,24 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
 
     final inference = await state.inferenceServerPlugin?.inferencePlugin
         .getInference(apiMethod);
-    return state.copyWith(
-      selectedApiMethod: apiMethod,
-      selectedInference: inference,
+
+    return _computeInferenceSelection(
+      inference,
+      state.copyWith(selectedApiMethod: apiMethod),
     );
+  }
+
+  Future<ConnectedPandoraMitmState> _computeInferenceSelection(
+    ApiMethodInference? inference,
+    ConnectedPandoraMitmState state,
+  ) async {
+    if (inference == null) {
+      return state.copyWith(
+        selectedInference: null,
+      );
+    }
+
+    return state.copyWith(selectedInference: inference);
   }
 
   Future<void> selectRecord(int? recordIndex) async {
@@ -90,6 +104,13 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
       ),
     );
   }
+
+  Future<void> clearInferenceSelection() async =>
+      // The selectedInference should always be relevant to the selectedRecord
+      // and selectedApiMethod.
+      // If the either would be affected by this, however, a re-computation
+      // would simply result in another null value. It is therefore unneeded.
+      emit(await _computeInferenceSelection(null, state.requireConnected));
 
   Future<void> waitUntilPluginListUpdated() async {
     if (!state.requireConnected.pluginListUpdating) return;
@@ -202,7 +223,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
       );
 
   Future<void> disableInferenceServerPlugin() async {
-    await selectApiMethod(null);
+    await clearInferenceSelection();
     await _disablePlugin<pmeplg.InferenceServerPlugin>(
       (state) => state.copyWith(inferenceServerPlugin: null),
     );

@@ -71,7 +71,7 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
       // ignore: prefer_void_to_null
       PopupMenuItem<Null>(
         onTap: () async {
-          await context.read<PandoraMitmBloc>().selectApiMethod(null);
+          await context.read<PandoraMitmBloc>().clearInferenceSelection();
           plugin.inferencePlugin.clear();
         },
         child: const Text('Clear inferences'),
