@@ -194,6 +194,8 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
 
 @freezed
 class PandoraMitmState with _$PandoraMitmState {
+  const PandoraMitmState._();
+
   const factory PandoraMitmState.disconnected() = DisconnectedPandoraMitmState;
 
   const factory PandoraMitmState.connecting() = ConnectingPandoraMitmState;
@@ -213,4 +215,14 @@ class PandoraMitmState with _$PandoraMitmState {
 
   const factory PandoraMitmState.connectionFailed() =
       ConnectionFailedPandoraMitmState;
+
+  bool get allPluginsEnabled {
+    final state = this;
+    return state is ConnectedPandoraMitmState &&
+        state.recordPlugin != null &&
+        state.inferenceServerPlugin != null &&
+        state.reauthenticationPlugin != null &&
+        state.featureUnlockPlugin != null &&
+        state.mitmproxyUiHelperPlugin != null;
+  }
 }

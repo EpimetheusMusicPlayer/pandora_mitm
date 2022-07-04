@@ -144,8 +144,8 @@ class __$$DisconnectedPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DisconnectedPandoraMitmState implements DisconnectedPandoraMitmState {
-  const _$DisconnectedPandoraMitmState();
+class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
+  const _$DisconnectedPandoraMitmState() : super._();
 
   @override
   String toString() {
@@ -272,8 +272,9 @@ class _$DisconnectedPandoraMitmState implements DisconnectedPandoraMitmState {
   }
 }
 
-abstract class DisconnectedPandoraMitmState implements PandoraMitmState {
+abstract class DisconnectedPandoraMitmState extends PandoraMitmState {
   const factory DisconnectedPandoraMitmState() = _$DisconnectedPandoraMitmState;
+  const DisconnectedPandoraMitmState._() : super._();
 }
 
 /// @nodoc
@@ -300,8 +301,8 @@ class __$$ConnectingPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectingPandoraMitmState implements ConnectingPandoraMitmState {
-  const _$ConnectingPandoraMitmState();
+class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
+  const _$ConnectingPandoraMitmState() : super._();
 
   @override
   String toString() {
@@ -428,8 +429,9 @@ class _$ConnectingPandoraMitmState implements ConnectingPandoraMitmState {
   }
 }
 
-abstract class ConnectingPandoraMitmState implements PandoraMitmState {
+abstract class ConnectingPandoraMitmState extends PandoraMitmState {
   const factory ConnectingPandoraMitmState() = _$ConnectingPandoraMitmState;
+  const ConnectingPandoraMitmState._() : super._();
 }
 
 /// @nodoc
@@ -505,14 +507,15 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
+class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   const _$ConnectedPandoraMitmState(this.pandoraMitm,
       {this.pluginListUpdating = false,
       this.recordPlugin,
       this.inferenceServerPlugin,
       this.reauthenticationPlugin,
       this.featureUnlockPlugin,
-      this.mitmproxyUiHelperPlugin});
+      this.mitmproxyUiHelperPlugin})
+      : super._();
 
   @override
   final PluginCapablePandoraMitm pandoraMitm;
@@ -704,7 +707,7 @@ class _$ConnectedPandoraMitmState implements ConnectedPandoraMitmState {
   }
 }
 
-abstract class ConnectedPandoraMitmState implements PandoraMitmState {
+abstract class ConnectedPandoraMitmState extends PandoraMitmState {
   const factory ConnectedPandoraMitmState(
           final PluginCapablePandoraMitm pandoraMitm,
           {final bool pluginListUpdating,
@@ -715,6 +718,7 @@ abstract class ConnectedPandoraMitmState implements PandoraMitmState {
           final pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
           final pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin}) =
       _$ConnectedPandoraMitmState;
+  const ConnectedPandoraMitmState._() : super._();
 
   PluginCapablePandoraMitm get pandoraMitm =>
       throw _privateConstructorUsedError;
@@ -757,8 +761,8 @@ class __$$DisconnectingPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DisconnectingPandoraMitmState implements DisconnectingPandoraMitmState {
-  const _$DisconnectingPandoraMitmState();
+class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
+  const _$DisconnectingPandoraMitmState() : super._();
 
   @override
   String toString() {
@@ -885,9 +889,10 @@ class _$DisconnectingPandoraMitmState implements DisconnectingPandoraMitmState {
   }
 }
 
-abstract class DisconnectingPandoraMitmState implements PandoraMitmState {
+abstract class DisconnectingPandoraMitmState extends PandoraMitmState {
   const factory DisconnectingPandoraMitmState() =
       _$DisconnectingPandoraMitmState;
+  const DisconnectingPandoraMitmState._() : super._();
 }
 
 /// @nodoc
@@ -915,8 +920,8 @@ class __$$ConnectionFailedPandoraMitmStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ConnectionFailedPandoraMitmState
-    implements ConnectionFailedPandoraMitmState {
-  const _$ConnectionFailedPandoraMitmState();
+    extends ConnectionFailedPandoraMitmState {
+  const _$ConnectionFailedPandoraMitmState() : super._();
 
   @override
   String toString() {
@@ -1043,7 +1048,8 @@ class _$ConnectionFailedPandoraMitmState
   }
 }
 
-abstract class ConnectionFailedPandoraMitmState implements PandoraMitmState {
+abstract class ConnectionFailedPandoraMitmState extends PandoraMitmState {
   const factory ConnectionFailedPandoraMitmState() =
       _$ConnectionFailedPandoraMitmState;
+  const ConnectionFailedPandoraMitmState._() : super._();
 }
