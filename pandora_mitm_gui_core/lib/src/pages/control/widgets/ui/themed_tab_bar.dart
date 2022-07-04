@@ -17,7 +17,7 @@ class ThemedTabBar extends StatelessWidget {
       height: AppBarTheme.of(context).toolbarHeight ?? kToolbarHeight,
       child: Card(
         color: Theme.of(context).primaryColor,
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.none,
         margin: EdgeInsets.zero,
         shape: const Border(),
         elevation: AppBarTheme.of(context).elevation ?? 4,
