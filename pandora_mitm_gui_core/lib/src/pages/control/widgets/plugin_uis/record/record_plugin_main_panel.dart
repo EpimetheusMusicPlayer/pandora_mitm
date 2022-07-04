@@ -18,8 +18,14 @@ class RecordPluginMainPanel extends StatelessWidget {
     return ThemedTabbedSection(
       tabBar: const ThemedTabBar(
         tabs: [
-          ThemedTabEntry('Messages', Icons.cloud_sync),
-          ThemedTabEntry('Metadata', Icons.library_music),
+          ThemedTabEntry(
+            title: Text('Messages'),
+            icon: Icon(Icons.cloud_sync),
+          ),
+          ThemedTabEntry(
+            title: Text('Metadata'),
+            icon: Icon(Icons.library_music),
+          ),
         ],
       ),
       children: [

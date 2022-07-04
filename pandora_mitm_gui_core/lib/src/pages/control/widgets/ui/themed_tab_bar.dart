@@ -35,10 +35,13 @@ class ThemedTabBar extends StatelessWidget {
                         (tabEntry) => Tab(
                           child: Row(
                             children: [
-                              if (tabEntry.iconData != null)
-                                Icon(tabEntry.iconData, size: 20),
+                              if (tabEntry.icon != null)
+                                IconTheme.merge(
+                                  data: const IconThemeData(size: 20),
+                                  child: tabEntry.icon!,
+                                ),
                               const SizedBox(width: 8),
-                              Text(tabEntry.name),
+                              tabEntry.title,
                             ],
                           ),
                         ),
@@ -56,19 +59,11 @@ class ThemedTabBar extends StatelessWidget {
 }
 
 class ThemedTabEntry {
-  final String name;
-  final IconData? iconData;
+  final Widget title;
+  final Widget? icon;
 
-  const ThemedTabEntry(this.name, this.iconData);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ThemedTabEntry &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          iconData == other.iconData;
-
-  @override
-  int get hashCode => Object.hash(name, iconData);
+  const ThemedTabEntry({
+    required this.title,
+    this.icon,
+  });
 }

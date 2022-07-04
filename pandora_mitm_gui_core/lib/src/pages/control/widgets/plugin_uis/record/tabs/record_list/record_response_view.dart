@@ -35,7 +35,7 @@ class RecordResponseView extends StatelessWidget {
             jsonEncodable: record.response?.apiResponse,
             tabEntries: const [
               ...MessageTabBar.defaultTabEntries,
-              ThemedTabEntry('Preview', Icons.preview),
+              ThemedTabEntry(title: Text('Preview'), icon: Icon(Icons.preview)),
             ],
           ),
           children: [

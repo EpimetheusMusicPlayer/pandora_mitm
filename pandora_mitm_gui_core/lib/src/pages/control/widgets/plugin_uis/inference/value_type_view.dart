@@ -17,21 +17,21 @@ class FlatValueTypeView extends StatelessWidget {
       tabBar: ThemedTabBar(
         tabs: nestedObjectEntries.map(
           (entry) {
-            final IconData iconData;
+            final Icon icon;
             switch (entry.parentCategory) {
               case NestedObjectValueTypeParentCategory.root:
               case NestedObjectValueTypeParentCategory.object:
-                iconData = Icons.data_object;
+                icon = const Icon(Icons.data_object);
                 break;
               case NestedObjectValueTypeParentCategory.map:
-                iconData = Icons.transform;
+                icon = const Icon(Icons.transform);
                 break;
               case NestedObjectValueTypeParentCategory.list:
-                iconData = Icons.data_array;
+                icon = const Icon(Icons.data_array);
                 break;
             }
 
-            return ThemedTabEntry(entry.name, iconData);
+            return ThemedTabEntry(title: Text(entry.name), icon: icon);
           },
         ).toList(growable: false),
       ),

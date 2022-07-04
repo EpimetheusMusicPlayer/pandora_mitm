@@ -32,8 +32,14 @@ class RecordView extends StatelessWidget {
             child: ThemedTabbedSection(
               tabBar: const ThemedTabBar(
                 tabs: [
-                  ThemedTabEntry('Request', Icons.upload),
-                  ThemedTabEntry('Response', Icons.download),
+                  ThemedTabEntry(
+                    title: Text('Request'),
+                    icon: Icon(Icons.upload),
+                  ),
+                  ThemedTabEntry(
+                    title: Text('Response'),
+                    icon: Icon(Icons.download),
+                  ),
                 ],
               ),
               children: [

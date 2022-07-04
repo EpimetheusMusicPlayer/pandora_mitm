@@ -73,8 +73,8 @@ class PluginMainPanel extends StatelessWidget {
             tabs: pluginUiMap.values
                 .map(
                   (pluginUi) => ThemedTabEntry(
-                    pluginUi.displayName,
-                    pluginUi.iconData,
+                    title: Text(pluginUi.displayName),
+                    icon: Icon(pluginUi.iconData),
                   ),
                 )
                 .toList(growable: false),
