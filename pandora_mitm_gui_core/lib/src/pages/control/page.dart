@@ -11,7 +11,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/section_heade
 
 class ControlPage extends StatelessWidget {
   final List<PluginUi> availablePluginUis;
-  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
+  final Map<String, List<PluginUi>> availablePluginTemplates;
 
   const ControlPage({
     Key? key,

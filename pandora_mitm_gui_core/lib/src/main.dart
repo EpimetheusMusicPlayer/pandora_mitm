@@ -19,7 +19,7 @@ import 'package:provider/provider.dart';
 
 void runPandoraMitmGuiApp({
   List<PluginUi> extraPluginUis = const [],
-  Map<String, Iterable<PluginUi>> extraPluginTemplates = const {},
+  Map<String, List<PluginUi>> extraPluginTemplates = const {},
 }) {
   Logger.root.onRecord.listen(
     (record) => stdout.writeln(
@@ -53,7 +53,7 @@ void runPandoraMitmGuiApp({
 
 class PandoraMitmGuiApp extends StatefulWidget {
   final List<PluginUi> availablePluginUis;
-  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
+  final Map<String, List<PluginUi>> availablePluginTemplates;
 
   PandoraMitmGuiApp({
     Key? key,

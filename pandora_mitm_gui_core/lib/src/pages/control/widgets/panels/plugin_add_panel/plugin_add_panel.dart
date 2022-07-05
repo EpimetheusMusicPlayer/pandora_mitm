@@ -7,7 +7,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
 class PluginAddPanel extends StatelessWidget {
   final PluginManager pluginManager;
   final List<PluginUi> availablePluginUis;
-  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
+  final Map<String, List<PluginUi>> availablePluginTemplates;
 
   const PluginAddPanel({
     Key? key,

@@ -7,7 +7,7 @@ import 'package:popup_menu_title/popup_menu_title.dart';
 
 class PluginTemplateButton extends StatelessWidget {
   final PluginManager pluginManager;
-  final Map<String, Iterable<PluginUi>> availablePluginTemplates;
+  final Map<String, List<PluginUi>> availablePluginTemplates;
 
   const PluginTemplateButton({
     Key? key,
