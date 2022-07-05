@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_selection_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/controls/api_method_dropdown.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class InferenceSelector extends StatefulWidget {
@@ -28,7 +30,6 @@ class InferenceSelector extends StatefulWidget {
 class _InferenceSelectorState extends State<InferenceSelector> {
   late StreamSubscription<void> _apiMethodSubscription;
   late Future<Set<String>> _apiMethodsFuture;
-  var _isRequestSelected = false;
 
   @override
   void initState() {
@@ -78,29 +79,58 @@ class _InferenceSelectorState extends State<InferenceSelector> {
             ApiMethodInference?>(
           selector: (state) => state.requireConnected.selectedInference,
           builder: (context, inference) {
-            return Column(
-              children: [
-                InferenceSelectionBar(
-                  apiMethods: apiMethods,
-                  selectedApiMethod: inference?.method,
-                  isRequestSelected: _isRequestSelected,
-                  onApiMethodSelected: (selectedApiMethod) => context
-                      .read<PandoraMitmBloc>()
-                      .selectApiMethod(selectedApiMethod),
-                  onMessageTypeSelected: (isRequestSelected) =>
-                      setState(() => _isRequestSelected = isRequestSelected),
-                  inProgress: false,
-                ),
-                const Divider(height: 0),
-                if (inference != null)
-                  Expanded(
-                    child: widget.builder(
-                      context,
-                      inference,
-                      _isRequestSelected,
+            final tabBarTextTheme =
+                Theme.of(context).primaryTextTheme.bodyText1!;
+            return ThemedTabbedSection(
+              tabBar: ThemedTabBar(
+                alignment: Alignment.centerRight,
+                leading: [
+                  Theme(
+                    data: ThemeData(
+                      inputDecorationTheme:
+                          Theme.of(context).inputDecorationTheme.copyWith(
+                                iconColor: tabBarTextTheme.color,
+                                contentPadding:
+                                    const EdgeInsets.only(left: 20, right: 4),
+                              ),
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: DropdownButtonHideUnderline(
+                        child: ApiMethodDropdown(
+                          apiMethods: apiMethods,
+                          selectionValid: inference != null,
+                          textStyle: tabBarTextTheme,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+                tabs: const [
+                  ThemedTabEntry(
+                    title: Text('Request'),
+                    icon: Icon(Icons.upload),
                   ),
-              ],
+                  ThemedTabEntry(
+                    title: Text('Response'),
+                    icon: Icon(Icons.download),
+                  ),
+                ],
+              ),
+              children: inference == null
+                  ? const [SizedBox.shrink(), SizedBox.shrink()]
+                  : [
+                      widget.builder(
+                        context,
+                        inference,
+                        true,
+                      ),
+                      widget.builder(
+                        context,
+                        inference,
+                        false,
+                      ),
+                    ],
             );
           },
         );
