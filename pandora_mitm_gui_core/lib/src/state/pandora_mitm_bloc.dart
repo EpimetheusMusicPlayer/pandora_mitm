@@ -213,6 +213,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
       _enablePlugin<pmeplg.InferenceServerPlugin>(
         () => pmeplg.InferenceServerPlugin(
           pmplg.BackgroundInferencePlugin.new,
+          serve: false,
           port: 46337,
           stripBoilerplate: true,
         ),
