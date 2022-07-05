@@ -1,15 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/controls/api_method_dropdown.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_api_method_selector.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tab_bar.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed_section.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
-class InferenceSelector extends StatefulWidget {
+class InferenceSelector extends StatelessWidget {
   final pmplg.InferencePlugin plugin;
   final Widget Function(
     BuildContext context,
@@ -24,57 +23,11 @@ class InferenceSelector extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InferenceSelector> createState() => _InferenceSelectorState();
-}
-
-class _InferenceSelectorState extends State<InferenceSelector> {
-  late StreamSubscription<void> _apiMethodSubscription;
-  late Future<Set<String>> _apiMethodsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _bindToPlugin();
-  }
-
-  @override
-  void didUpdateWidget(InferenceSelector oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (!identical(widget.plugin, oldWidget.plugin)) {
-      _unbindFromPlugin().then((_) {
-        if (mounted) _bindToPlugin();
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _unbindFromPlugin();
-    super.dispose();
-  }
-
-  void _bindToPlugin() {
-    _apiMethodsFuture = Future.value(widget.plugin.inferredApiMethods);
-    _apiMethodSubscription = widget.plugin.inferredApiMethodStream.listen((_) {
-      setState(
-        () {
-          _apiMethodsFuture = Future.value(widget.plugin.inferredApiMethods);
-        },
-      );
-    });
-  }
-
-  Future<void> _unbindFromPlugin() async {
-    await _apiMethodSubscription.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Set<String>>(
-      future: _apiMethodsFuture,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return const SizedBox.shrink();
-        final apiMethods = snapshot.requireData;
+    return InferenceApiMethodSetBuilder(
+      plugin: plugin,
+      builder: (context, apiMethods) {
+        if (apiMethods == null) return const SizedBox.shrink();
         return BlocSelector<PandoraMitmBloc, PandoraMitmState,
             ApiMethodInference?>(
           selector: (state) => state.requireConnected.selectedInference,
@@ -120,12 +73,12 @@ class _InferenceSelectorState extends State<InferenceSelector> {
               children: inference == null
                   ? const [SizedBox.shrink(), SizedBox.shrink()]
                   : [
-                      widget.builder(
+                      builder(
                         context,
                         inference,
                         true,
                       ),
-                      widget.builder(
+                      builder(
                         context,
                         inference,
                         false,
