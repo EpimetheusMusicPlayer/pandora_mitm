@@ -33,9 +33,7 @@ class _InferenceApiMethodSetBuilderState
   void didUpdateWidget(InferenceApiMethodSetBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!identical(widget.plugin, oldWidget.plugin)) {
-      _unbindFromPlugin().then((_) {
-        if (mounted) _bindToPlugin();
-      });
+      _unbindFromPlugin().then((_) => _bindToPlugin());
     }
   }
 
@@ -52,7 +50,9 @@ class _InferenceApiMethodSetBuilderState
       setState(() => _apiMethods = apiMethods);
     }
 
-    await _updateApiMethods();
+    // Initialize the inferred API method set in case the stream emits an event
+    // before the initial set is retrieved.
+    _apiMethods = {};
     _apiMethodSubscription =
         widget.plugin.inferredApiMethodStream.listen((apiMethod) {
       if (!mounted) return;
@@ -65,6 +65,7 @@ class _InferenceApiMethodSetBuilderState
         setState(() => _apiMethods!.add(apiMethod));
       }
     });
+    await _updateApiMethods();
   }
 
   Future<void> _unbindFromPlugin() async {
