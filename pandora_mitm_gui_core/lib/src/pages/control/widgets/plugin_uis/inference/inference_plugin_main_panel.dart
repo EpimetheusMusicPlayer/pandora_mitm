@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_codegen_button.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/inference_selector.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/inference/value_type_view.dart';
 
@@ -20,6 +21,15 @@ class InferencePluginMainPanel extends StatelessWidget {
           nestedObjectEntries: isRequestSelected
               ? inference.computedRequestValueTypeEntries
               : inference.computedResponseValueTypeEntries,
+          actions: [
+            IconTheme(
+              data: IconTheme.of(context),
+              child: InferenceCodegenButton(
+                inference: inference,
+                generateRequest: isRequestSelected,
+              ),
+            ),
+          ],
         );
       },
     );

@@ -5,10 +5,12 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/ui/themed_tabbed
 
 class FlatValueTypeView extends StatelessWidget {
   final List<NestedObjectValueTypeEntry> nestedObjectEntries;
+  final List<Widget>? actions;
 
   const FlatValueTypeView({
     Key? key,
     required this.nestedObjectEntries,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class FlatValueTypeView extends StatelessWidget {
             return ThemedTabEntry(title: Text(entry.name), icon: icon);
           },
         ).toList(growable: false),
+        actions: actions,
       ),
       children: nestedObjectEntries
           .map(

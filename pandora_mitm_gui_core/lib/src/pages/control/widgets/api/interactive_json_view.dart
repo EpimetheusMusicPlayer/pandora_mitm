@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_view/json_view.dart';
-import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_json_view.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/raw_code_view.dart';
 
 class InteractiveJsonView extends StatelessWidget {
   final Map<String, dynamic> json;
@@ -20,11 +20,11 @@ class InteractiveJsonView extends StatelessWidget {
       child: JsonConfig(
         data: JsonConfigData(
           color: JsonColorScheme(
-            nullColor: RawJsonView.theme['literal']!.color,
-            boolColor: RawJsonView.theme['literal']!.color,
-            numColor: RawJsonView.theme['number']!.color,
-            stringColor: RawJsonView.theme['string']!.color,
-            normalColor: RawJsonView.theme['root']!.color,
+            nullColor: RawCodeView.theme['literal']!.color,
+            boolColor: RawCodeView.theme['literal']!.color,
+            numColor: RawCodeView.theme['number']!.color,
+            stringColor: RawCodeView.theme['string']!.color,
+            normalColor: RawCodeView.theme['root']!.color,
           ),
           style: JsonStyleScheme(depth: initialDepth),
           animationDuration: const Duration(milliseconds: 200),

@@ -45,6 +45,8 @@ class ApiRequestMethodIcon extends StatelessWidget {
         'playlists.v7.getTracks': Icons.featured_play_list,
         'aesop.v1.annotateObjects': Icons.book_outlined,
         'aesop.v1.getDetails': Icons.book,
+        'collections.v7.removeItem': Icons.playlist_remove,
+        'downloads.v5.removeItem': Icons.delete,
       }[method],
     );
   }

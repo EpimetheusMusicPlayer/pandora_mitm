@@ -31,3 +31,7 @@ dev_dependencies:
 dependency_overrides:
   iapetus:
     path: ../iapetus
+  code_builder:
+    git:
+      url: https://github.com/hacker1024/code_builder.git
+      ref: 7fa1ac26e526763e4cc70c4345b514bb830c78c8
