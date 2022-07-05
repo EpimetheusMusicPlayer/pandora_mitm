@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ThemedTabBar extends StatelessWidget {
+  final AlignmentGeometry alignment;
+  final List<Widget>? leading;
   final List<ThemedTabEntry> tabs;
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   const ThemedTabBar({
     Key? key,
+    this.alignment = Alignment.centerLeft,
+    this.leading,
     required this.tabs,
-    this.actions = const [],
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -27,29 +31,33 @@ class ThemedTabBar extends StatelessWidget {
           ),
           child: Row(
             children: [
+              if (leading != null) ...leading!,
               Expanded(
-                child: TabBar(
-                  isScrollable: true,
-                  tabs: tabs
-                      .map(
-                        (tabEntry) => Tab(
-                          child: Row(
-                            children: [
-                              if (tabEntry.icon != null)
-                                IconTheme.merge(
-                                  data: const IconThemeData(size: 20),
-                                  child: tabEntry.icon!,
-                                ),
-                              const SizedBox(width: 8),
-                              tabEntry.title,
-                            ],
+                child: Align(
+                  alignment: alignment,
+                  child: TabBar(
+                    isScrollable: true,
+                    tabs: tabs
+                        .map(
+                          (tabEntry) => Tab(
+                            child: Row(
+                              children: [
+                                if (tabEntry.icon != null)
+                                  IconTheme.merge(
+                                    data: const IconThemeData(size: 20),
+                                    child: tabEntry.icon!,
+                                  ),
+                                const SizedBox(width: 8),
+                                tabEntry.title,
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                      .toList(growable: false),
+                        )
+                        .toList(growable: false),
+                  ),
                 ),
               ),
-              ...actions,
+              if (actions != null) ...actions!,
             ],
           ),
         ),
