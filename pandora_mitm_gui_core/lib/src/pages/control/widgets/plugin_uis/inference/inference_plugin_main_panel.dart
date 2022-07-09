@@ -8,9 +8,9 @@ class InferencePluginMainPanel extends StatelessWidget {
   final pmplg.InferencePlugin plugin;
 
   const InferencePluginMainPanel({
-    Key? key,
+    super.key,
     required this.plugin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

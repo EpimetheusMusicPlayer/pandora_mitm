@@ -11,10 +11,10 @@ class PluginMainPanel extends StatelessWidget {
   final List<PluginUi> availablePluginUis;
 
   const PluginMainPanel({
-    Key? key,
+    super.key,
     required this.pluginManager,
     required this.availablePluginUis,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

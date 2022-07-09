@@ -7,12 +7,12 @@ class ThemedTabBar extends StatelessWidget {
   final List<Widget>? actions;
 
   const ThemedTabBar({
-    Key? key,
+    super.key,
     this.alignment = Alignment.centerLeft,
     this.leading,
     required this.tabs,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

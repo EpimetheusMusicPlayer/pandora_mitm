@@ -10,10 +10,10 @@ class PluginTemplateButton extends StatelessWidget {
   final Map<String, List<PluginUi>> availablePluginTemplates;
 
   const PluginTemplateButton({
-    Key? key,
+    super.key,
     required this.pluginManager,
     required this.availablePluginTemplates,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

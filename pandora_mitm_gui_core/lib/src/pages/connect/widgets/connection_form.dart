@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class ConnectionForm extends StatefulWidget {
-  const ConnectionForm({Key? key}) : super(key: key);
+  const ConnectionForm({super.key});
 
   @override
   State<ConnectionForm> createState() => ConnectionFormState();

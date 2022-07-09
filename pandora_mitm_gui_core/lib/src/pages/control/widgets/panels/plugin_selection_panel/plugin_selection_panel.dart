@@ -13,10 +13,10 @@ class PluginSelectionPanel extends StatelessWidget {
   final List<PluginUi> availablePluginUis;
 
   const PluginSelectionPanel({
-    Key? key,
+    super.key,
     required this.pluginManager,
     required this.availablePluginUis,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +48,10 @@ class PluginSelectionPanelTile extends StatefulWidget {
   final PluginUi pluginUi;
 
   const PluginSelectionPanelTile({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.pluginUi,
-  }) : super(key: key);
+  });
 
   @override
   State<PluginSelectionPanelTile> createState() =>

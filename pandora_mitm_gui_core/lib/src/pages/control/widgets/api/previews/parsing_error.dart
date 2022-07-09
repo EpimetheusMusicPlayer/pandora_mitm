@@ -11,10 +11,10 @@ class ParsingErrorPreview extends StatelessWidget {
   final VoidCallback reparse;
 
   const ParsingErrorPreview({
-    Key? key,
+    super.key,
     required this.error,
     required this.reparse,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

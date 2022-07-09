@@ -6,7 +6,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/med
 class DebugMediaListTile extends StatelessWidget {
   final MediaAnnotation annotation;
 
-  const DebugMediaListTile(this.annotation, {Key? key}) : super(key: key);
+  const DebugMediaListTile(this.annotation, {super.key});
 
   @override
   Widget build(BuildContext context) {

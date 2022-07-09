@@ -11,9 +11,9 @@ class RecordListWidget extends StatelessWidget {
   final RecordPlugin plugin;
 
   const RecordListWidget({
-    Key? key,
+    super.key,
     required this.plugin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

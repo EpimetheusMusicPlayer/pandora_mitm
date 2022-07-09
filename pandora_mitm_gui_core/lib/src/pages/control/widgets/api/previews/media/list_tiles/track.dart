@@ -8,9 +8,9 @@ class TrackListTile extends StatelessWidget {
 
   const TrackListTile(
     this.annotation, {
-    Key? key,
+    super.key,
     this.onPlay,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

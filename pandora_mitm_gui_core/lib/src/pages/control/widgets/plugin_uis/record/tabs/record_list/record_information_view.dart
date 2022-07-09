@@ -7,9 +7,9 @@ class RecordInformationView extends StatelessWidget {
   final PandoraMitmRecord record;
 
   const RecordInformationView({
-    Key? key,
+    super.key,
     required this.record,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

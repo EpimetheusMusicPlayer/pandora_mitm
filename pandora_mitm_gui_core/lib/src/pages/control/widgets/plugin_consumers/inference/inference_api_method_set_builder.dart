@@ -8,10 +8,10 @@ class InferenceApiMethodSetBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, Set<String>? apiMethods) builder;
 
   const InferenceApiMethodSetBuilder({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   State<InferenceApiMethodSetBuilder> createState() =>

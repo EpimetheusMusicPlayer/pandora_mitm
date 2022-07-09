@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 class LogTile extends StatelessWidget {
   final LogRecord record;
 
-  const LogTile({Key? key, required this.record}) : super(key: key);
+  const LogTile({super.key, required this.record});
 
   @override
   Widget build(BuildContext context) {

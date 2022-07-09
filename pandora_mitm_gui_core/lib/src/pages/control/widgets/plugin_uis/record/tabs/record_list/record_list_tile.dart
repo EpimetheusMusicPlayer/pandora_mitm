@@ -12,12 +12,12 @@ class RecordListTile extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const RecordListTile({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.record,
     this.selected = false,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

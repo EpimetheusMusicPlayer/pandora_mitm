@@ -3,7 +3,7 @@ import 'package:pandora_mitm_gui_core/src/pages/connect/widgets/connect_button.d
 import 'package:pandora_mitm_gui_core/src/pages/connect/widgets/connection_form.dart';
 
 class ConnectionSetupWidget extends StatefulWidget {
-  const ConnectionSetupWidget({Key? key}) : super(key: key);
+  const ConnectionSetupWidget({super.key});
 
   @override
   State<ConnectionSetupWidget> createState() => _ConnectionSetupWidgetState();

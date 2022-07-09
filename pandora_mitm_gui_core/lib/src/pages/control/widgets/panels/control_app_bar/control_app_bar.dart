@@ -7,9 +7,9 @@ class ControlAppBar extends StatelessWidget {
   final PluginCapablePandoraMitm pandoraMitm;
 
   const ControlAppBar({
-    Key? key,
+    super.key,
     required this.pandoraMitm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

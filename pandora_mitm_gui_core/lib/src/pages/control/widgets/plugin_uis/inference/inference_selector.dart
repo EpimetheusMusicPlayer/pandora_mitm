@@ -16,10 +16,10 @@ class InferenceSelector extends StatelessWidget {
   ) builder;
 
   const InferenceSelector({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

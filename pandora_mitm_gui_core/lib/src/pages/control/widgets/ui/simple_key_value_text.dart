@@ -7,8 +7,8 @@ class SimpleKeyValueText extends StatelessWidget {
   const SimpleKeyValueText(
     this.label,
     this.value, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

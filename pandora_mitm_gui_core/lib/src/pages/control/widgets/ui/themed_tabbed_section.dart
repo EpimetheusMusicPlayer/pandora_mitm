@@ -5,10 +5,10 @@ class ThemedTabbedSection extends StatelessWidget {
   final List<Widget> children;
 
   const ThemedTabbedSection({
-    Key? key,
+    super.key,
     required this.tabBar,
     required this.children,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

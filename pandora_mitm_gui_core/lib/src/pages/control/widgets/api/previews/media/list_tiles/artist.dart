@@ -5,7 +5,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/med
 class ArtistListTile extends StatelessWidget {
   final ArtistAnnotation annotation;
 
-  const ArtistListTile(this.annotation, {Key? key}) : super(key: key);
+  const ArtistListTile(this.annotation, {super.key});
 
   @override
   Widget build(BuildContext context) {

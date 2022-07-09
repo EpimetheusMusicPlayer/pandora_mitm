@@ -11,9 +11,9 @@ class RecordListTab extends StatelessWidget {
   final RecordPlugin plugin;
 
   const RecordListTab({
-    Key? key,
+    super.key,
     required this.plugin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

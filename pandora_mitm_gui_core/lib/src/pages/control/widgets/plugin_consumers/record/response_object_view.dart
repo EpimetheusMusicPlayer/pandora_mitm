@@ -8,11 +8,11 @@ class ResponseObjectView extends StatelessWidget {
   final Widget Function(BuildContext context, Object? responseObject) builder;
 
   const ResponseObjectView({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.record,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

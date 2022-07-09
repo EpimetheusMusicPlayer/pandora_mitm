@@ -9,8 +9,7 @@ class RecordPlugin extends SuperStreamPlugin {
   late final MapEntryRecorder<String, MediaAnnotation> annotationRecorder;
   late final MapEntryRecorder<PandoraMitmRecord, Object?> objectRecorder;
 
-  RecordPlugin({bool stripBoilerplate = false})
-      : super(stripBoilerplate: stripBoilerplate) {
+  RecordPlugin({super.stripBoilerplate}) {
     messageRecorder = ListRecorder(recordStream);
     annotationRecorder = MapEntryRecorder(mediaAnnotationStream);
     objectRecorder = MapEntryRecorder(objectStream);
@@ -70,9 +69,8 @@ abstract class Recorder<T, C> {
 }
 
 class ListRecorder<T> extends Recorder<T, List<T>> {
-  ListRecorder(Stream<T> source)
+  ListRecorder(super.source)
       : super(
-          source,
           collectionFactory: () => [],
           addRecord: (records, record) => records.add(record),
           clearCollection: (records) => records.clear(),
@@ -82,9 +80,8 @@ class ListRecorder<T> extends Recorder<T, List<T>> {
 }
 
 class MapEntryRecorder<K, V> extends Recorder<MapEntry<K, V>, Map<K, V>> {
-  MapEntryRecorder(Stream<MapEntry<K, V>> source)
+  MapEntryRecorder(super.source)
       : super(
-          source,
           collectionFactory: Map.new,
           addRecord: (records, record) => records[record.key] = record.value,
           clearCollection: (records) => records.clear(),

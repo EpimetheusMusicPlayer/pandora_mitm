@@ -8,11 +8,11 @@ class ApiMethodDropdown extends StatelessWidget {
   final TextStyle? textStyle;
 
   const ApiMethodDropdown({
-    Key? key,
+    super.key,
     required this.apiMethods,
     this.selectionValid = true,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,9 @@ class ApiMethodDropdown extends StatelessWidget {
       selector: (state) => state.requireConnected.selectedApiMethod,
       builder: (context, selectedApiMethod) {
         return DropdownButton<String>(
-          hint: _SelectedDropdownMenuItem(
-            child: Text(hintText, style: textStyle),
-          ),
+          hint: _SelectedDropdownMenuItem(Text(hintText, style: textStyle)),
           disabledHint: _SelectedDropdownMenuItem(
-            child: Text(
+            Text(
               hintText,
               style:
                   textStyle?.copyWith(color: textStyle?.color?.withAlpha(0xB2)),
@@ -48,7 +46,7 @@ class ApiMethodDropdown extends StatelessWidget {
           selectedItemBuilder: (_) => apiMethods
               .map(
                 (apiMethod) => _SelectedDropdownMenuItem(
-                  child: Text(apiMethod, style: textStyle),
+                  Text(apiMethod, style: textStyle),
                 ),
               )
               .toList(growable: false),
@@ -61,10 +59,7 @@ class ApiMethodDropdown extends StatelessWidget {
 class _SelectedDropdownMenuItem extends StatelessWidget {
   final Widget child;
 
-  const _SelectedDropdownMenuItem({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
+  const _SelectedDropdownMenuItem(this.child);
 
   @override
   Widget build(BuildContext context) {

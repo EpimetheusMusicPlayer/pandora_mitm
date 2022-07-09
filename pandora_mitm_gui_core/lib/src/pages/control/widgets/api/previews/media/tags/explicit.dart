@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Explicit extends StatelessWidget {
   static const _color = Color(0xFFA00000);
 
-  const Explicit({Key? key}) : super(key: key);
+  const Explicit({super.key});
 
   @override
   Widget build(BuildContext context) {

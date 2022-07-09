@@ -5,7 +5,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/panels/log_panel
 import 'package:pandora_mitm_gui_core/src/state/log_notifier.dart';
 
 class LogPanel extends StatelessWidget {
-  const LogPanel({Key? key}) : super(key: key);
+  const LogPanel({super.key});
 
   @override
   Widget build(BuildContext context) {

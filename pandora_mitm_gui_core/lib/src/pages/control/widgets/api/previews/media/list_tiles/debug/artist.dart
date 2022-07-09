@@ -6,7 +6,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/med
 class DebugArtistListTile extends StatelessWidget {
   final ArtistAnnotation annotation;
 
-  const DebugArtistListTile(this.annotation, {Key? key}) : super(key: key);
+  const DebugArtistListTile(this.annotation, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,10 +8,10 @@ class RawJsonView extends StatefulWidget {
   final EdgeInsetsGeometry padding;
 
   const RawJsonView({
-    Key? key,
+    super.key,
     required this.jsonEncodable,
     this.padding = const EdgeInsets.all(8),
-  }) : super(key: key);
+  });
 
   @override
   State<RawJsonView> createState() => _RawJsonViewState();

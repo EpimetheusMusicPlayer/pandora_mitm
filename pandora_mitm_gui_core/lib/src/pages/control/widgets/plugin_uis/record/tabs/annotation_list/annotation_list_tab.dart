@@ -8,9 +8,9 @@ class AnnotationListTab extends StatelessWidget {
   final RecordPlugin plugin;
 
   const AnnotationListTab({
-    Key? key,
+    super.key,
     required this.plugin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

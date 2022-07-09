@@ -6,7 +6,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/api/previews/med
 class DebugTrackListTile extends StatelessWidget {
   final TrackAnnotation annotation;
 
-  const DebugTrackListTile(this.annotation, {Key? key}) : super(key: key);
+  const DebugTrackListTile(this.annotation, {super.key});
 
   @override
   Widget build(BuildContext context) {

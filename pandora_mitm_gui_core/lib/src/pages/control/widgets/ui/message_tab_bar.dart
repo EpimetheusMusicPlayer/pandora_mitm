@@ -12,10 +12,10 @@ class MessageTabBar extends StatelessWidget {
   final List<ThemedTabEntry> tabEntries;
 
   const MessageTabBar({
-    Key? key,
+    super.key,
     required this.jsonEncodable,
     this.tabEntries = defaultTabEntries,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,10 +8,10 @@ class FlatValueTypeView extends StatelessWidget {
   final List<Widget>? actions;
 
   const FlatValueTypeView({
-    Key? key,
+    super.key,
     required this.nestedObjectEntries,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +53,9 @@ class ShallowJsonObjectValueTypeView extends StatelessWidget {
   final TypedJsonObjectValueType valueType;
 
   const ShallowJsonObjectValueTypeView({
-    Key? key,
+    super.key,
     required this.valueType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,11 @@ class DebugMediaListTileContainer extends StatelessWidget {
   final List<String> secondaryIds;
 
   const DebugMediaListTileContainer({
-    Key? key,
+    super.key,
     required this.mediaListTile,
     required this.id,
     this.secondaryIds = const [],
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

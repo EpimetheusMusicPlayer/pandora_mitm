@@ -9,10 +9,10 @@ class InferenceCodegenButton extends StatelessWidget {
   final bool generateRequest;
 
   const InferenceCodegenButton({
-    Key? key,
+    super.key,
     required this.inference,
     required this.generateRequest,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

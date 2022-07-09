@@ -14,13 +14,13 @@ class ThreeLineListTile extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   const ThreeLineListTile({
-    Key? key,
+    super.key,
     required this.artUrl,
     required this.line1,
     required this.line2,
     required this.line3,
     this.padding = const EdgeInsets.all(16),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class ThreeLineMediaListTile extends StatelessWidget {
   final VoidCallback? onPlay;
 
   const ThreeLineMediaListTile({
-    Key? key,
+    super.key,
     required this.artUrl,
     required this.line1,
     required this.line2,
@@ -61,7 +61,7 @@ class ThreeLineMediaListTile extends StatelessWidget {
     required this.duration,
     required this.isExplicit,
     this.onPlay,
-  }) : super(key: key);
+  });
 
   String _formatDuration() {
     final seconds = duration.inSeconds;

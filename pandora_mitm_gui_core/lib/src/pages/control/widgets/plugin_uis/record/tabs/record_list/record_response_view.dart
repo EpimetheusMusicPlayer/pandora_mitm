@@ -13,10 +13,10 @@ class RecordResponseView extends StatelessWidget {
   final PandoraMitmRecord record;
 
   const RecordResponseView({
-    Key? key,
+    super.key,
     required this.plugin,
     required this.record,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

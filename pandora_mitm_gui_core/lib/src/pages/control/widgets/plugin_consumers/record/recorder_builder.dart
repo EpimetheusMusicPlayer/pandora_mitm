@@ -6,10 +6,10 @@ class RecorderBuilder<C> extends StatelessWidget {
   final Widget Function(BuildContext context, C records) builder;
 
   const RecorderBuilder({
-    Key? key,
+    super.key,
     required this.recorder,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

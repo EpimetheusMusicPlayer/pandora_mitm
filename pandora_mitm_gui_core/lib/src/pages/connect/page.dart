@@ -5,7 +5,7 @@ import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/widgets/splash_art.dart';
 
 class ConnectPage extends StatelessWidget {
-  const ConnectPage({Key? key}) : super(key: key);
+  const ConnectPage({super.key});
 
   @override
   Widget build(BuildContext context) {

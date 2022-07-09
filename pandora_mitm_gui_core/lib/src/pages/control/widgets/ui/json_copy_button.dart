@@ -7,9 +7,9 @@ class JsonCopyButton extends StatelessWidget {
   final Object? jsonEncodable;
 
   const JsonCopyButton({
-    Key? key,
+    super.key,
     required this.jsonEncodable,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

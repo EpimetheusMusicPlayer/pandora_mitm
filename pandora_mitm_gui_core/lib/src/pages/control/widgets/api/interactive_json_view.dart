@@ -8,11 +8,11 @@ class InteractiveJsonView extends StatelessWidget {
   final ScrollPhysics? physics;
 
   const InteractiveJsonView({
-    Key? key,
+    super.key,
     required this.json,
     this.initialDepth = 0,
     this.physics,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -57,16 +57,15 @@ class PandoraMitmGuiApp extends StatefulWidget {
   final Map<String, List<PluginUi>> availablePluginTemplates;
 
   PandoraMitmGuiApp({
-    Key? key,
+    super.key,
     required this.availablePluginUis,
     required this.availablePluginTemplates,
-  })  : assert(
+  }) : assert(
           availablePluginTemplates.values.every(
             (pluginUiList) => pluginUiList.every(availablePluginUis.contains),
           ),
           'The plugin templates must only contain plugin uis that are generally available.',
-        ),
-        super(key: key);
+        );
 
   @override
   State<PandoraMitmGuiApp> createState() => _PandoraMitmGuiAppState();

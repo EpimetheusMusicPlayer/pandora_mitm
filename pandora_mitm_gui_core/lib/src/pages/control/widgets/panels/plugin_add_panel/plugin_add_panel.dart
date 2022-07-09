@@ -10,11 +10,11 @@ class PluginAddPanel extends StatelessWidget {
   final Map<String, List<PluginUi>> availablePluginTemplates;
 
   const PluginAddPanel({
-    Key? key,
+    super.key,
     required this.pluginManager,
     required this.availablePluginUis,
     required this.availablePluginTemplates,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

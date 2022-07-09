@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class ApiRequestMethodIcon extends StatelessWidget {
   final String method;
 
-  const ApiRequestMethodIcon({Key? key, required this.method})
-      : super(key: key);
+  const ApiRequestMethodIcon({super.key, required this.method});
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,9 @@ class ConnectButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const ConnectButton({
-    Key? key,
+    super.key,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

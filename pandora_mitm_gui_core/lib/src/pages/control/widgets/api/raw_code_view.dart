@@ -12,11 +12,11 @@ class RawCodeView extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   const RawCodeView({
-    Key? key,
+    super.key,
     required this.code,
     required this.language,
     this.padding = const EdgeInsets.all(8),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,13 +12,13 @@ class PluginAddButton extends StatefulWidget {
   final bool showTooltip;
 
   const PluginAddButton({
-    Key? key,
+    super.key,
     required this.pluginManager,
     required this.availablePluginUis,
     this.color,
     this.size,
     this.showTooltip = true,
-  }) : super(key: key);
+  });
 
   @override
   State<PluginAddButton> createState() => _PluginAddButtonState();
