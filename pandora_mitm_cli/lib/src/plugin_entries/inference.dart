@@ -26,6 +26,7 @@ class InferencePluginEntry extends PluginEntry {
         PluginFlag(
           name: _serveFlag,
           description: 'Serves inferences over HTTP.',
+          defaultValue: true,
         ),
         PluginFlag(
           name: _noStripBoilerplateFlag,
