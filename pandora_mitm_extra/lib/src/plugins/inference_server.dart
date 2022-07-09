@@ -158,7 +158,9 @@ class InferenceServerPlugin<T extends pmplg.InferencePlugin>
   }
 
   static void _writeHomepageBody(
-      StringSink sink, Set<String> inferredApiMethods) {
+    StringSink sink,
+    Set<String> inferredApiMethods,
+  ) {
     _writeMarkdownAsWebpage(
       sink,
       'Pandora MITM Inference Server Plugin',
@@ -297,7 +299,9 @@ All the query parameters from Markdown are supported.''',
     if (requestedInference == null) {
       final inferences = await getInferences();
       writeHeader(
-          inferenceHeaderLevel - 1, 'Pandora JSON API message inferences');
+        inferenceHeaderLevel - 1,
+        'Pandora JSON API message inferences',
+      );
       sink.write('_');
       sink.write(inferences.length);
       sink.write(' methods inferred.');

@@ -23,7 +23,8 @@ void runPandoraMitmGuiApp({
 }) {
   Logger.root.onRecord.listen(
     (record) => stdout.writeln(
-        '[${record.level.name}] [${record.loggerName}] ${record.message}'),
+      '[${record.level.name}] [${record.loggerName}] ${record.message}',
+    ),
   );
   runApp(
     PandoraMitmGuiApp(

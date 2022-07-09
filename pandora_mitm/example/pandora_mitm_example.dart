@@ -45,7 +45,8 @@ void main() async {
         ]);
 
   pandoraMitm.pluginManager.pluginListChanges.forEach(
-      (pluginList) => stdout.writeln('Plugin list changed: $pluginList'));
+    (pluginList) => stdout.writeln('Plugin list changed: $pluginList'),
+  );
 
   stdout.writeln('Connecting...');
   await pandoraMitm.connect();

@@ -245,7 +245,8 @@ Future<void> run(
 
   Logger.root.onRecord.listen(
     (record) => stdout.writeln(
-        '[${record.level.name}] [${record.loggerName}] ${record.message}'),
+      '[${record.level.name}] [${record.loggerName}] ${record.message}',
+    ),
   );
 
   final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
@@ -258,7 +259,8 @@ Future<void> run(
     await pandoraMitm.connect(host: host, port: port);
   } on SocketException catch (e) {
     stderr.writeln(
-        'Could not connect to ws://$host:$port: ${e.message} (${e.osError})');
+      'Could not connect to ws://$host:$port: ${e.message} (${e.osError})',
+    );
     exit(-1);
   }
   await onConnect?.call(pandoraMitm);

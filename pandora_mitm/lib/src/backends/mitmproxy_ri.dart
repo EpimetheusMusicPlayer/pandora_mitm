@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:mitmproxy_ri_client/mitmproxy_ri_client.dart' as mitm_ri;
-import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm.dart';
 import 'package:pandora_mitm/src/pandora_mitm_backend.dart';
 import 'package:pandora_mitm/src/pandora_mitm_background.dart';
 import 'package:pandora_mitm/src/pandora_mitm_handler.dart';
+import 'package:pandora_mitm/src/pandora_mitm_logger.dart';
 import 'package:pandora_mitm/src/pandora_mitm_raw_message_parser.dart';
 
 class ForegroundMitmproxyRiPandoraMitm

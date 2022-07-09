@@ -44,16 +44,18 @@ class RecordResponsePreview extends StatelessWidget {
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text.rich(TextSpan(
-                      children: [
-                        const TextSpan(text: 'Response preview for '),
-                        TextSpan(
-                          text: record.apiRequest.method,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const TextSpan(text: ' is not yet implemented.'),
-                      ],
-                    )),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(text: 'Response preview for '),
+                          TextSpan(
+                            text: record.apiRequest.method,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const TextSpan(text: ' is not yet implemented.'),
+                        ],
+                      ),
+                    ),
                   ),
                 );
             }
