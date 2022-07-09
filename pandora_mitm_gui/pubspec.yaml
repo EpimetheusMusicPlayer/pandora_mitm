@@ -1,7 +1,7 @@
 name: pandora_mitm_gui
 description: A Pandora app reverse-engineering toolbox.
 
-publish_to: 'none'
+publish_to: none
 
 version: 1.0.0+1
 

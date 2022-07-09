@@ -3,6 +3,8 @@ description: A mitmproxy Remote Interceptions client that can analyse and modify
 version: 0.1.0
 homepage: https://github.com/EpimetheusMusicPlayer/pandora_mitm/tree/master/pandora_mitm
 
+publish_to: none
+
 environment:
   sdk: '>=2.17.0 <3.0.0'
 
