@@ -1,6 +1,1 @@
-include: package:lint/analysis_options_package.yaml
-
-linter:
-  rules:
-    sort_pub_dependencies: false
-    sort_unnamed_constructors_first: false
+../analysis_options_package.yaml
