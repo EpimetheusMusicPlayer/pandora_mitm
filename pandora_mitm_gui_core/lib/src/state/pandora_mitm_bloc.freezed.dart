@@ -27,8 +27,7 @@ mixin _$PandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -48,8 +47,7 @@ mixin _$PandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -69,8 +67,7 @@ mixin _$PandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -153,12 +150,20 @@ class __$$DisconnectedPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
+class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState
+    with DiagnosticableTreeMixin {
   const _$DisconnectedPandoraMitmState() : super._();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'PandoraMitmState.disconnected()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty('type', 'PandoraMitmState.disconnected'));
   }
 
   @override
@@ -183,8 +188,7 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -207,8 +211,7 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -231,8 +234,7 @@ class _$DisconnectedPandoraMitmState extends DisconnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -319,12 +321,19 @@ class __$$ConnectingPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
+class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState
+    with DiagnosticableTreeMixin {
   const _$ConnectingPandoraMitmState() : super._();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'PandoraMitmState.connecting()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'PandoraMitmState.connecting'));
   }
 
   @override
@@ -349,8 +358,7 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -373,8 +381,7 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -397,8 +404,7 @@ class _$ConnectingPandoraMitmState extends ConnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -474,7 +480,7 @@ abstract class _$$ConnectedPandoraMitmStateCopyWith<$Res> {
       ApiMethodInference? selectedInference,
       bool pluginListUpdating,
       RecordPlugin? recordPlugin,
-      pmeplg.InferenceServerPlugin<InferencePlugin>? inferenceServerPlugin,
+      pmplg.InferencePlugin? inferencePlugin,
       pmplg.ReauthenticationPlugin? reauthenticationPlugin,
       pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
       pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin});
@@ -500,7 +506,7 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
     Object? selectedInference = freezed,
     Object? pluginListUpdating = freezed,
     Object? recordPlugin = freezed,
-    Object? inferenceServerPlugin = freezed,
+    Object? inferencePlugin = freezed,
     Object? reauthenticationPlugin = freezed,
     Object? featureUnlockPlugin = freezed,
     Object? mitmproxyUiHelperPlugin = freezed,
@@ -530,10 +536,10 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
           ? _value.recordPlugin
           : recordPlugin // ignore: cast_nullable_to_non_nullable
               as RecordPlugin?,
-      inferenceServerPlugin: inferenceServerPlugin == freezed
-          ? _value.inferenceServerPlugin
-          : inferenceServerPlugin // ignore: cast_nullable_to_non_nullable
-              as pmeplg.InferenceServerPlugin<InferencePlugin>?,
+      inferencePlugin: inferencePlugin == freezed
+          ? _value.inferencePlugin
+          : inferencePlugin // ignore: cast_nullable_to_non_nullable
+              as pmplg.InferencePlugin?,
       reauthenticationPlugin: reauthenticationPlugin == freezed
           ? _value.reauthenticationPlugin
           : reauthenticationPlugin // ignore: cast_nullable_to_non_nullable
@@ -552,14 +558,15 @@ class __$$ConnectedPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
+class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState
+    with DiagnosticableTreeMixin {
   const _$ConnectedPandoraMitmState(this.pandoraMitm,
       {this.selectedRecord,
       this.selectedApiMethod,
       this.selectedInference,
       this.pluginListUpdating = false,
       this.recordPlugin,
-      this.inferenceServerPlugin,
+      this.inferencePlugin,
       this.reauthenticationPlugin,
       this.featureUnlockPlugin,
       this.mitmproxyUiHelperPlugin})
@@ -579,7 +586,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   @override
   final RecordPlugin? recordPlugin;
   @override
-  final pmeplg.InferenceServerPlugin<InferencePlugin>? inferenceServerPlugin;
+  final pmplg.InferencePlugin? inferencePlugin;
   @override
   final pmplg.ReauthenticationPlugin? reauthenticationPlugin;
   @override
@@ -588,8 +595,27 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
   final pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin;
 
   @override
-  String toString() {
-    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm, selectedRecord: $selectedRecord, selectedApiMethod: $selectedApiMethod, selectedInference: $selectedInference, pluginListUpdating: $pluginListUpdating, recordPlugin: $recordPlugin, inferenceServerPlugin: $inferenceServerPlugin, reauthenticationPlugin: $reauthenticationPlugin, featureUnlockPlugin: $featureUnlockPlugin, mitmproxyUiHelperPlugin: $mitmproxyUiHelperPlugin)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'PandoraMitmState.connected(pandoraMitm: $pandoraMitm, selectedRecord: $selectedRecord, selectedApiMethod: $selectedApiMethod, selectedInference: $selectedInference, pluginListUpdating: $pluginListUpdating, recordPlugin: $recordPlugin, inferencePlugin: $inferencePlugin, reauthenticationPlugin: $reauthenticationPlugin, featureUnlockPlugin: $featureUnlockPlugin, mitmproxyUiHelperPlugin: $mitmproxyUiHelperPlugin)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'PandoraMitmState.connected'))
+      ..add(DiagnosticsProperty('pandoraMitm', pandoraMitm))
+      ..add(DiagnosticsProperty('selectedRecord', selectedRecord))
+      ..add(DiagnosticsProperty('selectedApiMethod', selectedApiMethod))
+      ..add(DiagnosticsProperty('selectedInference', selectedInference))
+      ..add(DiagnosticsProperty('pluginListUpdating', pluginListUpdating))
+      ..add(DiagnosticsProperty('recordPlugin', recordPlugin))
+      ..add(DiagnosticsProperty('inferencePlugin', inferencePlugin))
+      ..add(
+          DiagnosticsProperty('reauthenticationPlugin', reauthenticationPlugin))
+      ..add(DiagnosticsProperty('featureUnlockPlugin', featureUnlockPlugin))
+      ..add(DiagnosticsProperty(
+          'mitmproxyUiHelperPlugin', mitmproxyUiHelperPlugin));
   }
 
   @override
@@ -610,7 +636,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
             const DeepCollectionEquality()
                 .equals(other.recordPlugin, recordPlugin) &&
             const DeepCollectionEquality()
-                .equals(other.inferenceServerPlugin, inferenceServerPlugin) &&
+                .equals(other.inferencePlugin, inferencePlugin) &&
             const DeepCollectionEquality()
                 .equals(other.reauthenticationPlugin, reauthenticationPlugin) &&
             const DeepCollectionEquality()
@@ -628,7 +654,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
       const DeepCollectionEquality().hash(selectedInference),
       const DeepCollectionEquality().hash(pluginListUpdating),
       const DeepCollectionEquality().hash(recordPlugin),
-      const DeepCollectionEquality().hash(inferenceServerPlugin),
+      const DeepCollectionEquality().hash(inferencePlugin),
       const DeepCollectionEquality().hash(reauthenticationPlugin),
       const DeepCollectionEquality().hash(featureUnlockPlugin),
       const DeepCollectionEquality().hash(mitmproxyUiHelperPlugin));
@@ -651,8 +677,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -667,7 +692,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
         selectedInference,
         pluginListUpdating,
         recordPlugin,
-        inferenceServerPlugin,
+        inferencePlugin,
         reauthenticationPlugin,
         featureUnlockPlugin,
         mitmproxyUiHelperPlugin);
@@ -685,8 +710,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -701,7 +725,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
         selectedInference,
         pluginListUpdating,
         recordPlugin,
-        inferenceServerPlugin,
+        inferencePlugin,
         reauthenticationPlugin,
         featureUnlockPlugin,
         mitmproxyUiHelperPlugin);
@@ -719,8 +743,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -737,7 +760,7 @@ class _$ConnectedPandoraMitmState extends ConnectedPandoraMitmState {
           selectedInference,
           pluginListUpdating,
           recordPlugin,
-          inferenceServerPlugin,
+          inferencePlugin,
           reauthenticationPlugin,
           featureUnlockPlugin,
           mitmproxyUiHelperPlugin);
@@ -796,8 +819,7 @@ abstract class ConnectedPandoraMitmState extends PandoraMitmState {
           final ApiMethodInference? selectedInference,
           final bool pluginListUpdating,
           final RecordPlugin? recordPlugin,
-          final pmeplg.InferenceServerPlugin<InferencePlugin>?
-              inferenceServerPlugin,
+          final pmplg.InferencePlugin? inferencePlugin,
           final pmplg.ReauthenticationPlugin? reauthenticationPlugin,
           final pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
           final pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin}) =
@@ -812,7 +834,7 @@ abstract class ConnectedPandoraMitmState extends PandoraMitmState {
       throw _privateConstructorUsedError;
   bool get pluginListUpdating => throw _privateConstructorUsedError;
   RecordPlugin? get recordPlugin => throw _privateConstructorUsedError;
-  pmeplg.InferenceServerPlugin<InferencePlugin>? get inferenceServerPlugin =>
+  pmplg.InferencePlugin? get inferencePlugin =>
       throw _privateConstructorUsedError;
   pmplg.ReauthenticationPlugin? get reauthenticationPlugin =>
       throw _privateConstructorUsedError;
@@ -849,12 +871,20 @@ class __$$DisconnectingPandoraMitmStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
+class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState
+    with DiagnosticableTreeMixin {
   const _$DisconnectingPandoraMitmState() : super._();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'PandoraMitmState.disconnecting()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty('type', 'PandoraMitmState.disconnecting'));
   }
 
   @override
@@ -879,8 +909,7 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -903,8 +932,7 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -927,8 +955,7 @@ class _$DisconnectingPandoraMitmState extends DisconnectingPandoraMitmState {
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -1017,12 +1044,19 @@ class __$$ConnectionFailedPandoraMitmStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ConnectionFailedPandoraMitmState
-    extends ConnectionFailedPandoraMitmState {
+    extends ConnectionFailedPandoraMitmState with DiagnosticableTreeMixin {
   const _$ConnectionFailedPandoraMitmState() : super._();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'PandoraMitmState.connectionFailed()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty('type', 'PandoraMitmState.connectionFailed'));
   }
 
   @override
@@ -1047,8 +1081,7 @@ class _$ConnectionFailedPandoraMitmState
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)
@@ -1071,8 +1104,7 @@ class _$ConnectionFailedPandoraMitmState
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?
@@ -1095,8 +1127,7 @@ class _$ConnectionFailedPandoraMitmState
             ApiMethodInference? selectedInference,
             bool pluginListUpdating,
             RecordPlugin? recordPlugin,
-            pmeplg.InferenceServerPlugin<InferencePlugin>?
-                inferenceServerPlugin,
+            pmplg.InferencePlugin? inferencePlugin,
             pmplg.ReauthenticationPlugin? reauthenticationPlugin,
             pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
             pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin)?

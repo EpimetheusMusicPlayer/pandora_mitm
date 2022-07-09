@@ -9,12 +9,10 @@ import 'package:pandora_mitm/plugin_dev.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
 
 /// An extension of the [InferencePlugin] that serves inference data over HTTP.
-///
-/// [InferencePlugin] APIs can be accessed through the internally managed
-/// [inferencePlugin].
 class InferenceServerPlugin<T extends pmplg.InferencePlugin>
     extends WrapperBasePlugin<T>
-    with PandoraMitmPluginLoggingMixin, PandoraMitmPluginStateTrackerMixin {
+    with PandoraMitmPluginLoggingMixin, PandoraMitmPluginStateTrackerMixin
+    implements pmplg.InferencePlugin {
   bool _serve;
   int _port;
   Future<HttpServer>? _httpServerFuture;
@@ -396,6 +394,46 @@ All the query parameters from Markdown are supported.''',
 ''',
     );
   }
+
+  // -- Expose InferencePlugin APIs --
+
+  @override
+  Set<String>? get apiMethodWhitelist => inner.apiMethodWhitelist;
+
+  @override
+  set apiMethodWhitelist(Set<String>? apiMethodWhitelist) =>
+      inner.apiMethodWhitelist = apiMethodWhitelist;
+
+  @override
+  bool get stripBoilerplate => inner.stripBoilerplate;
+
+  @override
+  set stripBoilerplate(bool stripBoilerplate) =>
+      inner.stripBoilerplate = stripBoilerplate;
+
+  @override
+  Future<void> applyApiMethodWhitelist(Set<String>? apiMethodWhitelist) =>
+      inner.applyApiMethodWhitelist(apiMethodWhitelist);
+
+  @override
+  Future<void> applyStripBoilerplate(bool stripBoilerplate) =>
+      inner.applyStripBoilerplate(stripBoilerplate);
+
+  @override
+  FutureOr<void> clear() => inner.clear();
+
+  @override
+  FutureOr<ApiMethodInference?> getInference(String apiMethod) =>
+      inner.getInference(apiMethod);
+
+  @override
+  FutureOr<Map<String, ApiMethodInference>> get inferences => inner.inferences;
+
+  @override
+  Stream<String?> get inferredApiMethodStream => inner.inferredApiMethodStream;
+
+  @override
+  FutureOr<Set<String>> get inferredApiMethods => inner.inferredApiMethods;
 }
 
 final _markdownContentType = ContentType('text', 'markdown', charset: 'utf-8');

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
-import 'package:pandora_mitm/plugins.dart' show InferencePlugin; // for Freezed
 import 'package:pandora_mitm_extra/plugins.dart' as pmeplg;
 import 'package:pandora_mitm_gui_core/src/plugins/record.dart';
 
@@ -16,7 +16,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     int port = 8082,
   }) async {
     emit(const PandoraMitmState.connecting());
-    final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
+    final pandoraMitm = ForegroundMitmproxyRiPandoraMitm()
       ..done.then((_) {
         // If the client completes after the connection fails, don't override
         // that state.
@@ -50,8 +50,7 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
       );
     }
 
-    final inference = await state.inferenceServerPlugin?.inferencePlugin
-        .getInference(apiMethod);
+    final inference = await state.inferencePlugin?.getInference(apiMethod);
 
     return _computeInferenceSelection(
       inference,
@@ -215,23 +214,27 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
   }
 
   Future<void> enableInferenceServerPlugin() =>
-      _enablePlugin<pmeplg.InferenceServerPlugin>(
-        () => pmeplg.InferenceServerPlugin(
-          pmplg.BackgroundInferencePlugin.new,
-          serve: false,
-          port: 46337,
-          stripBoilerplate: true,
-        ),
+      _enablePlugin<pmplg.InferencePlugin>(
+        () => kIsWeb
+            ? pmplg.ForegroundInferencePlugin(
+                stripBoilerplate: true,
+              )
+            : pmeplg.InferenceServerPlugin(
+                pmplg.BackgroundInferencePlugin.new,
+                serve: false,
+                port: 46337,
+                stripBoilerplate: true,
+              ),
         (indexOf, indexAfter) =>
             indexAfter<RecordPlugin>() ??
             indexOf<pmplg.MitmproxyUiHelperPlugin>(),
-        (state, plugin) => state.copyWith(inferenceServerPlugin: plugin),
+        (state, plugin) => state.copyWith(inferencePlugin: plugin),
       );
 
   Future<void> disableInferenceServerPlugin() async {
     await clearInferenceSelection();
-    await _disablePlugin<pmeplg.InferenceServerPlugin>(
-      (state) => state.copyWith(inferenceServerPlugin: null),
+    await _disablePlugin<pmplg.InferencePlugin>(
+      (state) => state.copyWith(inferencePlugin: null),
     );
   }
 
@@ -291,7 +294,7 @@ class PandoraMitmState with _$PandoraMitmState {
     ApiMethodInference? selectedInference,
     @Default(false) bool pluginListUpdating,
     RecordPlugin? recordPlugin,
-    pmeplg.InferenceServerPlugin? inferenceServerPlugin,
+    pmplg.InferencePlugin? inferencePlugin,
     pmplg.ReauthenticationPlugin? reauthenticationPlugin,
     pmplg.FeatureUnlockPlugin? featureUnlockPlugin,
     pmplg.MitmproxyUiHelperPlugin? mitmproxyUiHelperPlugin,
@@ -307,7 +310,7 @@ class PandoraMitmState with _$PandoraMitmState {
     final state = this;
     return state is ConnectedPandoraMitmState &&
         state.recordPlugin != null &&
-        state.inferenceServerPlugin != null &&
+        state.inferencePlugin != null &&
         state.reauthenticationPlugin != null &&
         state.featureUnlockPlugin != null &&
         state.mitmproxyUiHelperPlugin != null;

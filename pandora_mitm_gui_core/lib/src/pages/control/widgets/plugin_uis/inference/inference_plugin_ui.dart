@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
@@ -8,7 +9,7 @@ import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_uis/mixin
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
+class InferencePluginUi extends PluginUi<pmplg.InferencePlugin>
     with BoilerplateStripperPluginUiMixin {
   const InferencePluginUi();
 
@@ -28,51 +29,57 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
   @override
   Widget buildMainPanel(
     BuildContext context,
-    pmeplg.InferenceServerPlugin<pmplg.InferencePlugin> plugin,
+    pmplg.InferencePlugin plugin,
   ) =>
-      InferencePluginMainPanel(plugin: plugin.inferencePlugin);
-
-  @override
-  pmplg.BoilerplateStripperPlugin getBoilerplateStripperPlugin(
-    pmeplg.InferenceServerPlugin<pmplg.InferencePlugin> plugin,
-  ) =>
-      plugin.inferencePlugin;
+      InferencePluginMainPanel(plugin: plugin);
 
   @override
   List<PopupMenuItem<Object?>> buildContextMenuItems(
     BuildContext context,
-    pmeplg.InferenceServerPlugin plugin,
+    pmplg.InferencePlugin plugin,
   ) {
-    Future<void> launchWebUi() async => launchUrl(
-          Uri(
-            scheme: 'http',
-            host: 'localhost',
-            port: await plugin.runningPort,
-          ),
-          mode: LaunchMode.externalApplication,
-        );
+    final List<PopupMenuItem> platformItems;
+    if (kIsWeb) {
+      platformItems = const [];
+    } else {
+      plugin as pmeplg.InferenceServerPlugin;
 
-    return [
-      if (plugin.running)
+      Future<void> launchWebUi() async => launchUrl(
+            Uri(
+              scheme: 'http',
+              host: 'localhost',
+              port: await plugin.runningPort,
+            ),
+            mode: LaunchMode.externalApplication,
+          );
+
+      platformItems = [
+        if (plugin.running)
+          // ignore: prefer_void_to_null
+          PopupMenuItem<Null>(
+            onTap: launchWebUi,
+            child: const Text('Open webpage'),
+          ),
         // ignore: prefer_void_to_null
         PopupMenuItem<Null>(
-          onTap: launchWebUi,
-          child: const Text('Open webpage'),
+          onTap: () async {
+            await plugin.changeServe(serve: !plugin.serve);
+            if (!plugin.running) return;
+            launchWebUi();
+          },
+          child:
+              Text(plugin.running ? 'Stop HTTP server' : 'Start HTTP server'),
         ),
-      // ignore: prefer_void_to_null
-      PopupMenuItem<Null>(
-        onTap: () async {
-          await plugin.changeServe(serve: !plugin.serve);
-          if (!plugin.running) return;
-          launchWebUi();
-        },
-        child: Text(plugin.running ? 'Stop HTTP server' : 'Start HTTP server'),
-      ),
+      ];
+    }
+
+    return [
+      ...platformItems,
       // ignore: prefer_void_to_null
       PopupMenuItem<Null>(
         onTap: () async {
           await context.read<PandoraMitmBloc>().clearInferenceSelection();
-          plugin.inferencePlugin.clear();
+          plugin.clear();
         },
         child: const Text('Clear inferences'),
       ),
@@ -82,7 +89,7 @@ class InferencePluginUi extends PluginUi<pmeplg.InferenceServerPlugin>
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.state.requireConnected.inferenceServerPlugin != null;
+      pandoraMitmBloc.state.requireConnected.inferencePlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>

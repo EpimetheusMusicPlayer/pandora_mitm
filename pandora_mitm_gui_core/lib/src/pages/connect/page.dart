@@ -10,21 +10,22 @@ class ConnectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseTheme = Theme.of(context);
-    return Theme(
-      data: baseTheme.copyWith(
-        scaffoldBackgroundColor: Theme.of(context).colorScheme.background,
-        brightness: Brightness.dark,
-        textTheme: baseTheme.typography.white,
-      ),
-      child: Scaffold(
-        body: BlocListener<PandoraMitmBloc, PandoraMitmState>(
-          listener: (context, state) {
-            if (state is ConnectionFailedPandoraMitmState) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Connection failed.')),
-              );
-            }
-          },
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: BlocListener<PandoraMitmBloc, PandoraMitmState>(
+        listener: (context, state) {
+          if (state is ConnectionFailedPandoraMitmState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Connection failed.')),
+            );
+          }
+        },
+        child: Theme(
+          data: baseTheme.copyWith(
+            scaffoldBackgroundColor: Theme.of(context).colorScheme.background,
+            brightness: Brightness.dark,
+            textTheme: baseTheme.typography.white,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [

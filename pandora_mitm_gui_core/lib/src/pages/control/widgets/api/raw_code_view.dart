@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/flutter_highlight_background.dart';
 import 'package:flutter_highlight/themes/idea.dart';
 
 class RawCodeView extends StatelessWidget {
@@ -38,7 +39,9 @@ class RawCodeView extends StatelessWidget {
       theme: theme,
       padding: padding,
       textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
-      progressIndicator: simpleTextView,
+      progressIndicator: HighlightBackgroundProvider.maybeOf(context) == null
+          ? null
+          : simpleTextView,
     );
   }
 }

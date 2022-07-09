@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight_background.dart';
@@ -68,6 +69,20 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
 
   @override
   Widget build(BuildContext context) {
+    final ui = MaterialApp(
+      navigatorKey: _navigatorKey,
+      title: 'Pandora MITM',
+      theme: themeData,
+      darkTheme: darkThemeData,
+      routes: {
+        '/': (BuildContext context) => const ConnectPage(),
+        'control': (BuildContext context) => ControlPage(
+              availablePluginUis: widget.availablePluginUis,
+              availablePluginTemplates: widget.availablePluginTemplates,
+            ),
+      },
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -93,21 +108,7 @@ class _PandoraMitmGuiAppState extends State<PandoraMitmGuiApp> {
                 previous is! ConnectedPandoraMitmState) ||
             (current is! ConnectedPandoraMitmState &&
                 previous is ConnectedPandoraMitmState),
-        child: HighlightBackgroundEnvironment(
-          child: MaterialApp(
-            navigatorKey: _navigatorKey,
-            title: 'Pandora MITM',
-            theme: themeData,
-            darkTheme: darkThemeData,
-            routes: {
-              '/': (BuildContext context) => const ConnectPage(),
-              'control': (BuildContext context) => ControlPage(
-                    availablePluginUis: widget.availablePluginUis,
-                    availablePluginTemplates: widget.availablePluginTemplates,
-                  ),
-            },
-          ),
-        ),
+        child: kIsWeb ? ui : HighlightBackgroundEnvironment(child: ui),
       ),
     );
   }
