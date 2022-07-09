@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:isolate';
 
 import 'package:meta/meta.dart';
@@ -27,6 +26,7 @@ mixin PandoraMitmBackgroundMixin
   Future<void> connect({
     String host = 'localhost',
     int port = 8082,
+    void Function(Object error, StackTrace)? onError,
   }) async {
     final receivePort = ReceivePort('BackgroundPandoraMitmClient');
     done.then((_) => receivePort.close());
@@ -85,18 +85,10 @@ mixin PandoraMitmBackgroundMixin
         _disconnectionCompleter.complete();
       } else if (message is SendPort) {
         (_sendPort = message).send(_ConnectClientMessage(host, port));
-      } else if (message is _ExceptionServerMessage) {
-        if (connectedCompleter.isCompleted) {
-          Error.throwWithStackTrace(
-            message.exception,
-            message.stackTrace,
-          );
-        } else {
-          connectedCompleter.completeError(
-            message.exception,
-            message.stackTrace,
-          );
-        }
+      } else if (message is _ErrorServerMessage) {
+        if (!connectedCompleter.isCompleted) connectedCompleter.complete();
+        (onError ?? Error.throwWithStackTrace)
+            .call(message.error, message.stackTrace);
       }
     });
 
@@ -148,12 +140,11 @@ abstract class PandoraMitmBackgroundIsolate
             .remove(message.flowId)!
             .complete(message.pandoraMessageSet);
       } else if (message is _ConnectClientMessage) {
-        try {
-          await connect(host: message.host, port: message.port);
-        } on IOException catch (e, s) {
-          _sendPort.send(_ExceptionServerMessage(e, s));
-          return;
-        }
+        connect(
+          host: message.host,
+          port: message.port,
+          onError: (e, s) => _sendPort.send(_ErrorServerMessage(e, s)),
+        );
         _sendPort.send(const _ConnectedServerMessage());
       } else if (message is _DisconnectClientMessage) {
         disconnect();
@@ -393,9 +384,9 @@ class _HandleResponseServerMessage implements _HandleMessageServerMessage {
   );
 }
 
-class _ExceptionServerMessage implements _PandoraMitmBackgroundServerMessage {
-  final Exception exception;
+class _ErrorServerMessage implements _PandoraMitmBackgroundServerMessage {
+  final Object error;
   final StackTrace stackTrace;
 
-  const _ExceptionServerMessage(this.exception, this.stackTrace);
+  const _ErrorServerMessage(this.error, this.stackTrace);
 }

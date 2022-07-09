@@ -157,11 +157,11 @@ class __$$_PandoraResponseCopyWithImpl<$Res>
 
 class _$_PandoraResponse implements _PandoraResponse {
   const _$_PandoraResponse(
-      {this.statusCode = HttpStatus.ok,
+      {this.statusCode = 200,
       this.reason,
       final Map<String, List<String>> headers = const {
-        HttpHeaders.serverHeader: ['envoy'],
-        HttpHeaders.contentTypeHeader: ['text/plain;charset=utf-8']
+        'server': ['envoy'],
+        'content-type': ['text/plain;charset=utf-8']
       },
       this.encryptedBody = false,
       required this.apiResponse})
@@ -230,15 +230,15 @@ abstract class _PandoraResponse implements PandoraResponse {
       required final PandoraApiResponse apiResponse}) = _$_PandoraResponse;
 
   @override
-  int get statusCode => throw _privateConstructorUsedError;
+  int get statusCode;
   @override
-  String? get reason => throw _privateConstructorUsedError;
+  String? get reason;
   @override
-  Map<String, List<String>> get headers => throw _privateConstructorUsedError;
+  Map<String, List<String>> get headers;
   @override
-  bool get encryptedBody => throw _privateConstructorUsedError;
+  bool get encryptedBody;
   @override
-  PandoraApiResponse get apiResponse => throw _privateConstructorUsedError;
+  PandoraApiResponse get apiResponse;
   @override
   @JsonKey(ignore: true)
   _$$_PandoraResponseCopyWith<_$_PandoraResponse> get copyWith =>

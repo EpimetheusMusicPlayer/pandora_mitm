@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
@@ -19,13 +17,20 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
   }) async {
     emit(const PandoraMitmState.connecting());
     final pandoraMitm = BackgroundMitmproxyRiPandoraMitm()
-      ..done.then((_) => emit(const PandoraMitmState.disconnected()));
-    try {
-      await pandoraMitm.connect(host: host, port: port);
-      emit(PandoraMitmState.connected(pandoraMitm));
-    } on IOException {
-      emit(const PandoraMitmState.connectionFailed());
-    }
+      ..done.then((_) {
+        // If the client completes after the connection fails, don't override
+        // that state.
+        if (state is! ConnectionFailedPandoraMitmState) {
+          emit(const PandoraMitmState.disconnected());
+        }
+      });
+    await pandoraMitm.connect(
+      host: host,
+      port: port,
+      onError: (error, stackTrace) =>
+          emit(const ConnectionFailedPandoraMitmState()),
+    );
+    emit(PandoraMitmState.connected(pandoraMitm));
   }
 
   Future<void> disconnect() async {

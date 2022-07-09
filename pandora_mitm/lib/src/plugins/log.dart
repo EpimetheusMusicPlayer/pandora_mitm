@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:pandora_mitm/plugin_dev.dart';
 
@@ -46,5 +45,6 @@ class LogPlugin extends PandoraMitmPlugin {
     String method, {
     required bool response,
   }) =>
-      stdout.writeln('[$flowId] API: ${response ? 'RCV' : 'SND'}: $method');
+      // ignore: avoid_print
+      print('[$flowId] API: ${response ? 'RCV' : 'SND'}: $method');
 }

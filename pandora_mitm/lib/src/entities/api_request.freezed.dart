@@ -231,17 +231,17 @@ abstract class _PandoraApiRequest extends PandoraApiRequest {
   const _PandoraApiRequest._() : super._();
 
   @override
-  int? get partnerId => throw _privateConstructorUsedError;
+  int? get partnerId;
   @override
-  String? get authToken => throw _privateConstructorUsedError;
+  String? get authToken;
   @override
-  String? get deviceId => throw _privateConstructorUsedError;
+  String? get deviceId;
   @override
-  String get method => throw _privateConstructorUsedError;
+  String get method;
   @override
-  bool get encrypted => throw _privateConstructorUsedError;
+  bool get encrypted;
   @override
-  Map<String, dynamic> get body => throw _privateConstructorUsedError;
+  Map<String, dynamic> get body;
   @override
   @JsonKey(ignore: true)
   _$$_PandoraApiRequestCopyWith<_$_PandoraApiRequest> get copyWith =>

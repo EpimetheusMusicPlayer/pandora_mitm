@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:iapetus/iapetus_data.dart';
 
@@ -9,16 +7,16 @@ part 'pandora_response.freezed.dart';
 @freezed
 class PandoraResponse with _$PandoraResponse {
   const factory PandoraResponse({
-    @Default(HttpStatus.ok)
+    @Default(200)
         int statusCode,
     String? reason,
     @Default({
       // Pandora evidently uses Envoy on their servers.
-      HttpHeaders.serverHeader: ['envoy'],
+      'server': ['envoy'],
 
       // All API responses use a plaintext UTF-8 content type,
       // even if they're in decrypted JSON form.
-      HttpHeaders.contentTypeHeader: ['text/plain;charset=utf-8'],
+      'content-type': ['text/plain;charset=utf-8'],
     })
         Map<String, List<String>> headers,
     @Default(false)

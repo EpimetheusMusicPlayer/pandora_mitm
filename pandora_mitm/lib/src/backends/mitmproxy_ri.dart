@@ -49,16 +49,17 @@ mixin PandoraMitmMitmproxyRiBackendMixin
   Future<void> connect({
     String host = 'localhost',
     int port = 8082,
+    void Function(Object error, StackTrace)? onError,
   }) async {
-    _mitmRiClient = await mitm_ri.Client.connect(
+    _mitmRiClient = mitm_ri.Client.connect(
       host: host,
       port: port,
+      onError: onError,
       getRequestSetSettings: getRawRequestSetSettings,
       getResponseSetSettings: getRawResponseSetSettings,
       handleRequest: handleRawRequest,
       handleResponse: handleRawResponse,
-    )
-      ..done.then((_) => _disconnectionCompleter.complete());
+    )..done.then((_) => _disconnectionCompleter.complete());
   }
 
   @override

@@ -66,9 +66,13 @@ mixin PandoraMitmPluginGroupMixin on PandoraMitmBackend
   PluginManager get pluginManager => _pluginGroup;
 
   @override
-  Future<void> connect({String host = 'localhost', int port = 8082}) async {
+  Future<void> connect({
+    String host = 'localhost',
+    int port = 8082,
+    void Function(Object error, StackTrace)? onError,
+  }) async {
     await _pluginGroup.attach();
-    await super.connect(host: host, port: port);
+    await super.connect(host: host, port: port, onError: onError);
     done.then((_) => _pluginGroup.detach());
   }
 

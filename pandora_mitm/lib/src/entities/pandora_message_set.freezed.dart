@@ -172,9 +172,9 @@ abstract class _PandoraMessageSet implements PandoraMessageSet {
       final PandoraResponse? response}) = _$_PandoraMessageSet;
 
   @override
-  PandoraApiRequest? get apiRequest => throw _privateConstructorUsedError;
+  PandoraApiRequest? get apiRequest;
   @override
-  PandoraResponse? get response => throw _privateConstructorUsedError;
+  PandoraResponse? get response;
   @override
   @JsonKey(ignore: true)
   _$$_PandoraMessageSetCopyWith<_$_PandoraMessageSet> get copyWith =>

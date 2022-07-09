@@ -25,9 +25,14 @@ abstract class PandoraMitmBackend {
   ///
   /// The server [host] and [port] can be overwritten if need be - by default,
   /// they match the mitmproxy Remote Interceptions defaults.
+  ///
+  /// The returned [Future] will never complete with an error, and may complete
+  /// before the backend is fully connected.
+  /// [onError] may be used to handle errors that arise at any stage.
   Future<void> connect({
     String host = 'localhost',
     int port = 8082,
+    void Function(Object error, StackTrace)? onError,
   });
 
   /// Disconnects from the HTTP message interception backend.

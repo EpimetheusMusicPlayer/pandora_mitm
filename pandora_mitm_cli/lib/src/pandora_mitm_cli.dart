@@ -255,14 +255,20 @@ Future<void> run(
   stdout.writeln('Plugins enabled: ${selectedPluginNames.join(',')}');
   stdout.writeln('Connecting to ws://$host:$port...');
 
-  try {
-    await pandoraMitm.connect(host: host, port: port);
-  } on SocketException catch (e) {
-    stderr.writeln(
-      'Could not connect to ws://$host:$port: ${e.message} (${e.osError})',
-    );
-    exit(-1);
-  }
+  await pandoraMitm.connect(
+    host: host,
+    port: port,
+    onError: (e, s) {
+      if (e is SocketException) {
+        stderr.writeln(
+          'Connection to ws://$host:$port failed. (${e.message} (${e.osError})',
+        );
+      } else {
+        Error.throwWithStackTrace(e, s);
+      }
+    },
+  );
+
   await onConnect?.call(pandoraMitm);
 
   stdout.writeln('Connected to ws://$host:$port.');

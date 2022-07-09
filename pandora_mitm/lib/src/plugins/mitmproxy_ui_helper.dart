@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:pandora_mitm/plugin_dev.dart';
 
 /// A [PandoraMitm] plugin to improve the mitmproxy UI experience.
@@ -49,7 +47,7 @@ class MitmproxyUiHelperPlugin extends PandoraMitmPlugin
         response: response?.copyWith(
           headers: {
             ...response.headers,
-            HttpHeaders.contentTypeHeader: [ContentType.json.value],
+            'content-type': const ['application/json'],
           },
         ),
       );

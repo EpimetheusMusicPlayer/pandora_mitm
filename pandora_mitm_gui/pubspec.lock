@@ -240,7 +240,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.0"
+    version: "4.6.0"
   json_view:
     dependency: transitive
     description:
@@ -294,8 +294,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: "8b23a897d4d39a09faa50b362a27d8fcc816ce3d"
-      resolved-ref: "8b23a897d4d39a09faa50b362a27d8fcc816ce3d"
+      ref: ed30f3f4fd2f5ce73a6a6da45573f4aa8e1b62f2
+      resolved-ref: ed30f3f4fd2f5ce73a6a6da45573f4aa8e1b62f2
       url: "https://github.com/hacker1024/mitmproxy_ri_client.dart.git"
     source: git
     version: "0.1.0"
@@ -420,6 +420,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.0"
+  stream_channel:
+    dependency: transitive
+    description:
+      name: stream_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   string_scanner:
     dependency: transitive
     description:
@@ -518,6 +525,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  web_socket_channel:
+    dependency: transitive
+    description:
+      name: web_socket_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   yaml:
     dependency: transitive
     description:
