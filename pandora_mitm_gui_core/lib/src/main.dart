@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_highlight/flutter_highlight_background.dart';
-import 'package:logging/logging.dart';
 import 'package:pandora_mitm_gui_core/src/pages/connect/page.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/page.dart';
 import 'package:pandora_mitm_gui_core/src/pages/control/widgets/plugin_ui.dart';
@@ -21,11 +18,6 @@ void runPandoraMitmGuiApp({
   List<PluginUi> extraPluginUis = const [],
   Map<String, List<PluginUi>> extraPluginTemplates = const {},
 }) {
-  Logger.root.onRecord.listen(
-    (record) => stdout.writeln(
-      '[${record.level.name}] [${record.loggerName}] ${record.message}',
-    ),
-  );
   runApp(
     PandoraMitmGuiApp(
       availablePluginUis: [
