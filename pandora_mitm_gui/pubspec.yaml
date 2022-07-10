@@ -22,5 +22,3 @@ flutter:
 
 dependency_overrides:
   meta: ^1.7.0
-  iapetus:
-    path: ../iapetus

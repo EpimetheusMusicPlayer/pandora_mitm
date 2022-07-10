@@ -95,8 +95,6 @@ flutter:
 
 dependency_overrides:
   meta: ^1.7.0
-  iapetus:
-    path: ../iapetus
   code_builder:
     git:
       url: https://github.com/hacker1024/code_builder.git

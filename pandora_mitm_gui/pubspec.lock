@@ -221,7 +221,7 @@ packages:
     source: path
     version: "0.1.0"
   iapetus_meta:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       path: "../iapetus_meta/iapetus_meta"
       relative: true
@@ -330,14 +330,14 @@ packages:
     source: hosted
     version: "2.1.0"
   pandora_mitm:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       path: "../pandora_mitm"
       relative: true
     source: path
     version: "0.1.0"
   pandora_mitm_extra:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       path: "../pandora_mitm_extra"
       relative: true

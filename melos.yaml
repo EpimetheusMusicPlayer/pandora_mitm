@@ -1,0 +1,25 @@
+name: pandora_mitm_monorepo
+repository: https://github.com/EpimetheusMusicPlayer/pandora_mitm
+
+packages:
+  - iapetus
+  - iapetus_meta/iapetus_meta
+  - pandora_mitm
+  - pandora_mitm_cli
+  - pandora_mitm_extra
+  - pandora_mitm_gui
+  - pandora_mitm_gui_core
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+  version:
+    message: |
+      chore: Publish packages
+
+      {new_package_versions}
+    includeScopes: false
+    includeCommitId: true
+    linkToCommits: true
+    workspaceChangelog: true
+    updateGitTagRefs: true

@@ -31,8 +31,6 @@ dev_dependencies:
   freezed: ^2.0.3+1
 
 dependency_overrides:
-  iapetus:
-    path: ../iapetus
   code_builder:
     git:
       url: https://github.com/hacker1024/code_builder.git

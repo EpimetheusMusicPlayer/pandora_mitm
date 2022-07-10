@@ -19,7 +19,3 @@ dependencies:
 
 dev_dependencies:
   lint: ^1.8.2
-
-dependency_overrides:
-  iapetus:
-    path: ../iapetus
