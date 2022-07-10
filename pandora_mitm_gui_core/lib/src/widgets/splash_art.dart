@@ -18,9 +18,15 @@ class SplashArt extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              'packages/pandora_mitm_gui_core/assets/epimetheus_icon.png',
-              width: 48,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                boxShadow: kElevationToShadow[2],
+                shape: BoxShape.circle,
+              ),
+              child: Image.asset(
+                'packages/pandora_mitm_gui_core/assets/epimetheus_icon.png',
+                width: 48,
+              ),
             ),
             const SizedBox(width: 16),
             Text(
