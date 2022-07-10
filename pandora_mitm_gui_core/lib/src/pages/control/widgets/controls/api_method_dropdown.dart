@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/consumers/connected_state_builder.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 
 class ApiMethodDropdown extends StatelessWidget {
@@ -17,8 +18,8 @@ class ApiMethodDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const hintText = 'API method';
-    return BlocSelector<PandoraMitmBloc, PandoraMitmState, String?>(
-      selector: (state) => state.requireConnected.selectedApiMethod,
+    return ConnectedStateBuilder<String?>(
+      selector: (state) => state.selectedApiMethod,
       builder: (context, selectedApiMethod) {
         return DropdownButton<String>(
           hint: _SelectedDropdownMenuItem(Text(hintText, style: textStyle)),

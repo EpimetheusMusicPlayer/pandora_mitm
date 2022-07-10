@@ -17,7 +17,7 @@ class FeatureUnlockPluginUi extends PluginUi<pmplg.FeatureUnlockPlugin> {
 
   @override
   bool isPluginEnabled(PandoraMitmBloc pandoraMitmBloc) =>
-      pandoraMitmBloc.state.requireConnected.featureUnlockPlugin != null;
+      pandoraMitmBloc.state.maybeConnected?.featureUnlockPlugin != null;
 
   @override
   Future<void> enablePlugin(PandoraMitmBloc pandoraMitmBloc) =>

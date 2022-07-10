@@ -321,6 +321,11 @@ class PandoraMitmState with _$PandoraMitmState {
         state.mitmproxyUiHelperPlugin != null;
   }
 
+  ConnectedPandoraMitmState? get maybeConnected =>
+      this is ConnectedPandoraMitmState
+          ? this as ConnectedPandoraMitmState
+          : null;
+
   ConnectedPandoraMitmState get requireConnected {
     assert(this is ConnectedPandoraMitmState, 'Not connected!');
     return this as ConnectedPandoraMitmState;

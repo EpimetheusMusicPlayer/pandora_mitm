@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
-import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
+import 'package:pandora_mitm_gui_core/src/pages/control/widgets/consumers/connected_state_builder.dart';
 
 class SelectedInferenceBuilder extends StatelessWidget {
   final Widget Function(
@@ -16,8 +15,8 @@ class SelectedInferenceBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<PandoraMitmBloc, PandoraMitmState, ApiMethodInference?>(
-      selector: (state) => state.requireConnected.selectedInference,
+    return ConnectedStateBuilder(
+      selector: (state) => state.selectedInference,
       builder: builder,
     );
   }
