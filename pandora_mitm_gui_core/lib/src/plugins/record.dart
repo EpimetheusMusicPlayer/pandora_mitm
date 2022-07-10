@@ -12,7 +12,7 @@ class RecordPlugin extends pmplg.StreamPlugin
   late final MapEntryRecorder<String, MediaAnnotation> annotationRecorder;
   late final MapEntryRecorder<PandoraMitmRecord, Object?> objectRecorder;
 
-  RecordPlugin({super.stripBoilerplate = true}) {
+  RecordPlugin({super.stripBoilerplate}) {
     messageRecorder = ListRecorder(recordStream);
     annotationRecorder = MapEntryRecorder(mediaAnnotationStream);
     objectRecorder = MapEntryRecorder(objectStream);
