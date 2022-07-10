@@ -16,14 +16,19 @@ class PandoraMitmBloc extends Cubit<PandoraMitmState> {
     int port = 8082,
   }) async {
     emit(const PandoraMitmState.connecting());
-    final pandoraMitm = ForegroundMitmproxyRiPandoraMitm()
-      ..done.then((_) {
-        // If the client completes after the connection fails, don't override
-        // that state.
-        if (state is! ConnectionFailedPandoraMitmState) {
-          emit(const PandoraMitmState.disconnected());
-        }
-      });
+    final PluginCapablePandoraMitm pandoraMitm;
+    if (kIsWeb) {
+      pandoraMitm = ForegroundMitmproxyRiPandoraMitm();
+    } else {
+      pandoraMitm = BackgroundMitmproxyRiPandoraMitm();
+    }
+    pandoraMitm.done.then((_) {
+      // If the client completes after the connection fails, don't override
+      // that state.
+      if (state is! ConnectionFailedPandoraMitmState) {
+        emit(const PandoraMitmState.disconnected());
+      }
+    });
     await pandoraMitm.connect(
       host: host,
       port: port,
