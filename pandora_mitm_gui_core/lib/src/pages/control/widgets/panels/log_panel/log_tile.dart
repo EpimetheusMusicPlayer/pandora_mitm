@@ -10,7 +10,9 @@ class LogTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectableText.rich(
       TextSpan(
-        style: const TextStyle(fontFamily: 'Jetbrains Mono'),
+        style: const TextStyle(
+          fontFamily: 'packages/pandora_mitm_gui_core/JetBrains Mono',
+        ),
         children: [
           TextSpan(text: '[${record.level.name}] '),
           TextSpan(

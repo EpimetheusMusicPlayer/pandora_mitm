@@ -25,7 +25,7 @@ class RawCodeView extends StatelessWidget {
       code,
       style: TextStyle(
         color: theme['root']!.color,
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'packages/pandora_mitm_gui_core/JetBrains Mono',
       ),
     );
 
@@ -38,7 +38,9 @@ class RawCodeView extends StatelessWidget {
       language: language,
       theme: theme,
       padding: padding,
-      textStyle: const TextStyle(fontFamily: 'JetBrains Mono'),
+      textStyle: const TextStyle(
+        fontFamily: 'packages/pandora_mitm_gui_core/JetBrains Mono',
+      ),
       progressIndicator: HighlightBackgroundProvider.maybeOf(context) == null
           ? null
           : simpleTextView,

@@ -105,7 +105,10 @@ class ParsingErrorPreview extends StatelessWidget {
                     'Class',
                     SelectableText(
                       error.className ?? 'N/A',
-                      style: const TextStyle(fontFamily: 'Jetbrains Mono'),
+                      style: const TextStyle(
+                        fontFamily:
+                            'packages/pandora_mitm_gui_core/JetBrains Mono',
+                      ),
                     ),
                   ),
                   if (error.map.containsKey('pandoraId'))
@@ -150,7 +153,8 @@ class ParsingErrorPreview extends StatelessWidget {
                           child: SelectableText(
                             error.innerStack.toString(),
                             style: const TextStyle(
-                              fontFamily: 'Jetbrains Mono',
+                              fontFamily:
+                                  'packages/pandora_mitm_gui_core/JetBrains Mono',
                               fontSize: 11,
                             ),
                           ),
