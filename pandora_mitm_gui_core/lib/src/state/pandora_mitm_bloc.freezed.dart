@@ -826,22 +826,16 @@ abstract class ConnectedPandoraMitmState extends PandoraMitmState {
       _$ConnectedPandoraMitmState;
   const ConnectedPandoraMitmState._() : super._();
 
-  PluginCapablePandoraMitm get pandoraMitm =>
-      throw _privateConstructorUsedError;
-  PandoraMitmRecord? get selectedRecord => throw _privateConstructorUsedError;
-  String? get selectedApiMethod => throw _privateConstructorUsedError;
-  ApiMethodInference? get selectedInference =>
-      throw _privateConstructorUsedError;
-  bool get pluginListUpdating => throw _privateConstructorUsedError;
-  RecordPlugin? get recordPlugin => throw _privateConstructorUsedError;
-  pmplg.InferencePlugin? get inferencePlugin =>
-      throw _privateConstructorUsedError;
-  pmplg.ReauthenticationPlugin? get reauthenticationPlugin =>
-      throw _privateConstructorUsedError;
-  pmplg.FeatureUnlockPlugin? get featureUnlockPlugin =>
-      throw _privateConstructorUsedError;
-  pmplg.MitmproxyUiHelperPlugin? get mitmproxyUiHelperPlugin =>
-      throw _privateConstructorUsedError;
+  PluginCapablePandoraMitm get pandoraMitm;
+  PandoraMitmRecord? get selectedRecord;
+  String? get selectedApiMethod;
+  ApiMethodInference? get selectedInference;
+  bool get pluginListUpdating;
+  RecordPlugin? get recordPlugin;
+  pmplg.InferencePlugin? get inferencePlugin;
+  pmplg.ReauthenticationPlugin? get reauthenticationPlugin;
+  pmplg.FeatureUnlockPlugin? get featureUnlockPlugin;
+  pmplg.MitmproxyUiHelperPlugin? get mitmproxyUiHelperPlugin;
   @JsonKey(ignore: true)
   _$$ConnectedPandoraMitmStateCopyWith<_$ConnectedPandoraMitmState>
       get copyWith => throw _privateConstructorUsedError;

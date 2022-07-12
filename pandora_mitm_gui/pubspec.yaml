@@ -19,6 +19,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-dependency_overrides:
-  meta: ^1.7.0

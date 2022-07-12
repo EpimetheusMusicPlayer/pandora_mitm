@@ -43,7 +43,7 @@ dependencies:
 dev_dependencies:
   lint: ^1.8.2
   build_runner: ^2.1.11
-  freezed: ^2.0.3+1
+  freezed: ^2.0.5
 
 flutter:
   uses-material-design: true
@@ -94,7 +94,6 @@ flutter:
           style: italic
 
 dependency_overrides:
-  meta: ^1.7.0
   code_builder:
     git:
       url: https://github.com/hacker1024/code_builder.git
