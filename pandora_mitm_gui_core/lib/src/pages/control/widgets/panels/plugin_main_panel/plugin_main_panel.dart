@@ -33,36 +33,41 @@ class PluginMainPanel extends StatelessWidget {
 
         if (pluginUiMap.isEmpty) {
           return Center(
-            child: IntrinsicHeight(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const SplashArt(),
-                  const VerticalDivider(width: 56, indent: 12, endIndent: 12),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PluginAddButton(
-                        pluginManager: pluginManager,
-                        availablePluginUis: availablePluginUis,
-                        size: 72,
-                        // Match the color with SplashArt
-                        color: Theme.of(context).textTheme.displaySmall!.color,
-                        showTooltip: false,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Add an interactive plugin\nto populate this space',
-                        // Match the style with SplashArt
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(fontSize: 20),
-                      ),
-                    ],
-                  ),
-                ],
+            child: SingleChildScrollView(
+              primary: false,
+              scrollDirection: Axis.horizontal,
+              child: IntrinsicHeight(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SplashArt(),
+                    const VerticalDivider(width: 56, indent: 12, endIndent: 12),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PluginAddButton(
+                          pluginManager: pluginManager,
+                          availablePluginUis: availablePluginUis,
+                          size: 72,
+                          // Match the color with SplashArt
+                          color:
+                              Theme.of(context).textTheme.displaySmall!.color,
+                          showTooltip: false,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Add an interactive plugin\nto populate this space',
+                          // Match the style with SplashArt
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );
