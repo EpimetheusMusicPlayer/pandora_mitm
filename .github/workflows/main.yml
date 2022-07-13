@@ -38,7 +38,7 @@ jobs:
         with:
           workingDir: pandora_mitm_gui
           targetBranch: gh-pages
-          baseHref: ${{ github.event.repository.name }}
+          baseHref: /${{ github.event.repository.name }}/
           webRenderer: canvaskit
           customArgs: --build-name=${{ steps.versions.outputs.gui_version }}
 
