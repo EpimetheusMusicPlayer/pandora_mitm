@@ -70,11 +70,11 @@ class ShallowJsonObjectValueTypeView extends StatelessWidget {
           dense: true,
           tileColor:
               index.isOdd ? Theme.of(context).hoverColor : Colors.transparent,
-          title: Text(
+          title: SelectableText(
             entry.key,
             style: Theme.of(context).textTheme.subtitle1,
           ),
-          trailing: Text(
+          trailing: SelectableText(
             entry.value.name + (entry.value.optional ? ' (Optional)' : ''),
           ),
         );
