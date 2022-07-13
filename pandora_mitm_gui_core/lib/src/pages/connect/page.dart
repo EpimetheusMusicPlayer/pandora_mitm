@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pandora_mitm_gui_core/src/pages/connect/widgets/browser_warning.dart';
 import 'package:pandora_mitm_gui_core/src/pages/connect/widgets/connection_setup.dart';
 import 'package:pandora_mitm_gui_core/src/state/pandora_mitm_bloc.dart';
 import 'package:pandora_mitm_gui_core/src/widgets/splash_art.dart';
@@ -26,16 +28,31 @@ class ConnectPage extends StatelessWidget {
             brightness: Brightness.dark,
             textTheme: baseTheme.typography.white,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SplashArt(),
-              SizedBox(width: 64),
-              SizedBox(
-                width: 256,
-                child: ConnectionSetupWidget(),
+          child: Center(
+            child: IntrinsicWidth(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SplashArt(),
+                      SizedBox(width: 64),
+                      SizedBox(
+                        width: 256,
+                        child: ConnectionSetupWidget(),
+                      ),
+                    ],
+                  ),
+                  if (kIsWeb)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 32),
+                      child: BrowserWarning(),
+                    ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
