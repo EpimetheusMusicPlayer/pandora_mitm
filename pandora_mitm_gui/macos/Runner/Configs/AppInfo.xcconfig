@@ -1,3 +1,0 @@
-PRODUCT_NAME = Pandora MITM
-PRODUCT_BUNDLE_IDENTIFIER = tk.epimetheus.pandoraMitmGuiMacOS
-PRODUCT_COPYRIGHT = Copyright © 2022 hacker1024 and contributors. All rights reserved.
