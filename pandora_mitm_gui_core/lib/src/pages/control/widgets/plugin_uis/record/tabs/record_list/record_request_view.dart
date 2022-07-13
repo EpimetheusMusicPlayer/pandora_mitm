@@ -21,6 +21,7 @@ class RecordRequestView extends StatelessWidget {
         InteractiveJsonView(
           key: ObjectKey(record.apiRequest.body),
           json: record.apiRequest.body,
+          initialDepth: record.apiRequest.body.length == 1 ? 1 : 0,
         ),
         RawJsonView(
           key: ObjectKey(record.apiRequest.body),
