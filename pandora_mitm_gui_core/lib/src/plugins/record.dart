@@ -1,20 +1,15 @@
 import 'dart:async';
 
-import 'package:iapetus/iapetus.dart';
 import 'package:pandora_mitm/pandora_mitm.dart';
 import 'package:pandora_mitm/plugins.dart' as pmplg;
-import 'package:pandora_mitm_gui_core/src/plugins/mixins/annotation_stream.dart';
 import 'package:pandora_mitm_gui_core/src/plugins/mixins/object_stream.dart';
 
-class RecordPlugin extends pmplg.StreamPlugin
-    with ObjectStreamMixin, AnnotationStreamMixin {
+class RecordPlugin extends pmplg.StreamPlugin with ObjectStreamMixin {
   late final ListRecorder<PandoraMitmRecord> messageRecorder;
-  late final MapEntryRecorder<String, MediaAnnotation> annotationRecorder;
   late final MapEntryRecorder<PandoraMitmRecord, Object?> objectRecorder;
 
   RecordPlugin({super.stripBoilerplate}) {
     messageRecorder = ListRecorder(recordStream);
-    annotationRecorder = MapEntryRecorder(mediaAnnotationStream);
     objectRecorder = MapEntryRecorder(objectStream);
   }
 }

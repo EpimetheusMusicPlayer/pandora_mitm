@@ -42,11 +42,6 @@ class RecordPluginUi extends PluginUi<RecordPlugin>
           },
           child: const Text('Clear messages'),
         ),
-        // ignore: prefer_void_to_null
-        PopupMenuItem<Null>(
-          onTap: plugin.annotationRecorder.clear,
-          child: const Text('Clear annotations'),
-        ),
         ...super.buildContextMenuItems(context, plugin),
       ];
 
