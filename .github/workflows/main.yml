@@ -71,7 +71,7 @@ jobs:
         with:
           tag: gui-v${{ steps.versions.outputs.gui_version }}
           prerelease: true
-          name: [CD] Pandora MITM GUI v${{ steps.versions.outputs.gui_version }}
-          body: This is an automatic prerelease build of the Pandora MITM GUI.
+          name: '[CD] Pandora MITM GUI v${{ steps.versions.outputs.gui_version }}'
+          body: 'This is an automatic prerelease build of the Pandora MITM GUI.'
           artifacts: pandora_mitm_gui/build/macos/Build/Products/Release/PandoraMITMv${{ steps.versions.outputs.gui_version }}.dmg
 
