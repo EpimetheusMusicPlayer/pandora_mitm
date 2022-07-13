@@ -18,7 +18,13 @@ A Pandora app reverse-engineering toolbox.
 
 ### Setup
 
-Follow the [pandora_mitm setup instructions](../pandora_mitm#backend-setup).
+1. Follow the [pandora_mitm setup instructions](../pandora_mitm#backend-setup).
+2. Download the [latest desktop build](https://github.com/EpimetheusMusicPlayer/pandora_mitm/releases).
+   Alternatively, try out the [Web version](https://epimetheusmusicplayer.github.io/pandora_mitm).
+   
+   Note that:
+   - The Web version has reduced performance and may not connect in some browsers
+   - It should be trivial to add builds for other platforms - there's no OS-specific code in use. PRs are welcome.
 
 ### Usage
 
