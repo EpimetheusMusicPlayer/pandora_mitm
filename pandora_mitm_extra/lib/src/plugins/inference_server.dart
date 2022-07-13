@@ -285,7 +285,7 @@ All the query parameters from Markdown are supported.''',
     }
 
     final inferenceHeaderLevel = (options.containsKey('headerLevel')
-            ? int?.tryParse(options['headerLevel']!)
+            ? int.tryParse(options['headerLevel']!)
             : null) ??
         (requestedInference == null ? 2 : 1);
 
