@@ -13,6 +13,7 @@ packages:
 command:
   bootstrap:
     usePubspecOverrides: true
+    runPubGetInParallel: false
   version:
     message: |
       chore: Publish packages
