@@ -14,6 +14,17 @@ A Pandora app reverse-engineering toolbox.
   - Fake authentication token expiration
   - mitmproxy UI enhancements
 
+## Getting started
+
+### Setup
+
+Follow the [pandora_mitm setup instructions](../pandora_mitm#backend-setup).
+
+### Usage
+
+Plugins can be added, configured, and removed using the plugin selection panel on the left-hand side.  
+Useful templates can be accessed through the drop-down menu next to the add button.
+
 ## Technologies
 A rough overview of the technology stack used in this project is as follows:
 > [Python](https://python.org)

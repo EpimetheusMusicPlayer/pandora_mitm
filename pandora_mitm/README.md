@@ -2,7 +2,7 @@
 
 A Dart package for analysing and modifying Pandora JSON API messages.
 
-### [Looking for the CLI?][cli]
+### Looking for the [GUI][gui] or [CLI][cli]?
 
 ## Features
 
@@ -10,6 +10,7 @@ A Dart package for analysing and modifying Pandora JSON API messages.
 - Modular extensibility with plugins, including inbuilt solutions for:
   - Logging
   - Recording
+  - API message object definition inference
   - Feature unlocking
   - Reauthentication
   - mitmproxy UI enhancement
@@ -31,7 +32,7 @@ A Dart package for analysing and modifying Pandora JSON API messages.
    - [On Android emulators](https://docs.mitmproxy.org/stable/howto-install-system-trusted-ca-android)
    - [On rooted Android devices](https://github.com/NVISOsecurity/MagiskTrustUserCerts)
 
-   Alternatively, mod the Android app to disable certificate pinning.
+   Alternatively, on non-rooted Android devices, [mod the Android app](https://erev0s.com/blog/new-flag-in-apktool-for-automatic-generic-network-configuration) to disable certificate pinning.
 3. Add [mitmproxy] as a proxy server on your device.
    - On Android, [this app may be useful](https://github.com/theappbusiness/android-proxy-toggle).
      Note that most apps that route traffic to proxy servers via a VPN service will not work.
@@ -40,6 +41,9 @@ A Dart package for analysing and modifying Pandora JSON API messages.
    ```shell
    mitmproxy -s path/to/mitmproxy_remote_interceptions.py --allow-hosts android-tuner.pandora.com --set view_filter='^https://android-tuner\.pandora\.com/services/json.*$'
    ```
+
+### GUI
+A useful [GUI][gui] is provided.
 
 ### CLI
 
@@ -54,6 +58,7 @@ project.
      pandora_mitm:
        git:
          url: 'https://github.com/EpimetheusMusicPlayer/pandora_mitm.git'
+         path: pandora_mitm
          ref: master # Or a tag, commit, secondary branch, etc.
    ```
 2. Import the libraries:
@@ -74,5 +79,6 @@ project.
 3. Consult the API docs.
 
 [cli]: ../pandora_mitm_cli
+[gui]: ../pandora_mitm_gui
 [mitmproxy]: https://mitmproxy.org
 [ri]: https://github.com/hacker1024/mitmproxy_remote_interceptions
