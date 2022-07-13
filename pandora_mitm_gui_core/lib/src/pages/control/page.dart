@@ -35,8 +35,8 @@ class ControlPage extends StatelessWidget {
           ),
           child: MultiSplitView(
             initialAreas: [
-              Area(size: 240, minimalSize: 200),
-              Area(weight: 1, minimalSize: 512),
+              Area(weight: 0.2, minimalWeight: 0.1),
+              Area(minimalSize: 512),
             ],
             children: [
               Column(
